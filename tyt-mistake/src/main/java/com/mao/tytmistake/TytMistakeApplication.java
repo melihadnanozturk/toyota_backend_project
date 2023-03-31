@@ -1,0 +1,13 @@
+package com.mao.tytmistake;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class TytMistakeApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(TytMistakeApplication.class, args);
+    }
+
+}

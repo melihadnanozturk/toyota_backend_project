@@ -1,17 +1,20 @@
 package com.mao.tytmistake.service;
 
-import com.mao.tytmistake.model.domain.Defect;
+import com.mao.tytmistake.controller.request.DefectRequest;
+import com.mao.tytmistake.controller.request.UpdateDefectRequest;
+import com.mao.tytmistake.controller.response.DefectResponse;
+import com.mao.tytmistake.controller.response.PageDefectResponse;
 import com.mao.tytmistake.model.entity.DefectEntity;
-
-import java.util.List;
 
 public interface DefectService {
 
-    List<DefectEntity> getAllDefect();
+    PageDefectResponse getAllDefect();
 
     void removeDefect(Long id);
 
-    DefectEntity updateDefect(Long id, Defect defect);
+    DefectResponse updateDefect(UpdateDefectRequest updateDefectRequest);
 
-    DefectEntity addNewDefect(Defect defect);
+    DefectResponse addNewDefect(DefectRequest defectRequest);
+
+    DefectEntity getById(Long id);
 }

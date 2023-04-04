@@ -1,4 +1,4 @@
-package com.mao.tytmistake.presentation.repository;
+package com.mao.tytmistake.repository;
 
 import com.mao.tytmistake.model.entity.DefectLocationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -8,6 +8,6 @@ import lombok.Setter;
 public class Defect {
 
     //todo:Buraya validasyon anatasyonu ekle.
-    String defectCode;
-    String defectDesc;
+    String code;
+    String desc;
 }

@@ -9,6 +9,7 @@ import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.DefectLocationEntity;
 import com.mao.tytmistake.model.entity.VehicleDefectEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
+import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
 import com.mao.tytmistake.service.DefectService;
 import com.mao.tytmistake.service.VehicleDefectService;
@@ -61,13 +62,19 @@ public class VehicleDefectImpl implements VehicleDefectService {
     }
 
     @Override
-    public void deleteVehicleDefect(Long id) {
-        vehicleDefectEntityRepository.deleteById(id);
+    public Long deleteVehicleDefect(Long id) {
+        VehicleDefectEntity vehicleDefectEntity = checkExist(id);
+
+        vehicleDefectEntity.setIsDeleted(true);
+        vehicleDefectEntity.getVehicle().setIsDeleted(true);
+        vehicleDefectEntity.getDefect().setIsDeleted(true);
+        vehicleDefectEntity.getDefectLocation().forEach(location -> location.setIsDeleted(true));
+
+        return vehicleDefectEntityRepository.save(vehicleDefectEntity).getId();
     }
 
-    @SneakyThrows
     private VehicleDefectEntity checkExist(Long id) {
-        return vehicleDefectEntityRepository.findById(id).orElseThrow(() -> new Exception("Not found By ID"));
+        return vehicleDefectEntityRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
     }
 
     private List<DefectLocationEntity> locationsMappedEntities(List<Locations> locations) {

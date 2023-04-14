@@ -31,7 +31,7 @@ public class VehicleDefectController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        vehicleDefectService.deleteVehicleDefect(id);
+    public Long delete(@PathVariable Long id) {
+        return vehicleDefectService.deleteVehicleDefect(id);
     }
 }

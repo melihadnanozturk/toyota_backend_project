@@ -13,7 +13,7 @@ public interface VehicleService {
 
     VehicleResponse newVehicleAdd(VehicleRequest vehicleRequest);
 
-    void removeVehicle(@PathVariable Long id);
+    Long removeVehicle(@PathVariable Long id);
 
     VehicleResponse updateVehicle(UpdateVehicleRequest vehicleRequest);
 

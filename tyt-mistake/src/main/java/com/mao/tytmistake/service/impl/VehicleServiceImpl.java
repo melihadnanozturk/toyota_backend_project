@@ -48,8 +48,10 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public void removeVehicle(Long id) {
-        vehicleEntityRepository.deleteById(id);
+    public Long removeVehicle(Long id) {
+        VehicleEntity vehicleEntity = getById(id);
+        vehicleEntity.setIsDeleted(true);
+        return vehicleEntityRepository.save(vehicleEntity).getId();
     }
 
     @Override

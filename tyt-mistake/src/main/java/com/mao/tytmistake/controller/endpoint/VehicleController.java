@@ -33,7 +33,7 @@ public class VehicleController {
     }
 
     @DeleteMapping("/{id}")
-    public void removeVehicle(@PathVariable Long id) {
-        vehicleService.removeVehicle(id);
+    public Long removeVehicle(@PathVariable Long id) {
+        return vehicleService.removeVehicle(id);
     }
 }

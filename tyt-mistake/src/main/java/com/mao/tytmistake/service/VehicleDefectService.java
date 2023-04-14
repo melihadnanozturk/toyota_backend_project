@@ -11,7 +11,7 @@ public interface VehicleDefectService {
 
     VehicleDefectResponse addNewVehicleDefect(VehicleDefectRequest defectRequest);
 
-    void deleteVehicleDefect(Long id);
+    Long deleteVehicleDefect(Long id);
 
     VehicleDefectResponse updateVehicleDefect(UpdateVehicleDefectRequest vehicleDefectRequest);
 }

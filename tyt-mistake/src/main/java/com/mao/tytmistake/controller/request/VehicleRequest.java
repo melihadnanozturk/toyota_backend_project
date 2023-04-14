@@ -1,7 +1,8 @@
 package com.mao.tytmistake.controller.request;
 
+import com.mao.tytmistake.model.entity.Model;
 import com.mao.tytmistake.model.entity.VehicleEntity;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,8 +13,8 @@ import lombok.Setter;
 @Setter
 public class VehicleRequest {
 
-    @NotBlank
-    private String model;
+    @NotNull
+    private Model model;
     private String chassisNumber;
     private String colour;
 

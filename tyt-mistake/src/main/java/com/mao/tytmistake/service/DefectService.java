@@ -10,7 +10,7 @@ public interface DefectService {
 
     PageDefectResponse getAllDefect();
 
-    void removeDefect(Long id);
+    Long removeDefect(Long id);
 
     DefectResponse updateDefect(UpdateDefectRequest updateDefectRequest);
 

@@ -49,9 +49,10 @@ public class DefectServiceImpl implements DefectService {
     }
 
     @Override
-    public void removeDefect(Long id) {
-        checkExists(id);
-        defectEntityRepository.deleteById(id);
+    public Long removeDefect(Long id) {
+        DefectEntity defectEntity = getById(id);
+        defectEntity.setIsDeleted(true);
+        return defectEntityRepository.save(defectEntity).getId();
     }
 
     @Override

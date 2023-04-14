@@ -1,6 +1,7 @@
 package com.mao.tytmistake.controller.response;
 
 
+import com.mao.tytmistake.model.entity.VehicleEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,4 +15,13 @@ public class VehicleResponse {
     private String model;
     private String chassisNumber;
     private String colour;
+
+    public static VehicleResponse vehicleEntityMappedResponse(VehicleEntity vehicleEntity) {
+        return VehicleResponse.builder()
+                .id(vehicleEntity.getId())
+                .model(vehicleEntity.getModel())
+                .chassisNumber(vehicleEntity.getChassisNumber())
+                .colour(vehicleEntity.getColour())
+                .build();
+    }
 }

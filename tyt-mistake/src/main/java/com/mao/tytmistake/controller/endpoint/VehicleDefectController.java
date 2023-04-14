@@ -1,5 +1,6 @@
 package com.mao.tytmistake.controller.endpoint;
 
+import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.VehicleDefectRequest;
 import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
 import com.mao.tytmistake.controller.response.VehicleDefectResponse;
@@ -25,8 +26,8 @@ public class VehicleDefectController {
     }
 
     @PutMapping
-    public VehicleDefectResponse updateVehicleDefect(@PathVariable Long id, @RequestBody VehicleDefectRequest vehicleDefectRequest) {
-        return vehicleDefectService.updateVehicleDefect(id, vehicleDefectRequest);
+    public VehicleDefectResponse updateVehicleDefect(@RequestBody UpdateVehicleDefectRequest vehicleDefectRequest) {
+        return vehicleDefectService.updateVehicleDefect(vehicleDefectRequest);
     }
 
     @DeleteMapping("/{id}")

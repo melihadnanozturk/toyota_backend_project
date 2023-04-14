@@ -7,18 +7,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Entity
 @Table(name = "tt_defect_location")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DefectLocationEntity {
+public class DefectLocationEntity extends BaseEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Serial
+    private static final long serialVersionUID = -3773257122505753461L;
 
     @Column(name = "y_location", nullable = false)
     private String yLocation;
@@ -27,7 +28,8 @@ public class DefectLocationEntity {
     private String xLocation;
 
     //todo: burası kontrol edilebilir.
-    @OneToOne(mappedBy = "defectLocation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "vehicle_defect_id", referencedColumnName = "id")
     private VehicleDefectEntity defectEntity;
 
 }

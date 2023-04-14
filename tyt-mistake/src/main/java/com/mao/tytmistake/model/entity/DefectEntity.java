@@ -3,6 +3,7 @@ package com.mao.tytmistake.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serial;
 import java.util.List;
 
 @Entity
@@ -12,12 +13,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DefectEntity {
+public class DefectEntity extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Serial
+    private static final long serialVersionUID = 798308213670575701L;
 
     @Column(name = "defect_code", nullable = false, unique = true)
     private String defectCode;

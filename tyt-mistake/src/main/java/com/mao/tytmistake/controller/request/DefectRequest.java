@@ -1,5 +1,6 @@
 package com.mao.tytmistake.controller.request;
 
+import com.mao.tytmistake.model.entity.DefectEntity;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,4 +15,12 @@ public class DefectRequest {
     private String defectCode;
 
     private String defectDesc;
+
+    public static DefectEntity requestMappedDefectEntity(DefectRequest defectRequest) {
+        return DefectEntity.builder()
+                .defectCode(defectRequest.getDefectCode())
+                .defectDesc(defectRequest.getDefectDesc())
+                .build();
+    }
+
 }

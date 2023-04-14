@@ -1,14 +1,18 @@
 package com.mao.tytmistake.service.impl;
 
+import com.mao.tytmistake.controller.request.UpdateVehicleRequest;
 import com.mao.tytmistake.controller.request.VehicleRequest;
 import com.mao.tytmistake.controller.response.PageVehicleResponse;
 import com.mao.tytmistake.controller.response.VehicleResponse;
 import com.mao.tytmistake.model.entity.VehicleEntity;
+import com.mao.tytmistake.model.exception.AlreadyExistsException;
+import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.repository.VehicleEntityRepository;
 import com.mao.tytmistake.service.VehicleService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,29 +22,29 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public PageVehicleResponse getAllVehicle() {
+        List<VehicleResponse> vehicleResponses = vehicleEntityRepository.findAll()
+                .stream().map(VehicleResponse::vehicleEntityMappedResponse).toList();
+
         return PageVehicleResponse.builder()
-                .vehicleResponseList(vehicleEntityRepository.findAll()
-                        .stream().map(this::mapToResponse).toList())
+                .vehicleResponseList(vehicleResponses)
                 .build();
     }
 
     @Override
     public VehicleResponse newVehicleAdd(VehicleRequest vehicleRequest) {
-        VehicleEntity vehicleEntity = mapToEntity(vehicleRequest);
-        VehicleEntity saved = vehicleEntityRepository.save(vehicleEntity);
-        return mapToResponse(saved);
+        checkChassisNumberBeforeInsert(vehicleRequest.getChassisNumber());
+
+        VehicleEntity vehicleEntity = VehicleRequest.requestMappedVehicleEntity(vehicleRequest);
+        VehicleEntity savedEntity = vehicleEntityRepository.save(vehicleEntity);
+        return VehicleResponse.vehicleEntityMappedResponse(savedEntity);
     }
 
     @Override
-    public VehicleResponse updateVehicle(Long id, VehicleRequest vehicleRequest) {
-        VehicleEntity vehicleEntity = checkVehicleExist(id);
-        VehicleEntity updated = setVehicle(vehicleEntity, vehicleRequest);
-        return mapToResponse(vehicleEntityRepository.save(updated));
-    }
-
-    @SneakyThrows
-    private VehicleEntity checkVehicleExist(Long id) {
-        return vehicleEntityRepository.findById(id).orElseThrow(() -> new Exception("Not Found"));
+    public VehicleResponse updateVehicle(UpdateVehicleRequest vehicleRequest) {
+        VehicleEntity vehicleEntity = checkVehicleEntityBeforeUpdate(vehicleRequest);
+        VehicleEntity updatedEntity = setVehicle(vehicleEntity, vehicleRequest.getVehicleRequest());
+        VehicleEntity savedEntity = vehicleEntityRepository.save(updatedEntity);
+        return VehicleResponse.vehicleEntityMappedResponse(savedEntity);
     }
 
     @Override
@@ -53,27 +57,33 @@ public class VehicleServiceImpl implements VehicleService {
         return checkVehicleExist(id);
     }
 
+    private void checkChassisNumberBeforeInsert(String chassisNumber) {
+        if (vehicleEntityRepository.findByChassisNumber(chassisNumber).isPresent()) {
+            throw new AlreadyExistsException(chassisNumber);
+        }
+    }
+
+    private VehicleEntity checkVehicleEntityBeforeUpdate(UpdateVehicleRequest vehicleRequest) {
+        VehicleEntity byId = checkVehicleExist(vehicleRequest.getId());
+        VehicleEntity byChassisNumber = vehicleEntityRepository
+                .findByChassisNumber(vehicleRequest.getVehicleRequest().getChassisNumber()).orElse(null);
+
+        if (byChassisNumber != null && (!byId.getId().equals(byChassisNumber.getId()))) {
+            throw new AlreadyExistsException(byChassisNumber.getChassisNumber());
+        }
+
+        return byId;
+    }
+
+    private VehicleEntity checkVehicleExist(Long id) {
+        return vehicleEntityRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
+    }
+
     private VehicleEntity setVehicle(VehicleEntity vehicleEntity, VehicleRequest vehicleRequest) {
         vehicleEntity.setColour(vehicleRequest.getColour());
         vehicleEntity.setChassisNumber(vehicleRequest.getChassisNumber());
         vehicleEntity.setModel(vehicleRequest.getModel());
         return vehicleEntity;
-    }
-
-    private VehicleEntity mapToEntity(VehicleRequest vehicleRequest) {
-        return VehicleEntity.builder()
-                .model(vehicleRequest.getModel())
-                .chassisNumber(vehicleRequest.getChassisNumber())
-                .colour(vehicleRequest.getColour())
-                .build();
-    }
-
-    private VehicleResponse mapToResponse(VehicleEntity vehicleEntity) {
-        return VehicleResponse.builder()
-                .model(vehicleEntity.getModel())
-                .chassisNumber(vehicleEntity.getChassisNumber())
-                .colour(vehicleEntity.getColour())
-                .build();
     }
 
 }

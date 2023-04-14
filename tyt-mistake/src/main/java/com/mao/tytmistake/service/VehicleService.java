@@ -1,5 +1,6 @@
 package com.mao.tytmistake.service;
 
+import com.mao.tytmistake.controller.request.UpdateVehicleRequest;
 import com.mao.tytmistake.controller.request.VehicleRequest;
 import com.mao.tytmistake.controller.response.PageVehicleResponse;
 import com.mao.tytmistake.controller.response.VehicleResponse;
@@ -14,7 +15,7 @@ public interface VehicleService {
 
     void removeVehicle(@PathVariable Long id);
 
-    VehicleResponse updateVehicle(Long id, VehicleRequest vehicleRequest);
+    VehicleResponse updateVehicle(UpdateVehicleRequest vehicleRequest);
 
     VehicleEntity getById(Long id);
 }

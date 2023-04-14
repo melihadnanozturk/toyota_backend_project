@@ -1,7 +1,10 @@
 package com.mao.tytmistake.service.impl;
 
+import com.mao.tytmistake.controller.request.Locations;
+import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.VehicleDefectRequest;
-import com.mao.tytmistake.controller.response.*;
+import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
+import com.mao.tytmistake.controller.response.VehicleDefectResponse;
 import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.DefectLocationEntity;
 import com.mao.tytmistake.model.entity.VehicleDefectEntity;
@@ -14,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class VehicleDefectImpl implements VehicleDefectService {
@@ -25,29 +30,34 @@ public class VehicleDefectImpl implements VehicleDefectService {
 
     @Override
     public PageVehicleDefectResponse getAllVehicleDefect() {
+        List<VehicleDefectResponse> vehicleDefectResponses = vehicleDefectEntityRepository.findAll()
+                .stream().map(VehicleDefectResponse::vehicleDefectEntityMappedResponse).toList();
+
         return PageVehicleDefectResponse.builder()
-                .defectEntities(vehicleDefectEntityRepository.findAll().stream().toList())
+                .defectEntities(vehicleDefectResponses)
                 .build();
     }
 
     @SneakyThrows
     @Override
     public VehicleDefectResponse addNewVehicleDefect(VehicleDefectRequest vehicleDefectRequest) {
-        VehicleEntity vehicleEntity = vehicleService.getById(vehicleDefectRequest.getDefectId());
+        VehicleEntity vehicleEntity = vehicleService.getById(vehicleDefectRequest.getVehicleId());
         DefectEntity defectEntity = defectService.getById(vehicleDefectRequest.getDefectId());
-        DefectLocationEntity defectLocationEntity = mapToDefectEntity(vehicleDefectRequest);
+        List<DefectLocationEntity> defectLocationEntity = locationsMappedEntities(vehicleDefectRequest.getLocaitons());
 
-        VehicleDefectEntity vehicleDefectEntity = mapToEntity(vehicleDefectRequest);
+        VehicleDefectEntity vehicleDefectEntity = VehicleDefectRequest.responseMapToVehicleDefectEntity(vehicleDefectRequest);
         vehicleDefectEntity.setVehicle(vehicleEntity);
         vehicleDefectEntity.setDefect(defectEntity);
         vehicleDefectEntity.setDefectLocation(defectLocationEntity);
 
-        return mapToResponse(vehicleDefectEntityRepository.save(vehicleDefectEntity));
+        return VehicleDefectResponse.vehicleDefectEntityMappedResponse(vehicleDefectEntityRepository.save(vehicleDefectEntity));
     }
 
     @Override
-    public VehicleDefectResponse updateVehicleDefect(Long id, VehicleDefectRequest vehicleDefectRequest) {
-        return null;
+    public VehicleDefectResponse updateVehicleDefect(UpdateVehicleDefectRequest vehicleDefectRequest) {
+        VehicleDefectEntity vehicleDefectEntity = checkExist(vehicleDefectRequest.getId());
+        vehicleDefectEntity.setDefectImage(vehicleDefectRequest.getVehicleDefectRequest().getDefectImage());
+        return VehicleDefectResponse.vehicleDefectEntityMappedResponse(vehicleDefectEntityRepository.save(vehicleDefectEntity));
     }
 
     @Override
@@ -55,41 +65,12 @@ public class VehicleDefectImpl implements VehicleDefectService {
         vehicleDefectEntityRepository.deleteById(id);
     }
 
-    private VehicleDefectResponse mapToResponse(VehicleDefectEntity vehicleDefectEntity) {
-        DefectResponse defectResponse = DefectResponse.builder()
-                .id(vehicleDefectEntity.getDefect().getId())
-                .defectCode(vehicleDefectEntity.getDefect().getDefectCode())
-                .defectDesc(vehicleDefectEntity.getDefect().getDefectDesc())
-                .build();
-        return VehicleDefectResponse.builder()
-                .id(vehicleDefectEntity.getId())
-                .defectImage(vehicleDefectEntity.getDefectImage())
-                .defect(defectResponse)
-                .vehicle(VehicleResponse.builder()
-                        .id(vehicleDefectEntity.getVehicle().getId())
-                        .model(vehicleDefectEntity.getVehicle().getModel())
-                        .chassisNumber(vehicleDefectEntity.getVehicle().getChassisNumber())
-                        .colour(vehicleDefectEntity.getVehicle().getColour())
-                        .build())
-                .defectLocation(DefectLocationResponse.builder()
-                        .id(vehicleDefectEntity.getDefectLocation().getId())
-                        .xLocation(vehicleDefectEntity.getDefectLocation().getXLocation())
-                        .yLocation(vehicleDefectEntity.getDefectLocation().getYLocation())
-                        .build())
-                .build();
+    @SneakyThrows
+    private VehicleDefectEntity checkExist(Long id) {
+        return vehicleDefectEntityRepository.findById(id).orElseThrow(() -> new Exception("Not found By ID"));
     }
 
-    private VehicleDefectEntity mapToEntity(VehicleDefectRequest defectRequest) {
-        return VehicleDefectEntity.builder()
-                .defectImage(defectRequest.getDefectImage())
-                .vehicleDefectDesc(defectRequest.getVehicleDefectDesc())
-                .build();
-    }
-
-    private DefectLocationEntity mapToDefectEntity(VehicleDefectRequest vehicleDefectRequest) {
-        return DefectLocationEntity.builder()
-                .xLocation(vehicleDefectRequest.getXLocation())
-                .yLocation(vehicleDefectRequest.getYLocation())
-                .build();
+    private List<DefectLocationEntity> locationsMappedEntities(List<Locations> locations) {
+        return locations.stream().map(Locations::mappedDefectLocationEntity).toList();
     }
 }

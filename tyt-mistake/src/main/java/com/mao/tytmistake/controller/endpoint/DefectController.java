@@ -27,12 +27,12 @@ public class DefectController {
         return defectService.addNewDefect(defectRequest);
     }
 
-    @DeleteMapping
-    public void removeDefect(Long id) {
+    @DeleteMapping("/{id}")
+    public void removeDefect(@PathVariable Long id) {
         defectService.removeDefect(id);
     }
 
-    @PutMapping()
+    @PutMapping
     public DefectResponse updateDefect(@RequestBody UpdateDefectRequest updateDefectRequest) {
         return defectService.updateDefect(updateDefectRequest);
     }

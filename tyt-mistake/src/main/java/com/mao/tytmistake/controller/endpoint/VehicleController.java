@@ -1,5 +1,6 @@
 package com.mao.tytmistake.controller.endpoint;
 
+import com.mao.tytmistake.controller.request.UpdateVehicleRequest;
 import com.mao.tytmistake.controller.request.VehicleRequest;
 import com.mao.tytmistake.controller.response.PageVehicleResponse;
 import com.mao.tytmistake.controller.response.VehicleResponse;
@@ -17,9 +18,6 @@ public class VehicleController {
 
     @GetMapping
     public PageVehicleResponse getAllVehicle() {
-        //todo: will add pagination
-        //todo Burada filtreleme getir {model/ renk/ hata}}.
-        //todo:Birden fazla filtrelemeyi kabul eden bir yapı.
         return vehicleService.getAllVehicle();
     }
 
@@ -28,15 +26,14 @@ public class VehicleController {
         return vehicleService.newVehicleAdd(vehicleRequest);
     }
 
-    @PutMapping("/{id}")
-    public VehicleResponse updateVehicle(@PathVariable Long id, @RequestBody @Valid VehicleRequest vehicleRequest) {
-        return vehicleService.updateVehicle(id, vehicleRequest);
+    //todo: id yi url den mi alalaım yokas body den mi gelsin düşün?
+    @PutMapping
+    public VehicleResponse updateVehicle(@RequestBody UpdateVehicleRequest vehicleRequest) {
+        return vehicleService.updateVehicle(vehicleRequest);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void removeVehicle(@PathVariable Long id) {
-        //todo: Tüm silme işlemlerinde güvenlik problemini çöz
-        //todo: soft delete
         vehicleService.removeVehicle(id);
     }
 }

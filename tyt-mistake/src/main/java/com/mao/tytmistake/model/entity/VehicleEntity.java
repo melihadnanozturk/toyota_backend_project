@@ -28,7 +28,7 @@ public class VehicleEntity extends BaseEntity implements Serializable {
     private String chassisNumber;
 
     @Column(name = "colour")
-    private String colour;
+    private Colour colour;
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<VehicleDefectEntity> defect = new ArrayList<>();

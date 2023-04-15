@@ -57,19 +57,15 @@ public class DefectServiceImpl implements DefectService {
 
     @Override
     public DefectEntity getById(Long id) {
-        return checkExists(id);
-    }
-
-    private DefectEntity checkExists(Long id) {
         return defectEntityRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(id.toString()));
     }
 
     private DefectEntity controlsBeforeDefectCodeUpdate(UpdateDefectRequest updateDefectRequest) {
-        DefectEntity entity = checkExists(updateDefectRequest.getId());
+        DefectEntity entity = getById(updateDefectRequest.getId());
         String defectCode = updateDefectRequest.getDefectRequest().getDefectCode();
 
-        DefectEntity found = defectEntityRepository.findByDefectCode(defectCode).orElse(null);
+        DefectEntity found = defectEntityRepository.findByDefectCodeAndIsDeletedIsFalse(defectCode).orElse(null);
 
         if (found != null && (!entity.getId().equals(found.getId())))
             throw new AlreadyExistsException(defectCode);
@@ -78,7 +74,7 @@ public class DefectServiceImpl implements DefectService {
     }
 
     private void checkDefectCodeBeforeInsert(String defectCode) {
-        if (defectEntityRepository.findByDefectCode(defectCode).isPresent()) {
+        if (defectEntityRepository.findByDefectCodeAndIsDeletedIsFalse(defectCode).isPresent()) {
             throw new AlreadyExistsException(defectCode);
         }
     }

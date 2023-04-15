@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface VehicleEntityRepository extends JpaRepository<VehicleEntity, Long> {
 
-    Optional<VehicleEntity> findByChassisNumber(String chassisNumber);
+    Optional<VehicleEntity> findByChassisNumberAndIsDeletedIsFalse(String chassisNumber);
 }

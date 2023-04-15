@@ -56,29 +56,25 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public VehicleEntity getById(Long id) {
-        return checkVehicleExist(id);
+        return vehicleEntityRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
     }
 
     private void checkChassisNumberBeforeInsert(String chassisNumber) {
-        if (vehicleEntityRepository.findByChassisNumber(chassisNumber).isPresent()) {
+        if (vehicleEntityRepository.findByChassisNumberAndIsDeletedIsFalse(chassisNumber).isPresent()) {
             throw new AlreadyExistsException(chassisNumber);
         }
     }
 
     private VehicleEntity checkVehicleEntityBeforeUpdate(UpdateVehicleRequest vehicleRequest) {
-        VehicleEntity byId = checkVehicleExist(vehicleRequest.getId());
+        VehicleEntity byId = getById(vehicleRequest.getId());
         VehicleEntity byChassisNumber = vehicleEntityRepository
-                .findByChassisNumber(vehicleRequest.getVehicleRequest().getChassisNumber()).orElse(null);
+                .findByChassisNumberAndIsDeletedIsFalse(vehicleRequest.getVehicleRequest().getChassisNumber()).orElse(null);
 
         if (byChassisNumber != null && (!byId.getId().equals(byChassisNumber.getId()))) {
             throw new AlreadyExistsException(byChassisNumber.getChassisNumber());
         }
 
         return byId;
-    }
-
-    private VehicleEntity checkVehicleExist(Long id) {
-        return vehicleEntityRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
     }
 
     private VehicleEntity setVehicle(VehicleEntity vehicleEntity, VehicleRequest vehicleRequest) {

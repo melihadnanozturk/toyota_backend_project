@@ -1,5 +1,6 @@
 package com.mao.tytmistake.controller.request;
 
+import com.mao.tytmistake.model.entity.Colour;
 import com.mao.tytmistake.model.entity.Model;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ public class VehicleRequest {
     @NotNull
     private Model model;
     private String chassisNumber;
-    private String colour;
+    private Colour colour;
 
     public static VehicleEntity requestMappedVehicleEntity(VehicleRequest vehicleRequest) {
         return VehicleEntity.builder()

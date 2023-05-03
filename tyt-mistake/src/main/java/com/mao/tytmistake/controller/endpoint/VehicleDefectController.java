@@ -25,6 +25,7 @@ public class VehicleDefectController {
         return vehicleDefectService.addNewVehicleDefect(vehicleDefectRequest);
     }
 
+    //todo: düşünülecek
     @PutMapping
     public VehicleDefectResponse updateVehicleDefect(@RequestBody UpdateVehicleDefectRequest vehicleDefectRequest) {
         return vehicleDefectService.updateVehicleDefect(vehicleDefectRequest);

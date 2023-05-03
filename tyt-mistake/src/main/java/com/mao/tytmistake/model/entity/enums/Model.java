@@ -1,9 +1,7 @@
-package com.mao.tytmistake.model.entity;
+package com.mao.tytmistake.model.entity.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
 public enum Model {
 
@@ -14,4 +12,8 @@ public enum Model {
     HILUX("Hilux");
 
     private final String name;
+
+    Model(String name) {
+        this.name = name;
+    }
 }

@@ -20,6 +20,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     private final VehicleEntityRepository vehicleEntityRepository;
 
+    //todo: Will add pagination
     @Override
     public PageVehicleResponse getAllVehicle() {
         List<VehicleResponse> vehicleResponses = vehicleEntityRepository.findAll()

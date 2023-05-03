@@ -1,5 +1,6 @@
 package com.mao.tytmistake.model.entity;
 
+import com.mao.tytmistake.model.entity.enums.Defect;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +18,10 @@ import java.util.List;
 public class VehicleDefectEntity extends BaseEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -6882968192497474298L;
+    private static final long serialVersionUID = -1411462554817294988L;
+
+    @Enumerated(EnumType.STRING)
+    private Defect defect;
 
     @Column(name = "vehicle_defect_desc")
     private String vehicleDefectDesc;
@@ -29,10 +33,6 @@ public class VehicleDefectEntity extends BaseEntity implements Serializable {
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
     private VehicleEntity vehicle;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "defect_id", referencedColumnName = "id")
-    private DefectEntity defect;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "defectEntity")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "vehicleDefectEntity")
     private List<DefectLocationEntity> defectLocation;
 }

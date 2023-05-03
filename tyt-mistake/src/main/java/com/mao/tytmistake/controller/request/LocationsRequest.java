@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class Locations {
+public class LocationsRequest {
 
     @NotBlank
     private String yLocation;
@@ -17,7 +17,7 @@ public class Locations {
     @NotBlank
     private String xLocation;
 
-    public static DefectLocationEntity mappedDefectLocationEntity(Locations location) {
+    public static DefectLocationEntity mappedDefectLocationEntity(LocationsRequest location) {
         return DefectLocationEntity.builder()
                 .xLocation(location.getXLocation())
                 .yLocation(location.getYLocation())

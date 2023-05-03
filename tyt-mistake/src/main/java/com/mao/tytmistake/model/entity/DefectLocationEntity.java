@@ -27,7 +27,7 @@ public class DefectLocationEntity extends BaseEntity implements Serializable {
 
     //todo: burası kontrol edilebilir.
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "vehicle_defect_id", referencedColumnName = "id")
-    private VehicleDefectEntity defectEntity;
+    @JoinColumn(name = "vehicleDefectId", referencedColumnName = "id")
+    private VehicleDefectEntity vehicleDefectEntity;
 
 }

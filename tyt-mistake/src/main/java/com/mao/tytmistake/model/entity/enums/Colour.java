@@ -1,4 +1,4 @@
-package com.mao.tytmistake.model.entity;
+package com.mao.tytmistake.model.entity.enums;
 
 import lombok.AllArgsConstructor;
 

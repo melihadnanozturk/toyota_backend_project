@@ -1,24 +1,21 @@
 package com.mao.tytmistake.controller.response;
 
-import com.mao.tytmistake.model.entity.DefectLocationEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
 @Builder
 public class DefectLocationResponse {
 
-    private Long id;
-    private String yLocation;
-    private String xLocation;
+    List<LocationsResponse> locationsResponseList;
 
-    public static DefectLocationResponse defectLocationEntityMappedResponse(DefectLocationEntity defectLocationEntity) {
+    public static DefectLocationResponse defectLocationEntityMappedResponse(List<LocationsResponse> locationsResponses) {
         return DefectLocationResponse.builder()
-                .id(defectLocationEntity.getId())
-                .xLocation(defectLocationEntity.getXLocation())
-                .yLocation(defectLocationEntity.getYLocation())
+                .locationsResponseList(locationsResponses)
                 .build();
     }
 }

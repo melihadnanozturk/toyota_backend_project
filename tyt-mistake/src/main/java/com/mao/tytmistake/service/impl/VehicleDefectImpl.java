@@ -1,17 +1,13 @@
 package com.mao.tytmistake.service.impl;
 
-import com.mao.tytmistake.controller.request.Locations;
 import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.VehicleDefectRequest;
 import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
 import com.mao.tytmistake.controller.response.VehicleDefectResponse;
-import com.mao.tytmistake.model.entity.DefectEntity;
-import com.mao.tytmistake.model.entity.DefectLocationEntity;
 import com.mao.tytmistake.model.entity.VehicleDefectEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
-import com.mao.tytmistake.service.DefectService;
 import com.mao.tytmistake.service.VehicleDefectService;
 import com.mao.tytmistake.service.VehicleService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +22,6 @@ public class VehicleDefectImpl implements VehicleDefectService {
 
     private final VehicleDefectEntityRepository vehicleDefectEntityRepository;
     private final VehicleService vehicleService;
-    private final DefectService defectService;
 
 
     @Override
@@ -43,41 +38,38 @@ public class VehicleDefectImpl implements VehicleDefectService {
     @Override
     public VehicleDefectResponse addNewVehicleDefect(VehicleDefectRequest vehicleDefectRequest) {
         VehicleEntity vehicleEntity = vehicleService.getById(vehicleDefectRequest.getVehicleId());
-        DefectEntity defectEntity = defectService.getById(vehicleDefectRequest.getDefectId());
-        List<DefectLocationEntity> defectLocationEntity = locationsMappedEntities(vehicleDefectRequest.getLocaitons());
 
         VehicleDefectEntity vehicleDefectEntity = VehicleDefectRequest.responseMapToVehicleDefectEntity(vehicleDefectRequest);
         vehicleDefectEntity.setVehicle(vehicleEntity);
-        vehicleDefectEntity.setDefect(defectEntity);
-        vehicleDefectEntity.setDefectLocation(defectLocationEntity);
 
         return VehicleDefectResponse.vehicleDefectEntityMappedResponse(vehicleDefectEntityRepository.save(vehicleDefectEntity));
     }
 
     @Override
     public VehicleDefectResponse updateVehicleDefect(UpdateVehicleDefectRequest vehicleDefectRequest) {
-        VehicleDefectEntity vehicleDefectEntity = checkExist(vehicleDefectRequest.getId());
+        /*VehicleDefectEntity vehicleDefectEntity = checkExist(vehicleDefectRequest.getId());
         vehicleDefectEntity.setDefectImage(vehicleDefectRequest.getVehicleDefectRequest().getDefectImage());
-        return VehicleDefectResponse.vehicleDefectEntityMappedResponse(vehicleDefectEntityRepository.save(vehicleDefectEntity));
+        return VehicleDefectResponse.vehicleDefectEntityMappedResponse(vehicleDefectEntityRepository.save(vehicleDefectEntity));*/
+        return null;
     }
 
     @Override
+    public VehicleDefectEntity getVehicleDefectEntityById(Long id) {
+        return vehicleDefectEntityRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
+    }
+
+    //todo: kontrol et
+    @Override
     public Long deleteVehicleDefect(Long id) {
-        VehicleDefectEntity vehicleDefectEntity = checkExist(id);
+        VehicleDefectEntity vehicleDefectEntity = checkVehicleDefectEntityIsExists(id);
 
         vehicleDefectEntity.setIsDeleted(true);
-        vehicleDefectEntity.getVehicle().setIsDeleted(true);
-        vehicleDefectEntity.getDefect().setIsDeleted(true);
         vehicleDefectEntity.getDefectLocation().forEach(location -> location.setIsDeleted(true));
 
         return vehicleDefectEntityRepository.save(vehicleDefectEntity).getId();
     }
 
-    private VehicleDefectEntity checkExist(Long id) {
+    private VehicleDefectEntity checkVehicleDefectEntityIsExists(Long id) {
         return vehicleDefectEntityRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
-    }
-
-    private List<DefectLocationEntity> locationsMappedEntities(List<Locations> locations) {
-        return locations.stream().map(Locations::mappedDefectLocationEntity).toList();
     }
 }

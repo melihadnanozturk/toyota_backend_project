@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface VehicleEntityRepository extends JpaRepository<VehicleEntity, Long> {
 
     Optional<VehicleEntity> findByChassisNumberAndIsDeletedIsFalse(String chassisNumber);
+
+    Optional<VehicleEntity> findAllByIsDeletedIsFalse();
 }

@@ -1,8 +1,8 @@
 package com.mao.tytmistake.controller.request;
 
-import com.mao.tytmistake.model.entity.Colour;
-import com.mao.tytmistake.model.entity.Model;
 import com.mao.tytmistake.model.entity.VehicleEntity;
+import com.mao.tytmistake.model.entity.enums.Colour;
+import com.mao.tytmistake.model.entity.enums.Model;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;

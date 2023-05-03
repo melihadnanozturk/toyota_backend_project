@@ -1,5 +1,7 @@
 package com.mao.tytmistake.model.entity;
 
+import com.mao.tytmistake.model.entity.enums.Colour;
+import com.mao.tytmistake.model.entity.enums.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +20,7 @@ import java.util.List;
 public class VehicleEntity extends BaseEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -3991441569726779565L;
+    private static final long serialVersionUID = -1230356016786658643L;
 
     @Column(name = "model", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -28,6 +30,7 @@ public class VehicleEntity extends BaseEntity implements Serializable {
     private String chassisNumber;
 
     @Column(name = "colour")
+    @Enumerated(EnumType.STRING)
     private Colour colour;
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

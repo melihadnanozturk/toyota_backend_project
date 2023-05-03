@@ -1,18 +1,18 @@
 package com.mao.tytmistake.controller.request;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
-@Builder
-public class UpdateDefectRequest {
+public class DefectLocationRequest {
 
     @NotNull
-    private Long id;
+    private List<LocationsRequest> locations;
 
     @NotNull
-    private DefectRequest defectRequest;
+    private Long vehicleDefectEntityId;
 }

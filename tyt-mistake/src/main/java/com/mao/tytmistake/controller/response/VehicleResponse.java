@@ -1,9 +1,9 @@
 package com.mao.tytmistake.controller.response;
 
 
-import com.mao.tytmistake.model.entity.Colour;
-import com.mao.tytmistake.model.entity.Model;
 import com.mao.tytmistake.model.entity.VehicleEntity;
+import com.mao.tytmistake.model.entity.enums.Colour;
+import com.mao.tytmistake.model.entity.enums.Model;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

@@ -2,6 +2,7 @@ package com.mao.tytmistake.controller.endpoint;
 
 import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.VehicleDefectRequest;
+import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
 import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
 import com.mao.tytmistake.controller.response.VehicleDefectResponse;
 import com.mao.tytmistake.service.VehicleDefectService;
@@ -15,9 +16,10 @@ public class VehicleDefectController {
 
     private final VehicleDefectService vehicleDefectService;
 
+
     @GetMapping
-    public PageVehicleDefectResponse getAllVehicleDefect() {
-        return vehicleDefectService.getAllVehicleDefect();
+    public PageVehicleDefectResponse getAllVehicleDefect(@RequestBody PageVehicleDefectRequest request) {
+        return vehicleDefectService.getAllVehicleDefect(request);
     }
 
     @PostMapping
@@ -25,7 +27,9 @@ public class VehicleDefectController {
         return vehicleDefectService.addNewVehicleDefect(vehicleDefectRequest);
     }
 
-    //todo: düşünülecek
+    /*todo: desc ve defect değişebilir
+     * todo: eğer vehicle veya image değişecekse lokasyonlar direkt silinir
+     * */
     @PutMapping
     public VehicleDefectResponse updateVehicleDefect(@RequestBody UpdateVehicleDefectRequest vehicleDefectRequest) {
         return vehicleDefectService.updateVehicleDefect(vehicleDefectRequest);

@@ -11,4 +11,9 @@ public enum Colour {
     BLACK("Black");
 
     private final String colour;
+
+    @Override
+    public String toString() {
+        return colour;
+    }
 }

@@ -2,8 +2,9 @@ package com.mao.tytmistake.controller.endpoint;
 
 import com.mao.tytmistake.controller.request.UpdateVehicleRequest;
 import com.mao.tytmistake.controller.request.VehicleRequest;
-import com.mao.tytmistake.controller.response.PageVehicleResponse;
+import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.response.VehicleResponse;
+import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
 import com.mao.tytmistake.service.VehicleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ public class VehicleController {
     private final VehicleService vehicleService;
 
     @GetMapping
-    public PageVehicleResponse getAllVehicle() {
-        return vehicleService.getAllVehicle();
+    public PageVehicleResponse getAllVehicle(@RequestBody PageVehicleRequest pageVehicleRequest) {
+        return vehicleService.getAllVehicle(pageVehicleRequest);
     }
 
     @PostMapping

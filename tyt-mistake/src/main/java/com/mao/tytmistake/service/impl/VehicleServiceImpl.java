@@ -2,14 +2,21 @@ package com.mao.tytmistake.service.impl;
 
 import com.mao.tytmistake.controller.request.UpdateVehicleRequest;
 import com.mao.tytmistake.controller.request.VehicleRequest;
-import com.mao.tytmistake.controller.response.PageVehicleResponse;
+import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.response.VehicleResponse;
+import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.exception.AlreadyExistsException;
 import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.repository.VehicleEntityRepository;
 import com.mao.tytmistake.service.VehicleService;
+import com.mao.tytmistake.service.impl.spec.CreateVehicleSpec;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,14 +27,22 @@ public class VehicleServiceImpl implements VehicleService {
 
     private final VehicleEntityRepository vehicleEntityRepository;
 
-    //todo: Will add pagination
     @Override
-    public PageVehicleResponse getAllVehicle() {
-        List<VehicleResponse> vehicleResponses = vehicleEntityRepository.findAll()
+    public PageVehicleResponse getAllVehicle(PageVehicleRequest request) {
+        Pageable pageable = PageRequest.of(
+                request.getPageNumber(),
+                request.getPageSize(),
+                Sort.Direction.valueOf(request.getSortOf()),
+                request.getSortBy());
+
+        Specification<VehicleEntity> spec = CreateVehicleSpec.getAll(request);
+
+        //todo: will refactoring
+        List<VehicleResponse> responses = vehicleEntityRepository.findAll(spec, pageable)
                 .stream().map(VehicleResponse::vehicleEntityMappedResponse).toList();
 
         return PageVehicleResponse.builder()
-                .vehicleResponseList(vehicleResponses)
+                .vehicleResponseList(new PageImpl<>(responses, pageable, pageable.getPageSize()))
                 .build();
     }
 

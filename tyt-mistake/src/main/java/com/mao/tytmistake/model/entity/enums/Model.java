@@ -1,8 +1,10 @@
 package com.mao.tytmistake.model.entity.enums;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public enum Model {
 
     YARIS("Yaris"),

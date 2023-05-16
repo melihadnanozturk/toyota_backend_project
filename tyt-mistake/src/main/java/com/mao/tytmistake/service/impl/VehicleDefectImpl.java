@@ -33,6 +33,7 @@ public class VehicleDefectImpl implements VehicleDefectService {
 
     @Override
     public PageVehicleDefectResponse getAllVehicleDefect(PageVehicleDefectRequest request) {
+
         Pageable pageable = PageRequest.of(
                 request.getPageNumber(),
                 request.getPageSize(),

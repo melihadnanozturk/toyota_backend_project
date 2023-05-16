@@ -9,9 +9,5 @@ import lombok.Setter;
 public class PageVehicleDefectRequest extends PageRequest {
 
     private Defect defect;
-
-    private String defectDesc;
-
-    //@NotNull(message = "Vehicle Id Cannot Be Null !")
     private Long vehicleId;
 }

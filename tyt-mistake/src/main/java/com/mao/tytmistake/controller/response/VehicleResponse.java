@@ -21,8 +21,8 @@ public class VehicleResponse {
     private Colour colour;
     //will adding
     private Integer defectNumbers;
-    protected LocalDate createdAt;
-    protected LocalDate updatedAt;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 
     public static VehicleResponse vehicleEntityMappedResponse(VehicleEntity vehicleEntity) {
         return VehicleResponse.builder()

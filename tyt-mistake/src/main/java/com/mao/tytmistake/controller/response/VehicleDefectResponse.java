@@ -7,24 +7,26 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
 public class VehicleDefectResponse {
 
-    private Long id;
-    private VehicleResponse vehicle;
+    private Long defectId;
+    private Long vehicleId;
     private Defect defect;
-    private String defectImage;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 
     public static VehicleDefectResponse vehicleDefectEntityMappedResponse(VehicleDefectEntity vehicleDefectEntity) {
-        VehicleResponse vehicleResponse = VehicleResponse.vehicleEntityMappedResponse(vehicleDefectEntity.getVehicle());
-
         return VehicleDefectResponse.builder()
-                .id(vehicleDefectEntity.getId())
-                .defectImage(vehicleDefectEntity.getDefectImage())
+                .defectId(vehicleDefectEntity.getId())
+                .vehicleId(vehicleDefectEntity.getVehicle().getId())
                 .defect(vehicleDefectEntity.getDefect())
-                .vehicle(vehicleResponse)
+                .createdAt(vehicleDefectEntity.getCreatedAt())
+                .updatedAt(vehicleDefectEntity.getUpdatedAt())
                 .build();
     }
 }

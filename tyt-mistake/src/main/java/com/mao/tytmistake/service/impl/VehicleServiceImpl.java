@@ -1,6 +1,5 @@
 package com.mao.tytmistake.service.impl;
 
-import com.mao.tytmistake.controller.request.UpdateVehicleRequest;
 import com.mao.tytmistake.controller.request.VehicleRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.response.VehicleResponse;
@@ -12,10 +11,7 @@ import com.mao.tytmistake.repository.VehicleEntityRepository;
 import com.mao.tytmistake.service.VehicleService;
 import com.mao.tytmistake.service.impl.spec.CreateVehicleSpec;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +24,7 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleEntityRepository vehicleEntityRepository;
 
     @Override
-    public PageVehicleResponse getAllVehicle(PageVehicleRequest request) {
+    public Page<PageVehicleResponse> getAllVehicle(PageVehicleRequest request) {
         Pageable pageable = PageRequest.of(
                 request.getPageNumber(),
                 request.getPageSize(),
@@ -38,12 +34,10 @@ public class VehicleServiceImpl implements VehicleService {
         Specification<VehicleEntity> spec = CreateVehicleSpec.getAll(request);
 
         //todo: will refactoring
-        List<VehicleResponse> responses = vehicleEntityRepository.findAll(spec, pageable)
-                .stream().map(VehicleResponse::vehicleEntityMappedResponse).toList();
+        List<PageVehicleResponse> responses = vehicleEntityRepository.findAll(spec, pageable)
+                .stream().map(PageVehicleResponse::vehicleEntityMappedPageResponse).toList();
 
-        return PageVehicleResponse.builder()
-                .vehicleResponseList(new PageImpl<>(responses, pageable, pageable.getPageSize()))
-                .build();
+        return new PageImpl<>(responses, pageable, pageable.getPageSize());
     }
 
     @Override
@@ -56,9 +50,9 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public VehicleResponse updateVehicle(UpdateVehicleRequest vehicleRequest) {
-        VehicleEntity vehicleEntity = checkVehicleEntityBeforeUpdate(vehicleRequest);
-        VehicleEntity updatedEntity = setVehicle(vehicleEntity, vehicleRequest.getVehicleRequest());
+    public VehicleResponse updateVehicle(Long id, VehicleRequest vehicleRequest) {
+        VehicleEntity vehicleEntity = checkVehicleEntityBeforeUpdate(id, vehicleRequest.getChassisNumber());
+        VehicleEntity updatedEntity = setVehicle(vehicleEntity, vehicleRequest);
         VehicleEntity savedEntity = vehicleEntityRepository.save(updatedEntity);
         return VehicleResponse.vehicleEntityMappedResponse(savedEntity);
     }
@@ -81,10 +75,10 @@ public class VehicleServiceImpl implements VehicleService {
         }
     }
 
-    private VehicleEntity checkVehicleEntityBeforeUpdate(UpdateVehicleRequest vehicleRequest) {
-        VehicleEntity byId = getById(vehicleRequest.getId());
+    private VehicleEntity checkVehicleEntityBeforeUpdate(Long id, String chassisNumber) {
+        VehicleEntity byId = getById(id);
         VehicleEntity byChassisNumber = vehicleEntityRepository
-                .findByChassisNumberAndIsDeletedIsFalse(vehicleRequest.getVehicleRequest().getChassisNumber()).orElse(null);
+                .findByChassisNumberAndIsDeletedIsFalse(chassisNumber).orElse(null);
 
         if (byChassisNumber != null && (!byId.getId().equals(byChassisNumber.getId()))) {
             throw new AlreadyExistsException(byChassisNumber.getChassisNumber());

@@ -1,6 +1,5 @@
 package com.mao.tytmistake.controller.endpoint;
 
-import com.mao.tytmistake.controller.request.UpdateVehicleRequest;
 import com.mao.tytmistake.controller.request.VehicleRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.response.VehicleResponse;
@@ -8,6 +7,7 @@ import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
 import com.mao.tytmistake.service.VehicleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +18,7 @@ public class VehicleController {
     private final VehicleService vehicleService;
 
     @GetMapping
-    public PageVehicleResponse getAllVehicle(@RequestBody PageVehicleRequest pageVehicleRequest) {
+    public Page<PageVehicleResponse> getAllVehicle(@RequestBody PageVehicleRequest pageVehicleRequest) {
         return vehicleService.getAllVehicle(pageVehicleRequest);
     }
 
@@ -28,9 +28,9 @@ public class VehicleController {
     }
 
     //todo: id yi url den mi alalaım yokas body den mi gelsin düşün?
-    @PutMapping
-    public VehicleResponse updateVehicle(@RequestBody UpdateVehicleRequest vehicleRequest) {
-        return vehicleService.updateVehicle(vehicleRequest);
+    @PutMapping("/{id}")
+    public VehicleResponse updateVehicle(@RequestBody VehicleRequest vehicleRequest, @PathVariable Long id) {
+        return vehicleService.updateVehicle(id, vehicleRequest);
     }
 
     @DeleteMapping("/{id}")

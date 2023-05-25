@@ -4,6 +4,7 @@ import com.mao.tytmistake.controller.request.VehicleRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.response.VehicleResponse;
 import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
+import com.mao.tytmistake.service.GetAllService;
 import com.mao.tytmistake.service.VehicleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,15 +17,16 @@ import org.springframework.web.bind.annotation.*;
 public class VehicleController {
 
     private final VehicleService vehicleService;
+    private final GetAllService getAllService;
 
     @GetMapping
     public Page<PageVehicleResponse> getAllVehicle(@RequestBody PageVehicleRequest pageVehicleRequest) {
-        return vehicleService.getAllVehicle(pageVehicleRequest);
+        return getAllService.getAllVehicle(pageVehicleRequest);
     }
 
     @PostMapping
     public VehicleResponse addNewVehicle(@RequestBody @Valid VehicleRequest vehicleRequest) {
-        return vehicleService.newVehicleAdd(vehicleRequest);
+        return vehicleService.addNewVehicle(vehicleRequest);
     }
 
     //todo: id yi url den mi alalaım yokas body den mi gelsin düşün?

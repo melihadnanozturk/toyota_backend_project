@@ -15,8 +15,9 @@ import java.time.LocalDate;
 public class VehicleDefectResponse {
 
     private Long defectId;
-    private Long vehicleId;
     private Defect defect;
+    private String vehicleDefectDesc;
+    private Long vehicleId;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
@@ -24,6 +25,7 @@ public class VehicleDefectResponse {
         return VehicleDefectResponse.builder()
                 .defectId(vehicleDefectEntity.getId())
                 .vehicleId(vehicleDefectEntity.getVehicle().getId())
+                .vehicleDefectDesc(vehicleDefectEntity.getVehicleDefectDesc())
                 .defect(vehicleDefectEntity.getDefect())
                 .createdAt(vehicleDefectEntity.getCreatedAt())
                 .updatedAt(vehicleDefectEntity.getUpdatedAt())

@@ -5,8 +5,10 @@ import com.mao.tytmistake.controller.request.VehicleDefectRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
 import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
 import com.mao.tytmistake.controller.response.VehicleDefectResponse;
+import com.mao.tytmistake.service.GetAllService;
 import com.mao.tytmistake.service.VehicleDefectService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class VehicleDefectController {
 
     private final VehicleDefectService vehicleDefectService;
-
+    private final GetAllService getAllService;
 
     @GetMapping
-    public PageVehicleDefectResponse getAllVehicleDefect(@RequestBody PageVehicleDefectRequest request) {
-        return vehicleDefectService.getAllVehicleDefect(request);
+    public Page<PageVehicleDefectResponse> getAllVehicleDefect(@RequestBody PageVehicleDefectRequest request) {
+        return getAllService.getAllVehicleDefect(request);
     }
 
     @PostMapping
@@ -28,11 +30,11 @@ public class VehicleDefectController {
     }
 
     /*todo: desc ve defect değişebilir
-     * todo: eğer vehicle veya image değişecekse lokasyonlar direkt silinir
+     * todo: eğer image değişecekse lokasyonlar direkt silinir
      * */
-    @PutMapping
-    public VehicleDefectResponse updateVehicleDefect(@RequestBody UpdateVehicleDefectRequest vehicleDefectRequest) {
-        return vehicleDefectService.updateVehicleDefect(vehicleDefectRequest);
+    @PutMapping("/{id}")
+    public VehicleDefectResponse updateVehicleDefect(@RequestBody UpdateVehicleDefectRequest request, @PathVariable Long id) {
+        return vehicleDefectService.updateVehicleDefect(request, id);
     }
 
     @DeleteMapping("/{id}")

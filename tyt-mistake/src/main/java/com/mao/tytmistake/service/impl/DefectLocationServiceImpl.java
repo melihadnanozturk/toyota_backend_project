@@ -23,7 +23,8 @@ public class DefectLocationServiceImpl implements DefectLocationService {
     private final DefectLocationEntityRepository defectLocationEntityRepository;
     private final VehicleDefectService vehicleDefectService;
 
-    //will add pagination
+    //burada sayfalama değilde listeleme olabilir.
+    //Çünkü zaten hataların lokasyonlarını saklıyoruz. Burada listeleme ile getirip on yüzde bunu kontrol edebiliz.
     @Override
     public PageDefectLocationResponse findAll() {
         return null;
@@ -32,7 +33,7 @@ public class DefectLocationServiceImpl implements DefectLocationService {
     @Override
     public DefectLocationResponse addNewLocation(DefectLocationRequest defectLocationRequest) {
         VehicleDefectEntity vehicleDefectEntity = vehicleDefectService
-                .getVehicleDefectEntityById(defectLocationRequest.getVehicleDefectEntityId());
+                .getVehicleDefectEntityById(defectLocationRequest.getDefectId());
 
         List<DefectLocationEntity> entities = defectLocationRequest.getLocations().stream()
                 .map(locationsRequest -> {

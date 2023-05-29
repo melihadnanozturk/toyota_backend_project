@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class UpdateVehicleDefectRequest {
 
-    private String vehicleDefectDesc;
+    private String defectDesc;
 
     @NotBlank
     private String defectImage;

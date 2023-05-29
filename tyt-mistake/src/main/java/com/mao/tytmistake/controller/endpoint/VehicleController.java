@@ -29,7 +29,6 @@ public class VehicleController {
         return vehicleService.addNewVehicle(vehicleRequest);
     }
 
-    //todo: id yi url den mi alalaım yokas body den mi gelsin düşün?
     @PutMapping("/{id}")
     public VehicleResponse updateVehicle(@RequestBody VehicleRequest vehicleRequest, @PathVariable Long id) {
         return vehicleService.updateVehicle(id, vehicleRequest);

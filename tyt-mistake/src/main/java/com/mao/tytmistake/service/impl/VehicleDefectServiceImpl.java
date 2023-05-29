@@ -33,7 +33,8 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
     @Override
     public VehicleDefectResponse updateVehicleDefect(UpdateVehicleDefectRequest request, Long id) {
         VehicleDefectEntity vehicleDefectEntity = this.checkVehicleDefectEntityIsExists(id);
-        vehicleDefectEntity.setVehicleDefectDesc(request.getVehicleDefectDesc());
+        checkImageIsExist(vehicleDefectEntity, request.getDefectImage());
+        vehicleDefectEntity.setVehicleDefectDesc(request.getDefectDesc());
         vehicleDefectEntity.setDefectImage(request.getDefectImage());
         return VehicleDefectResponse.vehicleDefectEntityMappedResponse(vehicleDefectEntityRepository.save(vehicleDefectEntity));
     }
@@ -61,6 +62,12 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
 
     private VehicleDefectEntity checkVehicleDefectEntityIsExists(Long id) {
         return vehicleDefectEntityRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
+    }
+
+    private void checkImageIsExist(VehicleDefectEntity entity, String image) {
+        if (image != null && !entity.getDefectImage().equals(image)) {
+            entity.getDefectLocation().forEach(location -> location.setIsDeleted(true));
+        }
     }
 
 }

@@ -29,7 +29,7 @@ public class VehicleDefectController {
         return vehicleDefectService.addNewVehicleDefect(vehicleDefectRequest);
     }
 
-    /*todo: desc ve defect değişebilir
+    /*todo: image ve defect değişebilir
      * todo: eğer image değişecekse lokasyonlar direkt silinir
      * */
     @PutMapping("/{id}")

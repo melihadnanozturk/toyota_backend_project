@@ -18,7 +18,6 @@ public class PageVehicleResponse {
     private Model model;
     private String chassisNumber;
     private Colour colour;
-    //will adding
     private Integer defectNumbers;
     private LocalDate createdAt;
     private LocalDate updatedAt;

@@ -11,8 +11,9 @@ import java.util.List;
 public class DefectLocationRequest {
 
     @NotNull
-    private List<LocationsRequest> locations;
+    private Long defectId;
 
     @NotNull
-    private Long vehicleDefectEntityId;
+    private List<LocationsRequest> locations;
+
 }

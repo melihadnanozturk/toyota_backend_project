@@ -16,6 +16,7 @@ public class VehicleRequest {
 
     @NotNull
     private Model model;
+    //todo: ileride kaldırılabilir
     private String chassisNumber;
     private Colour colour;
 

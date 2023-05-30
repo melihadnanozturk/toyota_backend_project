@@ -2,6 +2,7 @@ package com.mao.tytmistake.controller.endpoint;
 
 import com.mao.tytmistake.controller.request.VehicleRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
+import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.controller.response.VehicleResponse;
 import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
 import com.mao.tytmistake.service.GetAllService;
@@ -20,22 +21,22 @@ public class VehicleController {
     private final GetAllService getAllService;
 
     @GetMapping
-    public Page<PageVehicleResponse> getAllVehicle(@RequestBody PageVehicleRequest pageVehicleRequest) {
+    public BaseResponse<Page<PageVehicleResponse>> getAllVehicle(@RequestBody PageVehicleRequest pageVehicleRequest) {
         return getAllService.getAllVehicle(pageVehicleRequest);
     }
 
     @PostMapping
-    public VehicleResponse addNewVehicle(@RequestBody @Valid VehicleRequest vehicleRequest) {
+    public BaseResponse<VehicleResponse> addNewVehicle(@RequestBody @Valid VehicleRequest vehicleRequest) {
         return vehicleService.addNewVehicle(vehicleRequest);
     }
 
     @PutMapping("/{id}")
-    public VehicleResponse updateVehicle(@RequestBody VehicleRequest vehicleRequest, @PathVariable Long id) {
+    public BaseResponse<VehicleResponse> updateVehicle(@RequestBody VehicleRequest vehicleRequest, @PathVariable Long id) {
         return vehicleService.updateVehicle(id, vehicleRequest);
     }
 
     @DeleteMapping("/{id}")
-    public Long removeVehicle(@PathVariable Long id) {
+    public BaseResponse<Long> removeVehicle(@PathVariable Long id) {
         return vehicleService.removeVehicle(id);
     }
 }

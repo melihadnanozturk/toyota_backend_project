@@ -5,9 +5,9 @@ import com.mao.tytmistake.controller.request.LocationRemoveRequest;
 import com.mao.tytmistake.controller.request.LocationsRequest;
 import com.mao.tytmistake.controller.response.DefectLocationResponse;
 import com.mao.tytmistake.controller.response.LocationsResponse;
-import com.mao.tytmistake.controller.response.PageDefectLocationResponse;
 import com.mao.tytmistake.model.entity.DefectLocationEntity;
 import com.mao.tytmistake.model.entity.VehicleDefectEntity;
+import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.repository.DefectLocationEntityRepository;
 import com.mao.tytmistake.service.DefectLocationService;
 import com.mao.tytmistake.service.VehicleDefectService;
@@ -26,8 +26,9 @@ public class DefectLocationServiceImpl implements DefectLocationService {
     //burada sayfalama değilde listeleme olabilir.
     //Çünkü zaten hataların lokasyonlarını saklıyoruz. Burada listeleme ile getirip on yüzde bunu kontrol edebiliz.
     @Override
-    public PageDefectLocationResponse findAll() {
-        return null;
+    public List<LocationsResponse> findAll(Long defectId) {
+        List<DefectLocationEntity> entities = defectLocationEntityRepository.findAllByVehicleDefectEntityId(defectId);
+        return entities.stream().map(LocationsResponse::mappedLocationsResponse).toList();
     }
 
     @Override
@@ -55,8 +56,16 @@ public class DefectLocationServiceImpl implements DefectLocationService {
 
     //todo: düşünülecek
     @Override
-    public List<Long> removeLocation(LocationRemoveRequest locationRemoveRequest) {
-        locationRemoveRequest.getLocationIds().forEach(defectLocationEntityRepository::deleteById);
-        return null;
+    public List<Long> removeLocation(LocationRemoveRequest request) {
+        request.getLocationIds().forEach(this::deleteLocations);
+        return request.getLocationIds();
+    }
+
+    private void deleteLocations(Long id) {
+        DefectLocationEntity entity = defectLocationEntityRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(id.toString()));
+
+        entity.setIsDeleted(true);
+        defectLocationEntityRepository.save(entity);
     }
 }

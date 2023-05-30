@@ -3,6 +3,7 @@ package com.mao.tytmistake.controller.endpoint;
 import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.VehicleDefectRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
+import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
 import com.mao.tytmistake.controller.response.VehicleDefectResponse;
 import com.mao.tytmistake.service.GetAllService;
@@ -20,25 +21,22 @@ public class VehicleDefectController {
     private final GetAllService getAllService;
 
     @GetMapping
-    public Page<PageVehicleDefectResponse> getAllVehicleDefect(@RequestBody PageVehicleDefectRequest request) {
+    public BaseResponse<Page<PageVehicleDefectResponse>> getAllVehicleDefect(@RequestBody PageVehicleDefectRequest request) {
         return getAllService.getAllVehicleDefect(request);
     }
 
     @PostMapping
-    public VehicleDefectResponse addNewVehicleDefect(@RequestBody VehicleDefectRequest vehicleDefectRequest) {
+    public BaseResponse<VehicleDefectResponse> addNewVehicleDefect(@RequestBody VehicleDefectRequest vehicleDefectRequest) {
         return vehicleDefectService.addNewVehicleDefect(vehicleDefectRequest);
     }
 
-    /*todo: image ve defect değişebilir
-     * todo: eğer image değişecekse lokasyonlar direkt silinir
-     * */
     @PutMapping("/{id}")
-    public VehicleDefectResponse updateVehicleDefect(@RequestBody UpdateVehicleDefectRequest request, @PathVariable Long id) {
+    public BaseResponse<VehicleDefectResponse> updateVehicleDefect(@RequestBody UpdateVehicleDefectRequest request, @PathVariable Long id) {
         return vehicleDefectService.updateVehicleDefect(request, id);
     }
 
     @DeleteMapping("/{id}")
-    public Long delete(@PathVariable Long id) {
+    public BaseResponse<Long> delete(@PathVariable Long id) {
         return vehicleDefectService.deleteVehicleDefect(id);
     }
 }

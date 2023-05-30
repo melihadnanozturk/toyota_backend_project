@@ -2,6 +2,7 @@ package com.mao.tytmistake.service.impl;
 
 import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.VehicleDefectRequest;
+import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.controller.response.VehicleDefectResponse;
 import com.mao.tytmistake.model.entity.VehicleDefectEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
@@ -21,22 +22,24 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
 
     @SneakyThrows
     @Override
-    public VehicleDefectResponse addNewVehicleDefect(VehicleDefectRequest vehicleDefectRequest) {
+    public BaseResponse<VehicleDefectResponse> addNewVehicleDefect(VehicleDefectRequest vehicleDefectRequest) {
         VehicleDefectEntity vehicleDefectEntity = VehicleDefectRequest.responseMapToVehicleDefectEntity(vehicleDefectRequest);
 
         VehicleEntity vehicleEntity = vehicleService.getById(vehicleDefectRequest.getVehicleId());
         vehicleDefectEntity.setVehicle(vehicleEntity);
 
-        return VehicleDefectResponse.vehicleDefectEntityMappedResponse(vehicleDefectEntityRepository.save(vehicleDefectEntity));
+        VehicleDefectResponse response = VehicleDefectResponse.vehicleDefectEntityMappedResponse(vehicleDefectEntityRepository.save(vehicleDefectEntity));
+        return BaseResponse.isSuccess(response);
     }
 
     @Override
-    public VehicleDefectResponse updateVehicleDefect(UpdateVehicleDefectRequest request, Long id) {
+    public BaseResponse<VehicleDefectResponse> updateVehicleDefect(UpdateVehicleDefectRequest request, Long id) {
         VehicleDefectEntity vehicleDefectEntity = this.checkVehicleDefectEntityIsExists(id);
         checkImageIsExist(vehicleDefectEntity, request.getDefectImage());
         vehicleDefectEntity.setVehicleDefectDesc(request.getDefectDesc());
         vehicleDefectEntity.setDefectImage(request.getDefectImage());
-        return VehicleDefectResponse.vehicleDefectEntityMappedResponse(vehicleDefectEntityRepository.save(vehicleDefectEntity));
+        VehicleDefectResponse response = VehicleDefectResponse.vehicleDefectEntityMappedResponse(vehicleDefectEntityRepository.save(vehicleDefectEntity));
+        return BaseResponse.isSuccess(response);
     }
 
     @Override
@@ -51,13 +54,14 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
 
     //todo: kontrol et
     @Override
-    public Long deleteVehicleDefect(Long id) {
+    public BaseResponse<Long> deleteVehicleDefect(Long id) {
         VehicleDefectEntity vehicleDefectEntity = checkVehicleDefectEntityIsExists(id);
 
         vehicleDefectEntity.setIsDeleted(true);
         vehicleDefectEntity.getDefectLocation().forEach(location -> location.setIsDeleted(true));
 
-        return vehicleDefectEntityRepository.save(vehicleDefectEntity).getId();
+        Long removedId = vehicleDefectEntityRepository.save(vehicleDefectEntity).getId();
+        return BaseResponse.isSuccess(removedId);
     }
 
     private VehicleDefectEntity checkVehicleDefectEntityIsExists(Long id) {

@@ -2,8 +2,9 @@ package com.mao.tytmistake.controller.endpoint;
 
 import com.mao.tytmistake.controller.request.DefectLocationRequest;
 import com.mao.tytmistake.controller.request.LocationRemoveRequest;
+import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.controller.response.DefectLocationResponse;
-import com.mao.tytmistake.controller.response.PageDefectLocationResponse;
+import com.mao.tytmistake.controller.response.LocationsResponse;
 import com.mao.tytmistake.service.DefectLocationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,23 +20,26 @@ public class DefectLocationController {
 
     public final DefectLocationService defectLocationService;
 
-    //todo: pagination will added
-    @GetMapping
-    public PageDefectLocationResponse getAllDefectLocation() {
-        return defectLocationService.findAll();
+    @GetMapping("/{defectId}")
+    public BaseResponse<List<LocationsResponse>> getAllDefectLocation(@PathVariable Long defectId) {
+        List<LocationsResponse> responses = defectLocationService.findAll(defectId);
+        return BaseResponse.isSuccess(responses);
     }
 
     @PostMapping
-    public DefectLocationResponse addNewLocations(@RequestBody DefectLocationRequest defectLocationRequest) {
-        return defectLocationService.addNewLocation(defectLocationRequest);
+    public BaseResponse<DefectLocationResponse> addNewLocations(@RequestBody DefectLocationRequest defectLocationRequest) {
+        DefectLocationResponse response = defectLocationService.addNewLocation(defectLocationRequest);
+        return BaseResponse.isSuccess(response);
     }
 
-    //todo: crud
-    //todo: get all locaiton about to image
+    @PutMapping
+    public void updateLocations() {
+    }
 
     @DeleteMapping()
-    public List<Long> removeLocations(@RequestBody LocationRemoveRequest locationRemoveRequest) {
-        return defectLocationService.removeLocation(locationRemoveRequest);
+    public BaseResponse<List<Long>> removeLocations(@RequestBody LocationRemoveRequest locationRemoveRequest) {
+        defectLocationService.removeLocation(locationRemoveRequest);
+        return BaseResponse.isSuccess(locationRemoveRequest.getLocationIds());
     }
 
 }

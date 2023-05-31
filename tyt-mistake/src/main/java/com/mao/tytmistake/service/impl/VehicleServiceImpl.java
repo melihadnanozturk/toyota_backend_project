@@ -1,7 +1,6 @@
 package com.mao.tytmistake.service.impl;
 
 import com.mao.tytmistake.controller.request.VehicleRequest;
-import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.controller.response.VehicleResponse;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.exception.AlreadyExistsException;
@@ -18,30 +17,27 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleEntityRepository vehicleEntityRepository;
 
     @Override
-    public BaseResponse<VehicleResponse> addNewVehicle(VehicleRequest vehicleRequest) {
+    public VehicleResponse addNewVehicle(VehicleRequest vehicleRequest) {
         this.checkChassisNumberBeforeInsert(vehicleRequest.getChassisNumber());
 
         VehicleEntity vehicleEntity = VehicleRequest.requestMappedVehicleEntity(vehicleRequest);
         VehicleEntity savedEntity = vehicleEntityRepository.save(vehicleEntity);
-        VehicleResponse response = VehicleResponse.vehicleEntityMappedResponse(savedEntity);
-
-        return BaseResponse.isSuccess(response);
+        return VehicleResponse.vehicleEntityMappedResponse(savedEntity);
     }
 
     @Override
-    public BaseResponse<VehicleResponse> updateVehicle(Long id, VehicleRequest vehicleRequest) {
+    public VehicleResponse updateVehicle(Long id, VehicleRequest vehicleRequest) {
         VehicleEntity vehicleEntity = this.checkVehicleEntityBeforeUpdate(id, vehicleRequest.getChassisNumber());
         VehicleEntity updatedEntity = setVehicle(vehicleEntity, vehicleRequest);
         VehicleEntity savedEntity = vehicleEntityRepository.save(updatedEntity);
-        VehicleResponse response = VehicleResponse.vehicleEntityMappedResponse(savedEntity);
-        return BaseResponse.isSuccess(response);
+        return VehicleResponse.vehicleEntityMappedResponse(savedEntity);
     }
 
     @Override
-    public BaseResponse<Long> removeVehicle(Long id) {
+    public Long removeVehicle(Long id) {
         VehicleEntity vehicleEntity = getById(id);
         vehicleEntity.setIsDeleted(true);
-        return BaseResponse.isSuccess(id);
+        return id;
     }
 
     @Override

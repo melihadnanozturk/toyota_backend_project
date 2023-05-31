@@ -22,21 +22,25 @@ public class VehicleDefectController {
 
     @GetMapping
     public BaseResponse<Page<PageVehicleDefectResponse>> getAllVehicleDefect(@RequestBody PageVehicleDefectRequest request) {
-        return getAllService.getAllVehicleDefect(request);
+        Page<PageVehicleDefectResponse> page = getAllService.getAllVehicleDefect(request);
+        return BaseResponse.isSuccess(page);
     }
 
     @PostMapping
     public BaseResponse<VehicleDefectResponse> addNewVehicleDefect(@RequestBody VehicleDefectRequest vehicleDefectRequest) {
-        return vehicleDefectService.addNewVehicleDefect(vehicleDefectRequest);
+        VehicleDefectResponse response = vehicleDefectService.addNewVehicleDefect(vehicleDefectRequest);
+        return BaseResponse.isSuccess(response);
     }
 
     @PutMapping("/{id}")
     public BaseResponse<VehicleDefectResponse> updateVehicleDefect(@RequestBody UpdateVehicleDefectRequest request, @PathVariable Long id) {
-        return vehicleDefectService.updateVehicleDefect(request, id);
+        VehicleDefectResponse response = vehicleDefectService.updateVehicleDefect(request, id);
+        return BaseResponse.isSuccess(response);
     }
 
     @DeleteMapping("/{id}")
     public BaseResponse<Long> delete(@PathVariable Long id) {
-        return vehicleDefectService.deleteVehicleDefect(id);
+        Long removedId = vehicleDefectService.deleteVehicleDefect(id);
+        return BaseResponse.isSuccess(removedId);
     }
 }

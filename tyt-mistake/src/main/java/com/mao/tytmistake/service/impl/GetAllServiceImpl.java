@@ -2,7 +2,6 @@ package com.mao.tytmistake.service.impl;
 
 import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
-import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.controller.response.PageDefectLocationResponse;
 import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
 import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
@@ -28,7 +27,7 @@ public class GetAllServiceImpl implements GetAllService {
     private final VehicleDefectEntityRepository vehicleDefectEntityRepository;
 
     @Override
-    public BaseResponse<Page<PageVehicleResponse>> getAllVehicle(PageVehicleRequest request) {
+    public Page<PageVehicleResponse> getAllVehicle(PageVehicleRequest request) {
         Pageable pageable = PageRequest.of(
                 request.getPageNumber(),
                 request.getPageSize(),
@@ -44,13 +43,11 @@ public class GetAllServiceImpl implements GetAllService {
 
         this.mappedDefectNumbers(responses);
 
-        Page<PageVehicleResponse> page = new PageImpl<>(responses, pageable, pageable.getPageSize());
-
-        return BaseResponse.isSuccess(page);
+        return new PageImpl<>(responses, pageable, pageable.getPageSize());
     }
 
     @Override
-    public BaseResponse<Page<PageVehicleDefectResponse>> getAllVehicleDefect(PageVehicleDefectRequest request) {
+    public Page<PageVehicleDefectResponse> getAllVehicleDefect(PageVehicleDefectRequest request) {
         Pageable pageable = PageRequest.of(
                 request.getPageNumber(),
                 request.getPageSize(),
@@ -63,8 +60,7 @@ public class GetAllServiceImpl implements GetAllService {
         List<PageVehicleDefectResponse> page = vehicleDefectEntityRepository.findAll(spec, pageable)
                 .stream().map(PageVehicleDefectResponse::vehicleDefectEntityMappedPageResponse).toList();
 
-        Page<PageVehicleDefectResponse> response = new PageImpl<>(page, pageable, request.getPageSize());
-        return BaseResponse.isSuccess(response);
+        return new PageImpl<>(page, pageable, request.getPageSize());
     }
 
     @Override

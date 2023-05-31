@@ -22,21 +22,25 @@ public class VehicleController {
 
     @GetMapping
     public BaseResponse<Page<PageVehicleResponse>> getAllVehicle(@RequestBody PageVehicleRequest pageVehicleRequest) {
-        return getAllService.getAllVehicle(pageVehicleRequest);
+        Page<PageVehicleResponse> page = getAllService.getAllVehicle(pageVehicleRequest);
+        return BaseResponse.isSuccess(page);
     }
 
     @PostMapping
     public BaseResponse<VehicleResponse> addNewVehicle(@RequestBody @Valid VehicleRequest vehicleRequest) {
-        return vehicleService.addNewVehicle(vehicleRequest);
+        VehicleResponse response = vehicleService.addNewVehicle(vehicleRequest);
+        return BaseResponse.isSuccess(response);
     }
 
     @PutMapping("/{id}")
     public BaseResponse<VehicleResponse> updateVehicle(@RequestBody VehicleRequest vehicleRequest, @PathVariable Long id) {
-        return vehicleService.updateVehicle(id, vehicleRequest);
+        VehicleResponse response = vehicleService.updateVehicle(id, vehicleRequest);
+        return BaseResponse.isSuccess(response);
     }
 
     @DeleteMapping("/{id}")
     public BaseResponse<Long> removeVehicle(@PathVariable Long id) {
-        return vehicleService.removeVehicle(id);
+        Long removedId = vehicleService.removeVehicle(id);
+        return BaseResponse.isSuccess(removedId);
     }
 }

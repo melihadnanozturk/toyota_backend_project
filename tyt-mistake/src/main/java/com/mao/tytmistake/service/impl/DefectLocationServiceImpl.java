@@ -50,8 +50,15 @@ public class DefectLocationServiceImpl implements DefectLocationService {
     }
 
     @Override
-    public DefectLocationResponse updateLocation() {
-        return null;
+    public LocationsResponse updateLocation(Long id, LocationsRequest locationsRequest) {
+        DefectLocationEntity entity = defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(id)
+                .orElseThrow(() -> new NotFoundException(id.toString()));
+
+        entity.setXLocation(locationsRequest.getXLocation());
+        entity.setYLocation(locationsRequest.getYLocation());
+        DefectLocationEntity updatedEntity = defectLocationEntityRepository.save(entity);
+
+        return LocationsResponse.mappedLocationsResponse(updatedEntity);
     }
 
     //todo: düşünülecek
@@ -62,7 +69,7 @@ public class DefectLocationServiceImpl implements DefectLocationService {
     }
 
     private void deleteLocations(Long id) {
-        DefectLocationEntity entity = defectLocationEntityRepository.findById(id)
+        DefectLocationEntity entity = defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(id)
                 .orElseThrow(() -> new NotFoundException(id.toString()));
 
         entity.setIsDeleted(true);

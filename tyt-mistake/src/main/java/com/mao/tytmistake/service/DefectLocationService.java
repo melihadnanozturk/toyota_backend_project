@@ -2,6 +2,7 @@ package com.mao.tytmistake.service;
 
 import com.mao.tytmistake.controller.request.DefectLocationRequest;
 import com.mao.tytmistake.controller.request.LocationRemoveRequest;
+import com.mao.tytmistake.controller.request.LocationsRequest;
 import com.mao.tytmistake.controller.response.DefectLocationResponse;
 import com.mao.tytmistake.controller.response.LocationsResponse;
 
@@ -13,7 +14,7 @@ public interface DefectLocationService {
 
     DefectLocationResponse addNewLocation(DefectLocationRequest defectLocationRequest);
 
-    DefectLocationResponse updateLocation();
+    LocationsResponse updateLocation(Long locationId, LocationsRequest request);
 
     List<Long> removeLocation(LocationRemoveRequest locationRemoveRequest);
 }

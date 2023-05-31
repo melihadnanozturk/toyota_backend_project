@@ -41,7 +41,8 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
 
     @Override
     public VehicleDefectEntity getVehicleDefectEntityById(Long id) {
-        return vehicleDefectEntityRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
+        return vehicleDefectEntityRepository.findByIdAndIsDeletedIsFalse(id)
+                .orElseThrow(() -> new NotFoundException(id.toString()));
     }
 
     @Override
@@ -49,7 +50,6 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
         return vehicleDefectEntityRepository.findAllByVehicleId(vehicleId).size();
     }
 
-    //todo: kontrol et
     @Override
     public Long deleteVehicleDefect(Long id) {
         VehicleDefectEntity vehicleDefectEntity = checkVehicleDefectEntityIsExists(id);

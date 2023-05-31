@@ -2,6 +2,7 @@ package com.mao.tytmistake.controller.endpoint;
 
 import com.mao.tytmistake.controller.request.DefectLocationRequest;
 import com.mao.tytmistake.controller.request.LocationRemoveRequest;
+import com.mao.tytmistake.controller.request.LocationsRequest;
 import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.controller.response.DefectLocationResponse;
 import com.mao.tytmistake.controller.response.LocationsResponse;
@@ -15,8 +16,6 @@ import java.util.List;
 @RequestMapping("/location")
 @RequiredArgsConstructor
 public class DefectLocationController {
-
-    //todo: crud diğer işlemler için kontrol et
 
     public final DefectLocationService defectLocationService;
 
@@ -32,8 +31,10 @@ public class DefectLocationController {
         return BaseResponse.isSuccess(response);
     }
 
-    @PutMapping
-    public void updateLocations() {
+    @PutMapping("/{locationId}")
+    public BaseResponse<LocationsResponse> updateLocations(@RequestBody LocationsRequest request, @PathVariable Long locationId) {
+        LocationsResponse response = defectLocationService.updateLocation(locationId, request);
+        return BaseResponse.isSuccess(response);
     }
 
     @DeleteMapping()

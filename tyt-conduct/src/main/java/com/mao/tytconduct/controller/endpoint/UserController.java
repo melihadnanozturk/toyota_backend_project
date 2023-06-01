@@ -4,6 +4,7 @@ import com.mao.tytconduct.controller.request.UserRequest;
 import com.mao.tytconduct.controller.response.BaseResponse;
 import com.mao.tytconduct.controller.response.UserResponse;
 import com.mao.tytconduct.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,13 +16,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    BaseResponse<UserResponse> addNewUser(@RequestBody UserRequest request) {
+    BaseResponse<UserResponse> addNewUser(@RequestBody @Valid UserRequest request) {
         UserResponse response = userService.addNewUser(request);
         return BaseResponse.isSuccess(response);
     }
 
     @PutMapping("/{id}")
-    BaseResponse<UserResponse> updateUser(@RequestBody UserRequest request, @PathVariable Long id) {
+    BaseResponse<UserResponse> updateUser(@RequestBody @Valid UserRequest request, @PathVariable Long id) {
         UserResponse response = userService.updateUser(id, request);
         return BaseResponse.isSuccess(response);
     }

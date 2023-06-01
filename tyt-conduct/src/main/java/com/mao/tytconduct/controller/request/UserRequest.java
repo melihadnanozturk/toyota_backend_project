@@ -2,6 +2,8 @@ package com.mao.tytconduct.controller.request;
 
 import com.mao.tytconduct.model.entity.UserEntity;
 import com.mao.tytconduct.model.entity.enums.Role;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +13,11 @@ import java.util.List;
 @Setter
 public class UserRequest {
 
+    @NotBlank
     private String name;
+    @NotBlank
     private String password;
+    @NotNull
     private List<Role> roles;
 
     public static UserEntity mappedToEntity(UserRequest request) {

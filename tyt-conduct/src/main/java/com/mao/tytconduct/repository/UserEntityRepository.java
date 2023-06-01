@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface UserEntityRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByIdAndIsDeletedIsFalse(Long id);
+
+    Optional<UserEntity> findByNameAndIsDeletedIsFalse(String name);
 }

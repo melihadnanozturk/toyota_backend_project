@@ -26,7 +26,7 @@ public class UserController {
         return BaseResponse.isSuccess(response);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     BaseResponse<Long> deleteUser(@PathVariable Long id) {
         Long removed = userService.removeUser(id);
         return BaseResponse.isSuccess(removed);

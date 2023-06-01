@@ -3,6 +3,7 @@ package com.mao.tytconduct.service.impl;
 import com.mao.tytconduct.controller.request.UserRequest;
 import com.mao.tytconduct.controller.response.UserResponse;
 import com.mao.tytconduct.model.entity.UserEntity;
+import com.mao.tytconduct.model.exception.AlreadyExistsException;
 import com.mao.tytconduct.model.exception.NotFoundException;
 import com.mao.tytconduct.repository.UserEntityRepository;
 import com.mao.tytconduct.service.UserService;
@@ -17,6 +18,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse addNewUser(UserRequest request) {
+        this.isUserEntityExistsWithName(request.getName());
+
         UserEntity entity = UserRequest.mappedToEntity(request);
         UserEntity saved = userEntityRepository.save(entity);
 
@@ -25,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse updateUser(Long id, UserRequest request) {
-        UserEntity entity = this.userEntityIsExists(id);
+        UserEntity entity = this.isUserEntityExists(id);
 
         entity.setName(request.getName());
         entity.setPassword(request.getPassword());
@@ -38,13 +41,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long removeUser(Long id) {
-        UserEntity entity = this.userEntityIsExists(id);
+        UserEntity entity = this.isUserEntityExists(id);
         entity.setIsDeleted(true);
+        userEntityRepository.save(entity);
         return id;
     }
 
-    private UserEntity userEntityIsExists(Long id) {
+    private UserEntity isUserEntityExists(Long id) {
         return userEntityRepository.findByIdAndIsDeletedIsFalse(id)
                 .orElseThrow(() -> new NotFoundException(id.toString()));
+    }
+
+    private void isUserEntityExistsWithName(String name) {
+        if (userEntityRepository.findByNameAndIsDeletedIsFalse(name).isPresent()) {
+            throw new AlreadyExistsException(name);
+        }
+        ;
     }
 }

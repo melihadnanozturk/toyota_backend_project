@@ -1,27 +1,39 @@
 package com.mao.tytauth.service;
 
-import com.mao.tytauth.controller.response.CustomUserDetails;
-import com.mao.tytauth.model.entity.UserEntity;
-import com.mao.tytauth.repository.UserEntityRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
-@RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
 
-    private final UserEntityRepository userRepository;
+    private Map<String, String> users = new HashMap<>();
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @PostConstruct
+    public void init() {
+        users.put("temelt", passwordEncoder.encode("123"));
+    }
+
 
     @Override
-    @SneakyThrows
-    public UserDetails loadUserByUsername(String username) {
-        UserEntity user = userRepository.findByNameAndIsDeletedIsFalse(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not founded: " + username));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return new CustomUserDetails(user);
+        if (users.containsKey(username)) {
+            return new User(username, users.get(username), new ArrayList<>());
+        }
+
+        throw new UsernameNotFoundException(username);
     }
 }

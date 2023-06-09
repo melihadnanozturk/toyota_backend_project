@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public abstract class BaseEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -2575739952112205541L;
+    private static final long serialVersionUID = -7266187724198140705L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,18 +28,8 @@ public abstract class BaseEntity implements Serializable {
 
     private String createdBy;
 
-    private LocalDate updatedAt;
-
-    private String updatedBy;
-
-
     @PrePersist
     public void prePersist() {
         createdAt = LocalDate.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = LocalDate.now();
     }
 }

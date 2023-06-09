@@ -56,6 +56,5 @@ public class UserServiceImpl implements UserService {
         if (userEntityRepository.findByNameAndIsDeletedIsFalse(name).isPresent()) {
             throw new AlreadyExistsException(name);
         }
-        ;
     }
 }

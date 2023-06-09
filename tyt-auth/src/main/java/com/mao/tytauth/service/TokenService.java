@@ -10,6 +10,8 @@ public interface TokenService {
 
     String createToken(Map<String, Object> claims, User user);
 
+    boolean authentication(String token, String name);
+
     boolean isValid(String token);
 
     String getUserName(String token);

@@ -46,6 +46,14 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
+    public boolean authentication(String token, String userName) {
+        String jwt = token.substring(7);
+
+        String name = getUserName(jwt);
+        return name.equals(userName);
+    }
+
+    @Override
     public boolean isValid(String token) {
         String isValid = token;
         return true;

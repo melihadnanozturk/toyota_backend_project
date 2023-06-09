@@ -1,18 +1,13 @@
 package com.mao.tytauth.service;
 
-import com.mao.tytauth.model.User;
-
-import java.util.Map;
+import com.mao.tytauth.controller.request.UserRequest;
+import com.mao.tytauth.controller.request.ValidateRequest;
 
 public interface TokenService {
 
-    String createToken(User user);
+    String createToken(UserRequest request);
 
-    String createToken(Map<String, Object> claims, User user);
+    Boolean authentication(String token, String name);
 
-    boolean authentication(String token, String name);
-
-    boolean isValid(String token);
-
-    String getUserName(String token);
+    Boolean authorization(ValidateRequest request);
 }

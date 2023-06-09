@@ -1,14 +1,12 @@
 package com.mao.tytauth.controller.endpoint;
 
 import com.mao.tytauth.controller.request.UserRequest;
+import com.mao.tytauth.controller.request.ValidateRequest;
 import com.mao.tytauth.controller.response.BaseResponse;
-import com.mao.tytauth.model.User;
 import com.mao.tytauth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/auth")
@@ -17,22 +15,25 @@ public class AuthController {
 
     private final TokenService tokenService;
 
+    //alınan tokenı kontrol etmek için
     @PostMapping
-    public BaseResponse<String> login(@RequestBody UserRequest userRequest) {
+    public BaseResponse<Boolean> auth(@RequestHeader("userName") String userName,
+                                      @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
 
-        User user = User.builder()
-                .userName(userRequest.getName())
-                .password(userRequest.getPassword())
-                .build();
+        return BaseResponse.isSuccess(tokenService.authentication(token, userName));
+    }
 
-        String token = tokenService.createToken(new HashMap<>(), user);
+    //ilk başta token almak için
+    @PostMapping("/login")
+    public BaseResponse<String> login(@RequestBody UserRequest request) {
+        String token = tokenService.createToken(request);
 
         return BaseResponse.isSuccess(token);
     }
 
-    @PostMapping("/token/{userName}")
-    public BaseResponse<Boolean> auth(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @PathVariable String userName) {
+    @PostMapping("/validate")
+    public BaseResponse<Boolean> auth(@RequestBody ValidateRequest request) {
 
-        return BaseResponse.isSuccess(tokenService.authentication(token, userName));
+        return BaseResponse.isSuccess(tokenService.authorization(request));
     }
 }

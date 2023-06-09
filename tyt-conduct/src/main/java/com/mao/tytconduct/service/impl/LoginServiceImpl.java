@@ -24,6 +24,7 @@ public class LoginServiceImpl implements LoginService {
             return UserResponse.entityMappedToResponse(entity);
         }
 
+        //todo: will add new exception
         throw new Exception();
     }
 }

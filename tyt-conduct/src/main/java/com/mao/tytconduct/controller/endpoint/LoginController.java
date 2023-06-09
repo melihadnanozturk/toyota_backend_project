@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/check")
 @RequiredArgsConstructor
 public class LoginController {
 
@@ -20,7 +20,7 @@ public class LoginController {
 
     @PostMapping
     @SneakyThrows
-    public BaseResponse<UserResponse> userIsValid(@RequestBody UserRequest request) {
+    public BaseResponse<UserResponse> checkUser(@RequestBody UserRequest request) {
         UserResponse response = loginService.userIsValid(request);
         return BaseResponse.isSuccess(response);
     }

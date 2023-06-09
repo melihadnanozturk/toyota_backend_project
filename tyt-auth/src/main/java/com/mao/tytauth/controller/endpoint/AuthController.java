@@ -16,7 +16,7 @@ public class AuthController {
     private final TokenService tokenService;
 
     //alınan tokenı kontrol etmek için
-    @PostMapping
+    @PostMapping("/validate-user")
     public BaseResponse<Boolean> auth(@RequestHeader("userName") String userName,
                                       @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
 
@@ -31,8 +31,9 @@ public class AuthController {
         return BaseResponse.isSuccess(token);
     }
 
+    //diğer servicelerden gelen tokenı doğrulamak için
     @PostMapping("/validate")
-    public BaseResponse<Boolean> auth(@RequestBody ValidateRequest request) {
+    public BaseResponse<Boolean> validate(@RequestHeader("request") ValidateRequest request) {
 
         return BaseResponse.isSuccess(tokenService.authorization(request));
     }

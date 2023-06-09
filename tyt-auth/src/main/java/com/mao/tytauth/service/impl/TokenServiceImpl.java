@@ -6,6 +6,8 @@ import com.mao.tytauth.controller.request.UserRequest;
 import com.mao.tytauth.controller.request.ValidateRequest;
 import com.mao.tytauth.controller.response.UserResponse;
 import com.mao.tytauth.model.Role;
+import com.mao.tytauth.model.exception.NotValidUserException;
+import com.mao.tytauth.model.exception.PastDueTimeException;
 import com.mao.tytauth.service.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -88,21 +90,19 @@ public class TokenServiceImpl implements TokenService {
         }
     }
 
-    private void checkExpiration(String token) throws Exception {
+    private void checkExpiration(String token) {
         Date date = extractClaim(token, Claims::getExpiration);
 
-        //todo: will add new exception
         if (!date.after(Date.from(Instant.now()))) {
-            throw new Exception();
+            throw new PastDueTimeException();
         }
     }
 
-    private void checkUserName(String userName, String token) throws Exception {
+    private void checkUserName(String userName, String token) {
         String userFToken = getUserName(token);
 
-        //todo: will add new exception
         if (!userName.equals(userFToken)) {
-            throw new Exception();
+            throw new NotValidUserException(userName);
         }
     }
 

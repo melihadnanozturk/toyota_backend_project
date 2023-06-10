@@ -1,7 +1,7 @@
 package com.mao.tytauth.controller.endpoint;
 
-import com.mao.tytauth.controller.request.ValidateRequest;
 import com.mao.tytauth.controller.response.BaseResponse;
+import com.mao.tytauth.model.Role;
 import com.mao.tytauth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -34,9 +34,11 @@ public class AuthController {
 
     //diğer servicelerden gelen tokenı doğrulamak için
     @PostMapping("/validate")
-    public BaseResponse<Boolean> validate(@RequestBody ValidateRequest request) {
+    public BaseResponse<Boolean> validate(@RequestHeader("userName") String userName,
+                                          @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+                                          @RequestBody Role role) {
 
-        Boolean isValid = tokenService.authorization(request);
+        Boolean isValid = tokenService.authorization(userName, token, role);
 
         return BaseResponse.isSuccess(isValid);
     }

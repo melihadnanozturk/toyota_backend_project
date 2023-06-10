@@ -1,9 +1,12 @@
 package com.mao.tytauth.model;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
-    ADMIN("admin"),
-    OPERATOR("operator"),
-    TEAM_LEAD("team_lead");
+    ADMIN("ADMIN"),
+    OPERATOR("OPERATOR"),
+    TEAM_LEAD("TEAM_LEAD");
 
     private String name;
 

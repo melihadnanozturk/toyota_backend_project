@@ -3,7 +3,6 @@ package com.mao.tytauth.service.impl;
 
 import com.mao.tytauth.client.ConductApiClient;
 import com.mao.tytauth.controller.request.UserRequest;
-import com.mao.tytauth.controller.request.ValidateRequest;
 import com.mao.tytauth.controller.response.UserResponse;
 import com.mao.tytauth.model.Role;
 import com.mao.tytauth.model.exception.ForbiddenException;
@@ -65,12 +64,13 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     @SneakyThrows
-    public Boolean authorization(ValidateRequest request) {
-        String jwt = request.getToken().substring(7);
+    public Boolean authorization(String userName, String token, Role role) {
+
+        String jwt = token.substring(7);
 
         checkExpiration(jwt);
-        checkUserName(request.getUser(), jwt);
-        checkRoles(request.getRole(), jwt);
+        checkUserName(userName, jwt);
+        checkRoles(role, jwt);
 
         return true;
     }
@@ -102,7 +102,7 @@ public class TokenServiceImpl implements TokenService {
     private void checkRoles(Role role, String token) throws Exception {
         Claims claims = extractAllClaims(token);
         List roles = claims.get("Role", List.class);
-        if (!roles.contains(role)) {
+        if (!roles.contains(role.getName())) {
             throw new ForbiddenException(role.toString());
         }
     }
@@ -120,9 +120,9 @@ public class TokenServiceImpl implements TokenService {
     }
 
     private void checkUserName(String userName, String token) {
-        String userFToken = getUserName(token);
+        String tokenUser = getUserName(token);
 
-        if (!userName.equals(userFToken)) {
+        if (!userName.equals(tokenUser)) {
             throw new NotValidUserException(userName);
         }
     }

@@ -12,6 +12,6 @@ public class ValidateRequest {
 
     private String user;
     private String token;
-    private Role roles;
+    private Role role;
 
 }

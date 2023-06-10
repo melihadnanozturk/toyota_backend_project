@@ -1,7 +1,6 @@
 package com.mao.tytconduct.controller.endpoint;
 
 import com.mao.tytconduct.client.AuthApiClient;
-import com.mao.tytconduct.client.request.ValidateRequest;
 import com.mao.tytconduct.controller.request.UserRequest;
 import com.mao.tytconduct.controller.response.BaseResponse;
 import com.mao.tytconduct.controller.response.UserResponse;
@@ -27,13 +26,13 @@ public class UserController {
             @RequestBody @Valid UserRequest request) {
 
         //todo: bu bir yerde ortaklaştırılabilir
-        ValidateRequest validateRequest = ValidateRequest.builder()
+        /*ValidateRequest validateRequest = ValidateRequest.builder()
                 .user(userName)
-                .roles(Role.ADMIN)
+                .role(Role.ADMIN)
                 .token(token)
-                .build();
+                .build();*/
 
-        apiClient.validate(validateRequest);
+        apiClient.validate(userName, token, Role.ADMIN);
 
         UserResponse response = userService.addNewUser(request);
         return BaseResponse.isSuccess(response);

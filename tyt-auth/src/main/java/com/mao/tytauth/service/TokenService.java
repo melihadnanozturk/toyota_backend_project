@@ -1,6 +1,6 @@
 package com.mao.tytauth.service;
 
-import com.mao.tytauth.controller.request.ValidateRequest;
+import com.mao.tytauth.model.Role;
 
 public interface TokenService {
 
@@ -8,5 +8,7 @@ public interface TokenService {
 
     Boolean authentication(String token, String name);
 
-    Boolean authorization(ValidateRequest request);
+    Boolean authorization(String userName,
+                          String token,
+                          Role role);
 }

@@ -7,8 +7,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "CONDUCT", url = "http://localhost:8081")
-public interface ApiClient {
+@FeignClient(value = "CONDUCT", url = "${tyt.32Bit.feign-client.conduct}")
+public interface ConductApiClient {
 
     @PostMapping("/check")
     BaseResponse<UserResponse> userIsValid(@RequestBody UserRequest request);

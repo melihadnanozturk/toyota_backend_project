@@ -1,6 +1,5 @@
 package com.mao.tytauth.controller.endpoint;
 
-import com.mao.tytauth.controller.request.UserRequest;
 import com.mao.tytauth.controller.request.ValidateRequest;
 import com.mao.tytauth.controller.response.BaseResponse;
 import com.mao.tytauth.service.TokenService;
@@ -25,16 +24,20 @@ public class AuthController {
 
     //ilk başta token almak için
     @PostMapping("/login")
-    public BaseResponse<String> login(@RequestBody UserRequest request) {
-        String token = tokenService.createToken(request);
+    public BaseResponse<String> login(@RequestHeader("userName") String userName,
+                                      @RequestHeader("password") String password) {
+
+        String token = tokenService.createToken(userName, password);
 
         return BaseResponse.isSuccess(token);
     }
 
     //diğer servicelerden gelen tokenı doğrulamak için
     @PostMapping("/validate")
-    public BaseResponse<Boolean> validate(@RequestHeader("request") ValidateRequest request) {
+    public BaseResponse<Boolean> validate(@RequestBody ValidateRequest request) {
 
-        return BaseResponse.isSuccess(tokenService.authorization(request));
+        Boolean isValid = tokenService.authorization(request);
+
+        return BaseResponse.isSuccess(isValid);
     }
 }

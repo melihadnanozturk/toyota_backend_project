@@ -17,3 +17,8 @@ application:
       secret-key: maoCom
       expiration: 900000 # 15 minutes
 
+tyt:
+  32Bit:
+    feign-client:
+      conduct: http://localhost:8081
+

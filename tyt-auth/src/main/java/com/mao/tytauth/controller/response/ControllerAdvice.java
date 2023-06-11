@@ -2,7 +2,7 @@ package com.mao.tytauth.controller.response;
 
 import com.mao.tytauth.model.exception.BaseException;
 import com.mao.tytauth.model.exception.ForbiddenException;
-import com.mao.tytauth.model.exception.NotValidUserException;
+import com.mao.tytauth.model.exception.NotValidTokenForUserException;
 import com.mao.tytauth.model.exception.PastDueTimeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,14 +17,14 @@ import java.util.Map;
 @RestControllerAdvice
 public class ControllerAdvice {
 
-    @ExceptionHandler(NotValidUserException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotValidTokenForUserException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    public BaseResponse<Object> handleNotFoundException(NotValidUserException exception) {
+    public BaseResponse<Object> handleNotFoundException(NotValidTokenForUserException exception) {
 
         Map<String, Object> body = getErrorBody(exception);
 
-        return BaseResponse.failed(body, HttpStatus.BAD_REQUEST);
+        return BaseResponse.failed(body, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(ForbiddenException.class)
@@ -38,7 +38,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(PastDueTimeException.class)
-    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
     public BaseResponse<Object> handleAlreadyExistsException(PastDueTimeException exception) {
 

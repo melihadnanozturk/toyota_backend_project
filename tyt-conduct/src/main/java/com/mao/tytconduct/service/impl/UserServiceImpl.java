@@ -1,8 +1,10 @@
 package com.mao.tytconduct.service.impl;
 
+import com.mao.tytconduct.client.AuthApiClient;
 import com.mao.tytconduct.controller.request.UserRequest;
 import com.mao.tytconduct.controller.response.UserResponse;
 import com.mao.tytconduct.model.entity.UserEntity;
+import com.mao.tytconduct.model.entity.enums.Role;
 import com.mao.tytconduct.model.exception.AlreadyExistsException;
 import com.mao.tytconduct.model.exception.NotFoundException;
 import com.mao.tytconduct.repository.UserEntityRepository;
@@ -15,9 +17,13 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserEntityRepository userEntityRepository;
+    private final AuthApiClient apiClient;
+
 
     @Override
-    public UserResponse addNewUser(UserRequest request) {
+    public UserResponse addNewUser(String userName, String token, UserRequest request) {
+        apiClient.validate(userName, token, Role.ADMIN);
+
         this.isUserEntityExistsWithName(request.getName());
 
         UserEntity entity = UserRequest.mappedToEntity(request);

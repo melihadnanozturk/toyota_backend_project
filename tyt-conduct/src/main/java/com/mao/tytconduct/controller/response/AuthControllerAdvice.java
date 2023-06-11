@@ -2,7 +2,7 @@ package com.mao.tytconduct.controller.response;
 
 import com.mao.tytconduct.model.exception.BaseException;
 import com.mao.tytconduct.model.exception.ForbiddenException;
-import com.mao.tytconduct.model.exception.NotValidUserException;
+import com.mao.tytconduct.model.exception.NotValidTokenForUserException;
 import com.mao.tytconduct.model.exception.PastDueTimeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,14 +16,14 @@ import java.util.Map;
 @RestControllerAdvice
 public class AuthControllerAdvice {
 
-    @ExceptionHandler(NotValidUserException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(NotValidTokenForUserException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    public BaseResponse<Object> handleNotFoundException(NotValidUserException exception) {
+    public BaseResponse<Object> handleNotFoundException(NotValidTokenForUserException exception) {
 
         Map<String, Object> body = getErrorBody(exception);
 
-        return BaseResponse.failed(body, HttpStatus.FORBIDDEN);
+        return BaseResponse.failed(body, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(ForbiddenException.class)

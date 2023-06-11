@@ -1,7 +1,7 @@
 package com.mao.tytconduct.controller.response;
 
 import com.mao.tytconduct.model.exception.ForbiddenException;
-import com.mao.tytconduct.model.exception.NotValidUserException;
+import com.mao.tytconduct.model.exception.NotValidTokenForUserException;
 import com.mao.tytconduct.model.exception.PastDueTimeException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
@@ -16,8 +16,8 @@ public class RetreiveMessageErrorDecoder implements ErrorDecoder {
     public Exception decode(String s, Response response) {
 
         switch (response.status()) {
-            case 400 -> {
-                return new NotValidUserException(s);
+            case 401 -> {
+                return new NotValidTokenForUserException(s);
             }
             case 403 -> {
                 return new ForbiddenException(s);

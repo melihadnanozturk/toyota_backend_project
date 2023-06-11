@@ -8,12 +8,12 @@ import java.io.Serial;
 
 @Getter
 @Setter
-public class NotValidUserException extends BaseException {
+public class NotValidTokenForUserException extends BaseException {
 
     @Serial
     private static final long serialVersionUID = -1175370455482142205L;
 
-    public NotValidUserException(String field) {
-        super(CommonError.NOT_VALID_USER, field);
+    public NotValidTokenForUserException(String field) {
+        super(CommonError.NOT_VALID_TOKEN, field);
     }
 }

@@ -5,7 +5,7 @@ import com.mao.tytauth.client.ConductApiClient;
 import com.mao.tytauth.controller.response.UserResponse;
 import com.mao.tytauth.model.Role;
 import com.mao.tytauth.model.exception.ForbiddenException;
-import com.mao.tytauth.model.exception.NotValidUserException;
+import com.mao.tytauth.model.exception.NotValidTokenForUserException;
 import com.mao.tytauth.model.exception.PastDueTimeException;
 import com.mao.tytauth.service.TokenService;
 import io.jsonwebtoken.Claims;
@@ -67,8 +67,8 @@ public class TokenServiceImpl implements TokenService {
 
         String jwt = token.substring(7);
 
-        checkExpiration(jwt);
         checkUserName(userName, jwt);
+        checkExpiration(jwt);
         checkRoles(role, jwt);
 
         return true;
@@ -114,7 +114,7 @@ public class TokenServiceImpl implements TokenService {
         String tokenUser = getUserName(token);
 
         if (!userName.equals(tokenUser)) {
-            throw new NotValidUserException(userName);
+            throw new NotValidTokenForUserException(userName);
         }
     }
 

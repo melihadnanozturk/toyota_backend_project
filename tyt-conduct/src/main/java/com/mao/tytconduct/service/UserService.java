@@ -5,7 +5,7 @@ import com.mao.tytconduct.controller.response.UserResponse;
 
 public interface UserService {
 
-    UserResponse addNewUser(UserRequest request);
+    UserResponse addNewUser(String userName, String token, UserRequest request);
 
     UserResponse updateUser(Long id, UserRequest request);
 

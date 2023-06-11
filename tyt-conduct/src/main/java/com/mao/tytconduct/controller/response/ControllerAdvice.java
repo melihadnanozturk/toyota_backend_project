@@ -1,6 +1,7 @@
 package com.mao.tytconduct.controller.response;
 
 import com.mao.tytconduct.model.exception.AlreadyExistsException;
+import com.mao.tytconduct.model.exception.BaseException;
 import com.mao.tytconduct.model.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,12 +21,7 @@ public class ControllerAdvice {
     @ResponseBody
     public BaseResponse<Object> handleNotFoundException(NotFoundException exception) {
 
-        //todo: ErrorResponse un standartlaştırılması lazım.
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("error", exception.getError());
-        body.put("message", exception.getMessage());
+        Map<String, Object> body = getErrorBody(exception);
 
         return BaseResponse.failed(body, HttpStatus.NOT_FOUND);
     }
@@ -35,11 +31,18 @@ public class ControllerAdvice {
     @ResponseBody
     public BaseResponse<Object> handleAlreadyExistsException(AlreadyExistsException exception) {
 
+        Map<String, Object> body = getErrorBody(exception);
+
+        return BaseResponse.failed(body, HttpStatus.BAD_REQUEST);
+    }
+
+    private Map<String, Object> getErrorBody(BaseException exception) {
+
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("error", exception.getError());
         body.put("message", exception.getMessage());
 
-        return BaseResponse.failed(body, HttpStatus.BAD_REQUEST);
+        return body;
     }
 }

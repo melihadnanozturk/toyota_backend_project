@@ -115,10 +115,6 @@ public class TokenServiceImpl implements TokenService {
         }
     }
 
-    private void checkRole(Role role, String token) {
-
-    }
-
     private void checkUserName(String userName, String token) {
         String tokenUser = getUserName(token);
 

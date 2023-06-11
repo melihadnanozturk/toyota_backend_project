@@ -32,7 +32,7 @@ public class UserController {
                 .token(token)
                 .build();*/
 
-        apiClient.validate(userName, token, Role.ADMIN);
+        BaseResponse<Boolean> feignResponse = apiClient.validate(userName, token, Role.ADMIN);
 
         UserResponse response = userService.addNewUser(request);
         return BaseResponse.isSuccess(response);

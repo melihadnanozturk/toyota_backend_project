@@ -14,6 +14,11 @@ public class BaseException extends RuntimeException {
     private final TytError error;
     private final String message;
 
+    public BaseException(TytError error) {
+        this.error = error;
+        this.message = String.format(error.getMessage());
+    }
+
     public BaseException(TytError error, String field) {
         this.error = error;
         this.message = String.format(error.getMessage(), field);

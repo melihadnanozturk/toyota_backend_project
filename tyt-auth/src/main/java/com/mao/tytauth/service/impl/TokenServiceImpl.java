@@ -2,7 +2,6 @@ package com.mao.tytauth.service.impl;
 
 
 import com.mao.tytauth.client.ConductApiClient;
-import com.mao.tytauth.controller.request.UserRequest;
 import com.mao.tytauth.controller.response.UserResponse;
 import com.mao.tytauth.model.Role;
 import com.mao.tytauth.model.exception.ForbiddenException;
@@ -87,19 +86,15 @@ public class TokenServiceImpl implements TokenService {
     }
 
     private UserResponse getUser(String userName, String password) {
-        UserRequest request = UserRequest.builder()
-                .name(userName)
-                .password(password)
-                .build();
 
-        return conductApiClient.userIsValid(request).getResponse();
+        return conductApiClient.userIsValid(userName, password).getResponse();
     }
 
     private String getUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    private void checkRoles(Role role, String token) throws Exception {
+    private void checkRoles(Role role, String token) {
         Claims claims = extractAllClaims(token);
         List roles = claims.get("Role", List.class);
         if (!roles.contains(role.getName())) {

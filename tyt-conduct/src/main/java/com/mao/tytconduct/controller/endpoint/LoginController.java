@@ -1,13 +1,11 @@
 package com.mao.tytconduct.controller.endpoint;
 
-import com.mao.tytconduct.controller.request.UserRequest;
 import com.mao.tytconduct.controller.response.BaseResponse;
 import com.mao.tytconduct.controller.response.UserResponse;
 import com.mao.tytconduct.service.LoginService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,9 +17,8 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping
-    @SneakyThrows
-    public BaseResponse<UserResponse> checkUser(@RequestBody UserRequest request) {
-        UserResponse response = loginService.userIsValid(request);
+    public BaseResponse<UserResponse> checkUser(@RequestHeader("userName") String userName, @RequestHeader("password") String password) {
+        UserResponse response = loginService.userIsValid(userName, password);
         return BaseResponse.isSuccess(response);
     }
 }

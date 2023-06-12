@@ -10,17 +10,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class RetreiveMessageErrorDecoder implements ErrorDecoder {
 
-    public ErrorDecoder errorDecoder = new Default();
-
     @Override
     public Exception decode(String s, Response response) {
 
         switch (response.status()) {
             case 401 -> {
-                return new NotValidTokenForUserException(s);
+                String userName = response.request().headers().get("userName").toString();
+                return new NotValidTokenForUserException(userName);
             }
             case 403 -> {
-                return new ForbiddenException(s);
+                return new ForbiddenException();
             }
             case 417 -> {
                 return new PastDueTimeException();

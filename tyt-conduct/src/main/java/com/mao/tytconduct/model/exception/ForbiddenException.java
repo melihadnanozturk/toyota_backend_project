@@ -4,7 +4,7 @@ import com.mao.tytconduct.model.error.CommonError;
 
 public class ForbiddenException extends BaseException {
 
-    public ForbiddenException(String field) {
-        super(CommonError.FORBIDDEN, field);
+    public ForbiddenException() {
+        super(CommonError.FORBIDDEN);
     }
 }

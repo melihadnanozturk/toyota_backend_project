@@ -8,9 +8,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CommonError implements Error {
 
-    PAST_DUE_TIME(2000, "TOKEN HAS EXPIRED"),
-    NOT_VALID_TOKEN(2001, "NOT VALID TOKEN FOR USER, %s"),
-    FORBIDDEN(2002, "NOT HAVE VALID ROLE, %s");
+    PAST_DUE_TIME(2000, "Token has expired"),
+    NOT_VALID_TOKEN(2001, "The token is not compatible with the user. Permission denied, %s"),
+    FORBIDDEN(2002, "Access Denied. You do not have permission to access the requested resource");
 
     private final Integer code;
     private final String message;

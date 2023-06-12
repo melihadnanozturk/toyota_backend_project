@@ -98,13 +98,14 @@ public class TokenServiceImpl implements TokenService {
         Claims claims = extractAllClaims(token);
         List roles = claims.get("Role", List.class);
         if (!roles.contains(role.getName())) {
-            throw new ForbiddenException(role.toString());
+            throw new ForbiddenException();
         }
     }
 
     private void checkExpiration(String token) {
         Date date = extractClaim(token, Claims::getExpiration);
 
+        //todo: bunu kontrol et
         if (!date.after(Date.from(Instant.now()))) {
             throw new PastDueTimeException();
         }

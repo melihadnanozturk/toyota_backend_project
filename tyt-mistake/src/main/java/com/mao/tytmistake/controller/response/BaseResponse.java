@@ -34,11 +34,11 @@ public class BaseResponse<T> {
                 .build();
     }
 
-    public final BaseResponse<String> failed(String message, HttpStatus httpStatus) {
-        return BaseResponse.<String>builder()
+    public static <T> BaseResponse<T> failed(T t, HttpStatus httpStatus) {
+        return BaseResponse.<T>builder()
                 .httpStatus(httpStatus)
                 .isSuccess(ResponseStatus.FAILED)
-                .response(message)
+                .response(t)
                 .build();
     }
 

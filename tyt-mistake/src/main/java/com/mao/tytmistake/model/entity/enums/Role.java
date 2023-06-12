@@ -1,4 +1,4 @@
-package com.mao.tytconduct.model.entity.enums;
+package com.mao.tytmistake.model.entity.enums;
 
 public enum Role {
     ADMIN("ADMIN"),

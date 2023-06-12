@@ -2,6 +2,8 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: tyt-auth
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres

@@ -1,4 +1,4 @@
-package com.mao.tytmistake.controller.response;
+package com.mao.tytmistake.controller.response.exceptionHandling;
 
 import com.mao.tytmistake.model.exception.AlreadyExistsException;
 import com.mao.tytmistake.model.exception.NotFoundException;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +23,6 @@ public class ControllerAdvice {
         //todo: ErrorResponse un standartlaştırılması lazım.
 
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
         body.put("error", exception.getError());
         body.put("message", exception.getMessage());
 
@@ -37,7 +35,6 @@ public class ControllerAdvice {
     public ResponseEntity<Object> handleAlreadyExistsException(AlreadyExistsException exception) {
 
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
         body.put("error", exception.getError());
         body.put("message", exception.getMessage());
 

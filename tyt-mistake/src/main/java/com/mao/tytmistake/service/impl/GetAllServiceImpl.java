@@ -1,5 +1,6 @@
 package com.mao.tytmistake.service.impl;
 
+import com.mao.tytmistake.client.AuthApiClient;
 import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.response.PageDefectLocationResponse;
@@ -7,6 +8,7 @@ import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
 import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
 import com.mao.tytmistake.model.entity.VehicleDefectEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
+import com.mao.tytmistake.model.entity.enums.Role;
 import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
 import com.mao.tytmistake.repository.VehicleEntityRepository;
 import com.mao.tytmistake.service.GetAllService;
@@ -15,9 +17,13 @@ import com.mao.tytmistake.service.impl.spec.CreateVehicleSpec;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +31,17 @@ public class GetAllServiceImpl implements GetAllService {
 
     private final VehicleEntityRepository vehicleEntityRepository;
     private final VehicleDefectEntityRepository vehicleDefectEntityRepository;
+    private final AuthApiClient apiClient;
+
+    private static final String USER_NAME = "userName";
+    private static final String TOKEN = "token";
+    private static final String AUTHORIZATION = "Authorization";
 
     @Override
-    public Page<PageVehicleResponse> getAllVehicle(PageVehicleRequest request) {
+    public Page<PageVehicleResponse> getAllVehicle(HttpHeaders headers, PageVehicleRequest request) {
+        Map<String, String> info = getHeaderInfo(headers);
+
+        apiClient.validate(info.get(USER_NAME), info.get(TOKEN), Role.TEAM_LEAD);
         Pageable pageable = PageRequest.of(
                 request.getPageNumber(),
                 request.getPageSize(),
@@ -74,5 +88,18 @@ public class GetAllServiceImpl implements GetAllService {
 
     private Integer getDefectNumbersByVehicleId(Long vehicleId) {
         return vehicleDefectEntityRepository.findAllByVehicleId(vehicleId).size();
+    }
+
+    private Map<String, String> getHeaderInfo(HttpHeaders headers) {
+        Map<String, String> infos = new HashMap<>();
+
+        String userName = Objects.requireNonNull(headers.get(USER_NAME)).get(0);
+        String token = Objects.requireNonNull(headers.get(AUTHORIZATION)).get(0);
+
+        infos.put(USER_NAME, userName);
+        infos.put(TOKEN, token);
+
+        return infos;
+
     }
 }

@@ -14,6 +14,6 @@ public class NotFoundException extends BaseException {
     private static final long serialVersionUID = -6965547598276886042L;
 
     public NotFoundException(String field) {
-        super(CommonError.NOT_FOUND, field);
+        super(CommonError.RECORD_NOT_FOUND, field);
     }
 }

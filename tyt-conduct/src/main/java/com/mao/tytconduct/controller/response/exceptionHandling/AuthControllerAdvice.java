@@ -1,5 +1,6 @@
-package com.mao.tytconduct.controller.response;
+package com.mao.tytconduct.controller.response.exceptionHandling;
 
+import com.mao.tytconduct.controller.response.BaseResponse;
 import com.mao.tytconduct.model.exception.BaseException;
 import com.mao.tytconduct.model.exception.ForbiddenException;
 import com.mao.tytconduct.model.exception.NotValidTokenForUserException;

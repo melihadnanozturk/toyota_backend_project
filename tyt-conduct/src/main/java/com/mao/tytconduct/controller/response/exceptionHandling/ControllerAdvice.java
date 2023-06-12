@@ -1,5 +1,6 @@
-package com.mao.tytconduct.controller.response;
+package com.mao.tytconduct.controller.response.exceptionHandling;
 
+import com.mao.tytconduct.controller.response.BaseResponse;
 import com.mao.tytconduct.model.exception.AlreadyExistsException;
 import com.mao.tytconduct.model.exception.BaseException;
 import com.mao.tytconduct.model.exception.NotFoundException;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +17,7 @@ import java.util.Map;
 public class ControllerAdvice {
 
     @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public BaseResponse<Object> handleNotFoundException(NotFoundException exception) {
 
@@ -39,7 +39,6 @@ public class ControllerAdvice {
     private Map<String, Object> getErrorBody(BaseException exception) {
 
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
         body.put("error", exception.getError());
         body.put("message", exception.getMessage());
 

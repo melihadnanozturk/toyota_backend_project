@@ -1,4 +1,4 @@
-package com.mao.tytconduct.controller.response;
+package com.mao.tytconduct.controller.response.exceptionHandling;
 
 import com.mao.tytconduct.model.exception.ForbiddenException;
 import com.mao.tytconduct.model.exception.NotValidTokenForUserException;
@@ -7,15 +7,17 @@ import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-public class RetreiveMessageErrorDecoder implements ErrorDecoder {
+public class ErrorDecoderService implements ErrorDecoder {
 
     @Override
     public Exception decode(String s, Response response) {
 
         switch (response.status()) {
             case 401 -> {
-                String userName = response.request().headers().get("userName").toString();
+                String userName = getUserName(response);
                 return new NotValidTokenForUserException(userName);
             }
             case 403 -> {
@@ -28,5 +30,10 @@ public class RetreiveMessageErrorDecoder implements ErrorDecoder {
                 return new Exception();
             }
         }
+    }
+
+    private String getUserName(Response response) {
+        List<String> userName = (List<String>) response.request().headers().get("userName");
+        return userName.get(0);
     }
 }

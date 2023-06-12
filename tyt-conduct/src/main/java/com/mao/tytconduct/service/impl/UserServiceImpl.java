@@ -33,7 +33,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse updateUser(Long id, UserRequest request) {
+    public UserResponse updateUser(String userName, String token, Long id, UserRequest request) {
+        apiClient.validate(userName, token, Role.ADMIN);
+
         UserEntity entity = this.isUserEntityExists(id);
 
         entity.setName(request.getName());
@@ -46,7 +48,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long removeUser(Long id) {
+    public Long removeUser(String userName, String token, Long id) {
+        apiClient.validate(userName, token, Role.ADMIN);
+
         UserEntity entity = this.isUserEntityExists(id);
         entity.setIsDeleted(true);
         userEntityRepository.save(entity);

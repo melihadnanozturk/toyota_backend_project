@@ -27,14 +27,23 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    BaseResponse<UserResponse> updateUser(@RequestBody @Valid UserRequest request, @PathVariable Long id) {
-        UserResponse response = userService.updateUser(id, request);
+    BaseResponse<UserResponse> updateUser(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestHeader("userName") String userName,
+            @RequestBody @Valid UserRequest request,
+            @PathVariable Long id) {
+
+        UserResponse response = userService.updateUser(userName, token, id, request);
         return BaseResponse.isSuccess(response);
     }
 
     @DeleteMapping("/{id}")
-    BaseResponse<Long> deleteUser(@PathVariable Long id) {
-        Long removed = userService.removeUser(id);
+    BaseResponse<Long> deleteUser(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestHeader("userName") String userName,
+            @PathVariable Long id) {
+
+        Long removed = userService.removeUser(userName, token, id);
         return BaseResponse.isSuccess(removed);
     }
 }

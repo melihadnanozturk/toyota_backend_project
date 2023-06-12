@@ -7,8 +7,8 @@ public interface UserService {
 
     UserResponse addNewUser(String userName, String token, UserRequest request);
 
-    UserResponse updateUser(Long id, UserRequest request);
+    UserResponse updateUser(String userName, String token, Long id, UserRequest request);
 
-    Long removeUser(Long id);
+    Long removeUser(String userName, String token, Long id);
 
 }

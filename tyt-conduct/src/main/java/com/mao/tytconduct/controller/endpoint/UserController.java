@@ -18,32 +18,29 @@ public class UserController {
 
     @PostMapping
     BaseResponse<UserResponse> addNewUser(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-            @RequestHeader("userName") String userName,
+            @RequestHeader HttpHeaders headers,
             @RequestBody @Valid UserRequest request) {
 
-        UserResponse response = userService.addNewUser(userName, token, request);
+        UserResponse response = userService.addNewUser(headers, request);
         return BaseResponse.isSuccess(response);
     }
 
     @PutMapping("/{id}")
     BaseResponse<UserResponse> updateUser(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-            @RequestHeader("userName") String userName,
+            @RequestHeader HttpHeaders headers,
             @RequestBody @Valid UserRequest request,
             @PathVariable Long id) {
 
-        UserResponse response = userService.updateUser(userName, token, id, request);
+        UserResponse response = userService.updateUser(headers, id, request);
         return BaseResponse.isSuccess(response);
     }
 
     @DeleteMapping("/{id}")
     BaseResponse<Long> deleteUser(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-            @RequestHeader("userName") String userName,
+            @RequestHeader HttpHeaders headers,
             @PathVariable Long id) {
 
-        Long removed = userService.removeUser(userName, token, id);
+        Long removed = userService.removeUser(headers, id);
         return BaseResponse.isSuccess(removed);
     }
 }

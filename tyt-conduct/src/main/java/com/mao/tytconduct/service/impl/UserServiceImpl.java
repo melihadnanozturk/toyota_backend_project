@@ -10,7 +10,12 @@ import com.mao.tytconduct.model.exception.NotFoundException;
 import com.mao.tytconduct.repository.UserEntityRepository;
 import com.mao.tytconduct.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -19,10 +24,14 @@ public class UserServiceImpl implements UserService {
     private final UserEntityRepository userEntityRepository;
     private final AuthApiClient apiClient;
 
+    private static final String USER_NAME = "userName";
+    private static final String TOKEN = "token";
+    private static final String AUTHORIZATION = "Authorization";
+
 
     @Override
-    public UserResponse addNewUser(String userName, String token, UserRequest request) {
-        apiClient.validate(userName, token, Role.ADMIN);
+    public UserResponse addNewUser(HttpHeaders headers, UserRequest request) {
+        this.isValidRequest(headers);
 
         this.isUserEntityExistsWithName(request.getName());
 
@@ -33,8 +42,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse updateUser(String userName, String token, Long id, UserRequest request) {
-        apiClient.validate(userName, token, Role.ADMIN);
+    public UserResponse updateUser(HttpHeaders headers, Long id, UserRequest request) {
+        this.isValidRequest(headers);
 
         UserEntity entity = this.isUserEntityExists(id);
 
@@ -48,13 +57,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long removeUser(String userName, String token, Long id) {
-        apiClient.validate(userName, token, Role.ADMIN);
+    public Long removeUser(HttpHeaders headers, Long id) {
+        this.isValidRequest(headers);
 
         UserEntity entity = this.isUserEntityExists(id);
         entity.setIsDeleted(true);
         userEntityRepository.save(entity);
         return id;
+    }
+
+    private void isValidRequest(HttpHeaders headers) {
+        Map<String, String> info = getHeaderInfo(headers);
+
+        apiClient.validate(info.get(USER_NAME), info.get(TOKEN), Role.ADMIN);
+    }
+
+    private Map<String, String> getHeaderInfo(HttpHeaders headers) {
+        Map<String, String> infos = new HashMap<>();
+
+        String userName = Objects.requireNonNull(headers.get(USER_NAME)).get(0);
+        String token = Objects.requireNonNull(headers.get(AUTHORIZATION)).get(0);
+
+        infos.put(USER_NAME, userName);
+        infos.put(TOKEN, token);
+
+        return infos;
     }
 
     private UserEntity isUserEntityExists(Long id) {

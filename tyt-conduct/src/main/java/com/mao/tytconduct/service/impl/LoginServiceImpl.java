@@ -7,7 +7,10 @@ import com.mao.tytconduct.model.exception.NotValidTokenForUserException;
 import com.mao.tytconduct.repository.UserEntityRepository;
 import com.mao.tytconduct.service.LoginService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +19,10 @@ public class LoginServiceImpl implements LoginService {
     private final UserEntityRepository userEntityRepository;
 
     @Override
-    public UserResponse userIsValid(String userName, String password) {
+    public UserResponse userIsValid(HttpHeaders headers) {
+        String userName = getUserName(headers);
+        String password = getToken(headers);
+
         UserEntity entity = userEntityRepository.findByNameAndIsDeletedIsFalse(userName)
                 .orElseThrow(() -> new NotFoundException(userName));
 
@@ -25,5 +31,13 @@ public class LoginServiceImpl implements LoginService {
         }
 
         throw new NotValidTokenForUserException(userName);
+    }
+
+    private String getUserName(HttpHeaders headers) {
+        return Objects.requireNonNull(headers.get("userName")).get(0);
+    }
+
+    private String getToken(HttpHeaders headers) {
+        return Objects.requireNonNull(headers.get("password")).get(0);
     }
 }

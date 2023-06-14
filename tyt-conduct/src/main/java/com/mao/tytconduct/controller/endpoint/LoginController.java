@@ -4,6 +4,7 @@ import com.mao.tytconduct.controller.response.BaseResponse;
 import com.mao.tytconduct.controller.response.UserResponse;
 import com.mao.tytconduct.service.LoginService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +19,8 @@ public class LoginController {
 
     @PostMapping
     public BaseResponse<UserResponse> checkUser(
-            @RequestHeader("userName") String userName,
-            @RequestHeader("password") String password) {
-        UserResponse response = loginService.userIsValid(userName, password);
+            @RequestHeader HttpHeaders headers) {
+        UserResponse response = loginService.userIsValid(headers);
         return BaseResponse.isSuccess(response);
     }
 }

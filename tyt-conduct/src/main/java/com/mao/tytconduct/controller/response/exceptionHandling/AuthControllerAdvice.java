@@ -44,7 +44,7 @@ public class AuthControllerAdvice {
 
         Map<String, Object> body = getErrorBody(exception);
 
-        return BaseResponse.failed(body, HttpStatus.FORBIDDEN);
+        return BaseResponse.failed(body, HttpStatus.EXPECTATION_FAILED);
     }
 
     private Map<String, Object> getErrorBody(BaseException exception) {

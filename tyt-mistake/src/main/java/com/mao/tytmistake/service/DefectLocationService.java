@@ -5,14 +5,15 @@ import com.mao.tytmistake.controller.request.LocationRemoveRequest;
 import com.mao.tytmistake.controller.request.LocationsRequest;
 import com.mao.tytmistake.controller.response.DefectLocationResponse;
 import com.mao.tytmistake.controller.response.LocationsResponse;
+import org.springframework.http.HttpHeaders;
 
 import java.util.List;
 
 public interface DefectLocationService {
 
-    DefectLocationResponse addNewLocation(DefectLocationRequest defectLocationRequest);
+    DefectLocationResponse addNewLocation(HttpHeaders headers, DefectLocationRequest defectLocationRequest);
 
-    LocationsResponse updateLocation(Long locationId, LocationsRequest request);
+    LocationsResponse updateLocation(HttpHeaders headers, Long locationId, LocationsRequest request);
 
-    List<Long> removeLocation(LocationRemoveRequest locationRemoveRequest);
+    List<Long> removeLocation(HttpHeaders headers, LocationRemoveRequest locationRemoveRequest);
 }

@@ -4,6 +4,7 @@ import com.mao.tytauth.model.exception.BaseException;
 import com.mao.tytauth.model.exception.ForbiddenException;
 import com.mao.tytauth.model.exception.NotValidTokenForUserException;
 import com.mao.tytauth.model.exception.PastDueTimeException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,14 +38,14 @@ public class ControllerAdvice {
         return BaseResponse.failed(body, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(PastDueTimeException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(ExpiredJwtException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     @ResponseBody
-    public BaseResponse<Object> handleAlreadyExistsException(PastDueTimeException exception) {
+    public BaseResponse<Object> handleAlreadyExistsException() {
 
-        Map<String, Object> body = getErrorBody(exception);
+        Map<String, Object> body = getErrorBody(new PastDueTimeException());
 
-        return BaseResponse.failed(body, HttpStatus.FORBIDDEN);
+        return BaseResponse.failed(body, HttpStatus.EXPECTATION_FAILED);
     }
 
     private Map<String, Object> getErrorBody(BaseException exception) {

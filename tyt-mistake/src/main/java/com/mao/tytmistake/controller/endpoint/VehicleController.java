@@ -31,29 +31,26 @@ public class VehicleController {
 
     @PostMapping
     public BaseResponse<VehicleResponse> addNewVehicle(
-            @RequestHeader("userName") String userName,
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestHeader HttpHeaders headers,
             @RequestBody @Valid VehicleRequest vehicleRequest) {
-        VehicleResponse response = vehicleService.addNewVehicle(vehicleRequest);
+        VehicleResponse response = vehicleService.addNewVehicle(headers, vehicleRequest);
         return BaseResponse.isSuccess(response);
     }
 
     @PutMapping("/{id}")
     public BaseResponse<VehicleResponse> updateVehicle(
-            @RequestHeader("userName") String userName,
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestHeader HttpHeaders headers,
             @RequestBody VehicleRequest vehicleRequest,
             @PathVariable Long id) {
-        VehicleResponse response = vehicleService.updateVehicle(id, vehicleRequest);
+        VehicleResponse response = vehicleService.updateVehicle(headers, id, vehicleRequest);
         return BaseResponse.isSuccess(response);
     }
 
     @DeleteMapping("/{id}")
     public BaseResponse<Long> removeVehicle(
-            @RequestHeader("userName") String userName,
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+            @RequestHeader HttpHeaders headers,
             @PathVariable Long id) {
-        Long removedId = vehicleService.removeVehicle(id);
+        Long removedId = vehicleService.removeVehicle(headers, id);
         return BaseResponse.isSuccess(removedId);
     }
 }

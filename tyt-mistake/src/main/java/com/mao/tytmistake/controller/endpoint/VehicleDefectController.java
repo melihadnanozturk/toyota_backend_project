@@ -30,20 +30,27 @@ public class VehicleDefectController {
     }
 
     @PostMapping
-    public BaseResponse<VehicleDefectResponse> addNewVehicleDefect(@RequestBody VehicleDefectRequest vehicleDefectRequest) {
-        VehicleDefectResponse response = vehicleDefectService.addNewVehicleDefect(vehicleDefectRequest);
+    public BaseResponse<VehicleDefectResponse> addNewVehicleDefect(
+            @RequestHeader HttpHeaders headers,
+            @RequestBody VehicleDefectRequest vehicleDefectRequest) {
+        VehicleDefectResponse response = vehicleDefectService.addNewVehicleDefect(headers, vehicleDefectRequest);
         return BaseResponse.isSuccess(response);
     }
 
     @PutMapping("/{id}")
-    public BaseResponse<VehicleDefectResponse> updateVehicleDefect(@RequestBody UpdateVehicleDefectRequest request, @PathVariable Long id) {
-        VehicleDefectResponse response = vehicleDefectService.updateVehicleDefect(request, id);
+    public BaseResponse<VehicleDefectResponse> updateVehicleDefect(
+            @RequestHeader HttpHeaders headers,
+            @RequestBody UpdateVehicleDefectRequest request,
+            @PathVariable Long id) {
+        VehicleDefectResponse response = vehicleDefectService.updateVehicleDefect(headers, request, id);
         return BaseResponse.isSuccess(response);
     }
 
     @DeleteMapping("/{id}")
-    public BaseResponse<Long> delete(@PathVariable Long id) {
-        Long removedId = vehicleDefectService.deleteVehicleDefect(id);
+    public BaseResponse<Long> delete(
+            @RequestHeader HttpHeaders headers,
+            @PathVariable Long id) {
+        Long removedId = vehicleDefectService.deleteVehicleDefect(headers, id);
         return BaseResponse.isSuccess(removedId);
     }
 }

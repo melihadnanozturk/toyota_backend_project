@@ -31,20 +31,27 @@ public class DefectLocationController {
     }
 
     @PostMapping
-    public BaseResponse<DefectLocationResponse> addNewLocations(@RequestBody DefectLocationRequest defectLocationRequest) {
-        DefectLocationResponse response = defectLocationService.addNewLocation(defectLocationRequest);
+    public BaseResponse<DefectLocationResponse> addNewLocations(
+            @RequestHeader HttpHeaders headers,
+            @RequestBody DefectLocationRequest defectLocationRequest) {
+        DefectLocationResponse response = defectLocationService.addNewLocation(headers, defectLocationRequest);
         return BaseResponse.isSuccess(response);
     }
 
     @PutMapping("/{locationId}")
-    public BaseResponse<LocationsResponse> updateLocations(@RequestBody LocationsRequest request, @PathVariable Long locationId) {
-        LocationsResponse response = defectLocationService.updateLocation(locationId, request);
+    public BaseResponse<LocationsResponse> updateLocations(
+            @RequestHeader HttpHeaders headers,
+            @RequestBody LocationsRequest request,
+            @PathVariable Long locationId) {
+        LocationsResponse response = defectLocationService.updateLocation(headers, locationId, request);
         return BaseResponse.isSuccess(response);
     }
 
     @DeleteMapping()
-    public BaseResponse<List<Long>> removeLocations(@RequestBody LocationRemoveRequest locationRemoveRequest) {
-        defectLocationService.removeLocation(locationRemoveRequest);
+    public BaseResponse<List<Long>> removeLocations(
+            @RequestHeader HttpHeaders headers,
+            @RequestBody LocationRemoveRequest locationRemoveRequest) {
+        defectLocationService.removeLocation(headers, locationRemoveRequest);
         return BaseResponse.isSuccess(locationRemoveRequest.getLocationIds());
     }
 

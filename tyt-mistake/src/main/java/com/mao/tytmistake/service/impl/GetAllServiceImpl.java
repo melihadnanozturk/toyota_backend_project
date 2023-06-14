@@ -116,6 +116,5 @@ public class GetAllServiceImpl implements GetAllService {
         infos.put(TOKEN, token);
 
         return infos;
-
     }
 }

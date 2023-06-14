@@ -3,15 +3,15 @@ package com.mao.tytmistake.service;
 import com.mao.tytmistake.controller.request.VehicleRequest;
 import com.mao.tytmistake.controller.response.VehicleResponse;
 import com.mao.tytmistake.model.entity.VehicleEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.HttpHeaders;
 
 public interface VehicleService {
 
-    VehicleResponse addNewVehicle(VehicleRequest vehicleRequest);
+    VehicleResponse addNewVehicle(HttpHeaders headers, VehicleRequest vehicleRequest);
 
-    Long removeVehicle(@PathVariable Long id);
+    Long removeVehicle(HttpHeaders headers, Long id);
 
-    VehicleResponse updateVehicle(Long id, VehicleRequest vehicleRequest);
+    VehicleResponse updateVehicle(HttpHeaders headers, Long id, VehicleRequest vehicleRequest);
 
     VehicleEntity getById(Long id);
 }

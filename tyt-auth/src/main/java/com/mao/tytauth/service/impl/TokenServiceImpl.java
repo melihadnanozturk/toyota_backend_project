@@ -67,9 +67,9 @@ public class TokenServiceImpl implements TokenService {
 
         String jwt = token.substring(7);
 
-        checkUserName(userName, jwt);
-        checkExpiration(jwt);
-        checkRoles(role, jwt);
+        this.checkUserName(userName, jwt);
+        this.checkExpiration(jwt);
+        this.checkRoles(role, jwt);
 
         return true;
     }

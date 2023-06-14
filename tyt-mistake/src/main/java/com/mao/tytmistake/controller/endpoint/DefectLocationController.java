@@ -7,7 +7,9 @@ import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.controller.response.DefectLocationResponse;
 import com.mao.tytmistake.controller.response.LocationsResponse;
 import com.mao.tytmistake.service.DefectLocationService;
+import com.mao.tytmistake.service.GetAllService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +20,13 @@ import java.util.List;
 public class DefectLocationController {
 
     public final DefectLocationService defectLocationService;
+    public final GetAllService getAllService;
 
     @GetMapping("/{defectId}")
-    public BaseResponse<List<LocationsResponse>> getAllDefectLocation(@PathVariable Long defectId) {
-        List<LocationsResponse> responses = defectLocationService.findAll(defectId);
+    public BaseResponse<List<LocationsResponse>> getAllDefectLocation(
+            @RequestHeader HttpHeaders headers,
+            @PathVariable Long defectId) {
+        List<LocationsResponse> responses = getAllService.getAllLocations(headers, defectId);
         return BaseResponse.isSuccess(responses);
     }
 

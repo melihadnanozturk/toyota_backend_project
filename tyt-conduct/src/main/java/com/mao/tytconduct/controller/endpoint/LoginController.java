@@ -17,7 +17,9 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping
-    public BaseResponse<UserResponse> checkUser(@RequestHeader("userName") String userName, @RequestHeader("password") String password) {
+    public BaseResponse<UserResponse> checkUser(
+            @RequestHeader("userName") String userName,
+            @RequestHeader("password") String password) {
         UserResponse response = loginService.userIsValid(userName, password);
         return BaseResponse.isSuccess(response);
     }

@@ -10,8 +10,6 @@ import java.util.List;
 
 public interface DefectLocationService {
 
-    List<LocationsResponse> findAll(Long defectId);
-
     DefectLocationResponse addNewLocation(DefectLocationRequest defectLocationRequest);
 
     LocationsResponse updateLocation(Long locationId, LocationsRequest request);

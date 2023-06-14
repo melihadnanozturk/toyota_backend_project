@@ -10,6 +10,7 @@ import com.mao.tytmistake.service.GetAllService;
 import com.mao.tytmistake.service.VehicleDefectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,8 +22,10 @@ public class VehicleDefectController {
     private final GetAllService getAllService;
 
     @GetMapping
-    public BaseResponse<Page<PageVehicleDefectResponse>> getAllVehicleDefect(@RequestBody PageVehicleDefectRequest request) {
-        Page<PageVehicleDefectResponse> page = getAllService.getAllVehicleDefect(request);
+    public BaseResponse<Page<PageVehicleDefectResponse>> getAllVehicleDefect(
+            @RequestHeader HttpHeaders headers,
+            @RequestBody PageVehicleDefectRequest request) {
+        Page<PageVehicleDefectResponse> page = getAllService.getAllVehicleDefect(headers, request);
         return BaseResponse.isSuccess(page);
     }
 

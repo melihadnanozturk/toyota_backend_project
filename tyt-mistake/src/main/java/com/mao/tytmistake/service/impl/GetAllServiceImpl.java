@@ -3,12 +3,14 @@ package com.mao.tytmistake.service.impl;
 import com.mao.tytmistake.client.AuthApiClient;
 import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
-import com.mao.tytmistake.controller.response.PageDefectLocationResponse;
+import com.mao.tytmistake.controller.response.LocationsResponse;
 import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
 import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
+import com.mao.tytmistake.model.entity.DefectLocationEntity;
 import com.mao.tytmistake.model.entity.VehicleDefectEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
+import com.mao.tytmistake.repository.DefectLocationEntityRepository;
 import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
 import com.mao.tytmistake.repository.VehicleEntityRepository;
 import com.mao.tytmistake.service.GetAllService;
@@ -31,6 +33,7 @@ public class GetAllServiceImpl implements GetAllService {
 
     private final VehicleEntityRepository vehicleEntityRepository;
     private final VehicleDefectEntityRepository vehicleDefectEntityRepository;
+    private final DefectLocationEntityRepository defectLocationEntityRepository;
     private final AuthApiClient apiClient;
 
     private static final String USER_NAME = "userName";
@@ -39,9 +42,9 @@ public class GetAllServiceImpl implements GetAllService {
 
     @Override
     public Page<PageVehicleResponse> getAllVehicle(HttpHeaders headers, PageVehicleRequest request) {
-        Map<String, String> info = getHeaderInfo(headers);
 
-        apiClient.validate(info.get(USER_NAME), info.get(TOKEN), Role.TEAM_LEAD);
+        this.isValidRequest(headers);
+
         Pageable pageable = PageRequest.of(
                 request.getPageNumber(),
                 request.getPageSize(),
@@ -61,7 +64,9 @@ public class GetAllServiceImpl implements GetAllService {
     }
 
     @Override
-    public Page<PageVehicleDefectResponse> getAllVehicleDefect(PageVehicleDefectRequest request) {
+    public Page<PageVehicleDefectResponse> getAllVehicleDefect(HttpHeaders headers, PageVehicleDefectRequest request) {
+        this.isValidRequest(headers);
+
         Pageable pageable = PageRequest.of(
                 request.getPageNumber(),
                 request.getPageSize(),
@@ -78,8 +83,19 @@ public class GetAllServiceImpl implements GetAllService {
     }
 
     @Override
-    public PageDefectLocationResponse findAll() {
-        return null;
+    public List<LocationsResponse> getAllLocations(HttpHeaders headers, Long defectId) {
+        this.isValidRequest(headers);
+
+        List<DefectLocationEntity> entities = defectLocationEntityRepository.findAllByVehicleDefectEntityId(defectId);
+
+        return entities.stream().map(LocationsResponse::mappedLocationsResponse).toList();
+    }
+
+
+    private void isValidRequest(HttpHeaders headers) {
+        Map<String, String> info = getHeaderInfo(headers);
+
+        apiClient.validate(info.get(USER_NAME), info.get(TOKEN), Role.TEAM_LEAD);
     }
 
     private void mappedDefectNumbers(List<PageVehicleResponse> responses) {

@@ -23,14 +23,6 @@ public class DefectLocationServiceImpl implements DefectLocationService {
     private final DefectLocationEntityRepository defectLocationEntityRepository;
     private final VehicleDefectService vehicleDefectService;
 
-    //burada sayfalama değilde listeleme olabilir.
-    //Çünkü zaten hataların lokasyonlarını saklıyoruz. Burada listeleme ile getirip on yüzde bunu kontrol edebiliz.
-    @Override
-    public List<LocationsResponse> findAll(Long defectId) {
-        List<DefectLocationEntity> entities = defectLocationEntityRepository.findAllByVehicleDefectEntityId(defectId);
-        return entities.stream().map(LocationsResponse::mappedLocationsResponse).toList();
-    }
-
     @Override
     public DefectLocationResponse addNewLocation(DefectLocationRequest defectLocationRequest) {
         VehicleDefectEntity vehicleDefectEntity = vehicleDefectService

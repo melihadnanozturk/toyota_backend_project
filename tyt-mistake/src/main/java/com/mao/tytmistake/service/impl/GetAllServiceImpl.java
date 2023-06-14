@@ -23,10 +23,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -36,10 +33,6 @@ public class GetAllServiceImpl implements GetAllService {
     private final VehicleDefectEntityRepository vehicleDefectEntityRepository;
     private final DefectLocationEntityRepository defectLocationEntityRepository;
     private final AuthApiClient apiClient;
-
-    private static final String USER_NAME = "userName";
-    private static final String TOKEN = "token";
-    private static final String AUTHORIZATION = "Authorization";
 
     @Override
     public Page<PageVehicleResponse> getAllVehicle(HttpHeaders headers, PageVehicleRequest request) {
@@ -98,18 +91,6 @@ public class GetAllServiceImpl implements GetAllService {
 
     private Integer getDefectNumbersByVehicleId(Long vehicleId) {
         return vehicleDefectEntityRepository.findAllByVehicleId(vehicleId).size();
-    }
-
-    private Map<String, String> getHeaderInfo(HttpHeaders headers) {
-        Map<String, String> infos = new HashMap<>();
-
-        String userName = Objects.requireNonNull(headers.get(USER_NAME)).get(0);
-        String token = Objects.requireNonNull(headers.get(AUTHORIZATION)).get(0);
-
-        infos.put(USER_NAME, userName);
-        infos.put(TOKEN, token);
-
-        return infos;
     }
 
     private void isClientValid(HttpHeaders headers) {

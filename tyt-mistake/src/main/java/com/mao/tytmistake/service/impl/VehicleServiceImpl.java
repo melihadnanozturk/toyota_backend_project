@@ -1,6 +1,7 @@
 package com.mao.tytmistake.service.impl;
 
 import com.mao.tytmistake.client.AuthApiClient;
+import com.mao.tytmistake.client.HeaderUtility;
 import com.mao.tytmistake.controller.request.VehicleRequest;
 import com.mao.tytmistake.controller.response.VehicleResponse;
 import com.mao.tytmistake.model.entity.VehicleEntity;
@@ -13,10 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
 @Service
 @RequiredArgsConstructor
 public class VehicleServiceImpl implements VehicleService {
@@ -24,14 +21,9 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleEntityRepository vehicleEntityRepository;
     private final AuthApiClient apiClient;
 
-    private static final String USER_NAME = "userName";
-    private static final String TOKEN = "token";
-    private static final String AUTHORIZATION = "Authorization";
-
-
     @Override
     public VehicleResponse addNewVehicle(HttpHeaders headers, VehicleRequest vehicleRequest) {
-        this.isValidRequest(headers);
+        this.isClientValid(headers);
         this.checkChassisNumberBeforeInsert(vehicleRequest.getChassisNumber());
 
         VehicleEntity vehicleEntity = VehicleRequest.requestMappedVehicleEntity(vehicleRequest);
@@ -41,7 +33,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public VehicleResponse updateVehicle(HttpHeaders headers, Long id, VehicleRequest vehicleRequest) {
-        this.isValidRequest(headers);
+        this.isClientValid(headers);
 
         VehicleEntity vehicleEntity = this.checkVehicleEntityBeforeUpdate(id, vehicleRequest.getChassisNumber());
         VehicleEntity updatedEntity = setVehicle(vehicleEntity, vehicleRequest);
@@ -51,7 +43,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Long removeVehicle(HttpHeaders headers, Long id) {
-        this.isValidRequest(headers);
+        this.isClientValid(headers);
 
         VehicleEntity vehicleEntity = getById(id);
         vehicleEntity.setIsDeleted(true);
@@ -61,24 +53,6 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleEntity getById(Long id) {
         return vehicleEntityRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
-    }
-
-    private void isValidRequest(HttpHeaders headers) {
-        Map<String, String> info = getHeaderInfo(headers);
-
-        apiClient.validate(info.get(USER_NAME), info.get(TOKEN), Role.OPERATOR);
-    }
-
-    private Map<String, String> getHeaderInfo(HttpHeaders headers) {
-        Map<String, String> infos = new HashMap<>();
-
-        String userName = Objects.requireNonNull(headers.get(USER_NAME)).get(0);
-        String token = Objects.requireNonNull(headers.get(AUTHORIZATION)).get(0);
-
-        infos.put(USER_NAME, userName);
-        infos.put(TOKEN, token);
-
-        return infos;
     }
 
     private void checkChassisNumberBeforeInsert(String chassisNumber) {
@@ -104,6 +78,12 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleEntity.setChassisNumber(vehicleRequest.getChassisNumber());
         vehicleEntity.setModel(vehicleRequest.getModel());
         return vehicleEntity;
+    }
+
+    private void isClientValid(HttpHeaders headers) {
+        HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
+
+        apiClient.validate(clientHeaders, Role.OPERATOR);
     }
 
 }

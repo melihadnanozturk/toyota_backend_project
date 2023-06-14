@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface AuthApiClient {
 
     @PostMapping("/auth/validate")
-    BaseResponse<Boolean> validate(@RequestHeader("userName") String userName,
-                                   @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+    BaseResponse<Boolean> validate(@RequestHeader HttpHeaders headers,
                                    @RequestBody Role role);
+
 }

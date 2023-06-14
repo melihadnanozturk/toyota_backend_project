@@ -15,6 +15,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -22,8 +23,7 @@ import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
@@ -36,6 +36,10 @@ public class TokenServiceImpl implements TokenService {
     private String secretKey;
     @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
+
+    private static final String USER_NAME = "userName";
+    private static final String TOKEN = "token";
+    private static final String AUTHORIZATION = "Authorization";
 
     @Override
     public String createToken(String userName, String password) {
@@ -64,12 +68,28 @@ public class TokenServiceImpl implements TokenService {
     @Override
     @SneakyThrows
     public Boolean authorization(String userName, String token, Role role) {
-
         String jwt = token.substring(7);
 
         this.checkUserName(userName, jwt);
         this.checkExpiration(jwt);
         this.checkRoles(role, jwt);
+
+        return true;
+    }
+
+    @Override
+    @SneakyThrows
+    public Boolean authorization(HttpHeaders headers, Role role) {
+        Map<String, String> info = getHeaderInfo(headers);
+
+        String jwt = info.get(TOKEN);
+        String userName = info.get(USER_NAME);
+
+        String token = jwt.substring(7);
+
+        this.checkUserName(userName, token);
+        this.checkExpiration(token);
+        this.checkRoles(role, token);
 
         return true;
     }
@@ -131,5 +151,17 @@ public class TokenServiceImpl implements TokenService {
     private byte[] generateKey(String secretkey) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         return digest.digest(secretkey.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static Map<String, String> getHeaderInfo(HttpHeaders headers) {
+        Map<String, String> infos = new HashMap<>();
+
+        String userName = Objects.requireNonNull(headers.get(USER_NAME)).get(0);
+        String token = Objects.requireNonNull(headers.get(AUTHORIZATION)).get(0);
+
+        infos.put(USER_NAME, userName);
+        infos.put(TOKEN, token);
+
+        return infos;
     }
 }

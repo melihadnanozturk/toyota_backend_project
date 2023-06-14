@@ -34,11 +34,10 @@ public class AuthController {
 
     //diğer servicelerden gelen tokenı doğrulamak için
     @PostMapping("/validate")
-    public BaseResponse<Boolean> validate(@RequestHeader("userName") String userName,
-                                          @RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+    public BaseResponse<Boolean> validate(@RequestHeader HttpHeaders headers,
                                           @RequestBody Role role) {
 
-        Boolean isValid = tokenService.authorization(userName, token, role);
+        Boolean isValid = tokenService.authorization(headers, role);
 
         return BaseResponse.isSuccess(isValid);
     }

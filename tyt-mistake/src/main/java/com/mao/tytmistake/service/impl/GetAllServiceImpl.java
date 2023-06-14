@@ -1,6 +1,7 @@
 package com.mao.tytmistake.service.impl;
 
 import com.mao.tytmistake.client.AuthApiClient;
+import com.mao.tytmistake.client.HeaderUtility;
 import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.response.LocationsResponse;
@@ -43,7 +44,7 @@ public class GetAllServiceImpl implements GetAllService {
     @Override
     public Page<PageVehicleResponse> getAllVehicle(HttpHeaders headers, PageVehicleRequest request) {
 
-        this.isValidRequest(headers);
+        this.isClientValid(headers);
 
         Pageable pageable = PageRequest.of(
                 request.getPageNumber(),
@@ -65,7 +66,7 @@ public class GetAllServiceImpl implements GetAllService {
 
     @Override
     public Page<PageVehicleDefectResponse> getAllVehicleDefect(HttpHeaders headers, PageVehicleDefectRequest request) {
-        this.isValidRequest(headers);
+        this.isClientValid(headers);
 
         Pageable pageable = PageRequest.of(
                 request.getPageNumber(),
@@ -84,18 +85,11 @@ public class GetAllServiceImpl implements GetAllService {
 
     @Override
     public List<LocationsResponse> getAllLocations(HttpHeaders headers, Long defectId) {
-        this.isValidRequest(headers);
+        this.isClientValid(headers);
 
         List<DefectLocationEntity> entities = defectLocationEntityRepository.findAllByVehicleDefectEntityId(defectId);
 
         return entities.stream().map(LocationsResponse::mappedLocationsResponse).toList();
-    }
-
-
-    private void isValidRequest(HttpHeaders headers) {
-        Map<String, String> info = getHeaderInfo(headers);
-
-        apiClient.validate(info.get(USER_NAME), info.get(TOKEN), Role.TEAM_LEAD);
     }
 
     private void mappedDefectNumbers(List<PageVehicleResponse> responses) {
@@ -116,5 +110,11 @@ public class GetAllServiceImpl implements GetAllService {
         infos.put(TOKEN, token);
 
         return infos;
+    }
+
+    private void isClientValid(HttpHeaders headers) {
+        HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
+
+        apiClient.validate(clientHeaders, Role.OPERATOR);
     }
 }

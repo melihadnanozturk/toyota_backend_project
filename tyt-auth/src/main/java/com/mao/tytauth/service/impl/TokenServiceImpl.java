@@ -2,6 +2,7 @@ package com.mao.tytauth.service.impl;
 
 
 import com.mao.tytauth.client.ConductApiClient;
+import com.mao.tytauth.client.HeaderUtility;
 import com.mao.tytauth.controller.response.UserResponse;
 import com.mao.tytauth.model.Role;
 import com.mao.tytauth.model.exception.ForbiddenException;
@@ -42,8 +43,8 @@ public class TokenServiceImpl implements TokenService {
     private static final String AUTHORIZATION = "Authorization";
 
     @Override
-    public String createToken(String userName, String password) {
-        UserResponse userResponse = getUser(userName, password);
+    public String createToken(HttpHeaders headers) {
+        UserResponse userResponse = getUser(headers);
 
         return Jwts.builder()
                 .setSubject(userResponse.getName())
@@ -105,9 +106,10 @@ public class TokenServiceImpl implements TokenService {
         return claimsResolver.apply(claims);
     }
 
-    private UserResponse getUser(String userName, String password) {
+    private UserResponse getUser(HttpHeaders headers) {
+        HttpHeaders clientHeader = HeaderUtility.createHeader(headers);
 
-        return conductApiClient.userIsValid(userName, password).getResponse();
+        return conductApiClient.userIsValid(clientHeader).getResponse();
     }
 
     private String getUserName(String token) {

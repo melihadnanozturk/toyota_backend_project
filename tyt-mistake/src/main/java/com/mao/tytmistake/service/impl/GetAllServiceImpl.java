@@ -96,6 +96,6 @@ public class GetAllServiceImpl implements GetAllService {
     private void isClientValid(HttpHeaders headers) {
         HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
 
-        apiClient.validate(clientHeaders, Role.OPERATOR);
+        apiClient.validate(clientHeaders, Role.TEAM_LEAD);
     }
 }

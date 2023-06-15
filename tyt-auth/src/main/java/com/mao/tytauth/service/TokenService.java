@@ -5,7 +5,7 @@ import org.springframework.http.HttpHeaders;
 
 public interface TokenService {
 
-    String createToken(String userName, String password);
+    String createToken(HttpHeaders headers);
 
     Boolean authentication(String token, String name);
 

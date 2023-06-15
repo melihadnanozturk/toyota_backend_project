@@ -24,10 +24,9 @@ public class AuthController {
 
     //ilk başta token almak için
     @PostMapping("/login")
-    public BaseResponse<String> login(@RequestHeader("userName") String userName,
-                                      @RequestHeader("password") String password) {
+    public BaseResponse<String> login(@RequestHeader HttpHeaders headers) {
 
-        String token = tokenService.createToken(userName, password);
+        String token = tokenService.createToken(headers);
 
         return BaseResponse.isSuccess(token);
     }

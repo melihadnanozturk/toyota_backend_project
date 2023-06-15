@@ -1,9 +1,7 @@
-package com.mao.tytauth.controller.response;
+package com.mao.tytauth.controller.response.exceptionHandling;
 
-import com.mao.tytauth.model.exception.BaseException;
-import com.mao.tytauth.model.exception.ForbiddenException;
-import com.mao.tytauth.model.exception.NotValidTokenForUserException;
-import com.mao.tytauth.model.exception.PastDueTimeException;
+import com.mao.tytauth.controller.response.BaseResponse;
+import com.mao.tytauth.model.exception.*;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,6 +42,16 @@ public class ControllerAdvice {
     public BaseResponse<Object> handleAlreadyExistsException() {
 
         Map<String, Object> body = getErrorBody(new PastDueTimeException());
+
+        return BaseResponse.failed(body, HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public BaseResponse<Object> handleAlreadyExistsException(NotFoundException exception) {
+
+        Map<String, Object> body = getErrorBody(exception);
 
         return BaseResponse.failed(body, HttpStatus.EXPECTATION_FAILED);
     }

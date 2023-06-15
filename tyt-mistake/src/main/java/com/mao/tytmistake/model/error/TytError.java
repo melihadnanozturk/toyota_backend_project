@@ -1,6 +1,6 @@
 package com.mao.tytmistake.model.error;
 
-public interface Error {
+public interface TytError {
 
     Integer getCode();
 

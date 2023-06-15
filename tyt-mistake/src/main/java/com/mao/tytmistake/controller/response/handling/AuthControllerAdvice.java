@@ -1,4 +1,4 @@
-package com.mao.tytmistake.controller.response.exceptionHandling;
+package com.mao.tytmistake.controller.response.handling;
 
 import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.model.exception.BaseException;
@@ -44,7 +44,7 @@ public class AuthControllerAdvice {
 
         Map<String, Object> body = getErrorBody(exception);
 
-        return BaseResponse.failed(body, HttpStatus.FORBIDDEN);
+        return BaseResponse.failed(body, HttpStatus.EXPECTATION_FAILED);
     }
 
     private Map<String, Object> getErrorBody(BaseException exception) {
@@ -52,6 +52,7 @@ public class AuthControllerAdvice {
         Map<String, Object> body = new HashMap<>();
         body.put("error", exception.getError());
         body.put("message", exception.getMessage());
+        body.put("error_code", exception.getError().getCode());
 
         return body;
     }

@@ -1,6 +1,6 @@
 package com.mao.tytmistake.model.exception;
 
-import com.mao.tytmistake.model.error.Error;
+import com.mao.tytmistake.model.error.TytError;
 import lombok.Getter;
 
 import java.io.Serial;
@@ -11,15 +11,15 @@ public class BaseException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = -8046581280895159903L;
 
-    private final Error error;
+    private final TytError error;
     private final String message;
 
-    public BaseException(Error error) {
+    public BaseException(TytError error) {
         this.error = error;
         this.message = String.format(error.getMessage());
     }
 
-    public BaseException(Error error, String field) {
+    public BaseException(TytError error, String field) {
         this.error = error;
         this.message = String.format(error.getMessage(), field);
     }

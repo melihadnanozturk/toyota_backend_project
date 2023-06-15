@@ -1,4 +1,4 @@
-package com.mao.tytmistake.controller.response.exceptionHandling;
+package com.mao.tytmistake.controller.response.handling;
 
 import com.mao.tytmistake.model.exception.ForbiddenException;
 import com.mao.tytmistake.model.exception.NotValidTokenForUserException;

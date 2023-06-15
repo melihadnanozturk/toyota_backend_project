@@ -1,16 +1,20 @@
-package com.mao.tytmistake.controller.response.exceptionHandling;
+package com.mao.tytmistake.controller.response.handling;
 
 import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.model.exception.AlreadyExistsException;
 import com.mao.tytmistake.model.exception.BaseException;
 import com.mao.tytmistake.model.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
@@ -36,6 +40,16 @@ public class ControllerAdvice {
         return BaseResponse.failed(body, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public BaseResponse<Object> handleAlreadyExistsException(MethodArgumentNotValidException exception) {
+
+        String response = getValidationMessage(exception.getBindingResult());
+
+        return BaseResponse.failed(response, HttpStatus.BAD_REQUEST);
+    }
+
     private Map<String, Object> getErrorBody(BaseException exception) {
 
         Map<String, Object> body = new HashMap<>();
@@ -44,5 +58,11 @@ public class ControllerAdvice {
         body.put("error_code", exception.getError().getCode());
 
         return body;
+    }
+
+    private String getValidationMessage(BindingResult result) {
+        List<ObjectError> objects = result.getAllErrors();
+        ObjectError error = objects.get(0);
+        return error.getDefaultMessage();
     }
 }

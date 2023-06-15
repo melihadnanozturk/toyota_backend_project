@@ -1,6 +1,6 @@
 package com.mao.tytmistake.model.exception;
 
-import com.mao.tytmistake.model.error.CommonError;
+import com.mao.tytmistake.model.error.AuthError;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +14,6 @@ public class NotValidTokenForUserException extends BaseException {
     private static final long serialVersionUID = -1175370455482142205L;
 
     public NotValidTokenForUserException(String field) {
-        super(CommonError.NOT_VALID_TOKEN, field);
+        super(AuthError.NOT_VALID_TOKEN, field);
     }
 }

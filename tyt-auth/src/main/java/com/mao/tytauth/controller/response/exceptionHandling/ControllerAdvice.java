@@ -53,13 +53,24 @@ public class ControllerAdvice {
 
         Map<String, Object> body = getErrorBody(exception);
 
-        return BaseResponse.failed(body, HttpStatus.EXPECTATION_FAILED);
+        return BaseResponse.failed(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidLoginRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public BaseResponse<Object> handleAlreadyExistsException(InvalidLoginRequestException exception) {
+
+        Map<String, Object> body = getErrorBody(exception);
+
+        return BaseResponse.failed(body, HttpStatus.BAD_REQUEST);
     }
 
     private Map<String, Object> getErrorBody(BaseException exception) {
 
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
+        body.put("error_code", exception.getError().getCode());
         body.put("error", exception.getError());
         body.put("message", exception.getMessage());
 

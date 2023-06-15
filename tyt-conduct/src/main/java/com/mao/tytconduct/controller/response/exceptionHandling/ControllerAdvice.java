@@ -3,6 +3,7 @@ package com.mao.tytconduct.controller.response.exceptionHandling;
 import com.mao.tytconduct.controller.response.BaseResponse;
 import com.mao.tytconduct.model.exception.AlreadyExistsException;
 import com.mao.tytconduct.model.exception.BaseException;
+import com.mao.tytconduct.model.exception.InvalidLoginRequestException;
 import com.mao.tytconduct.model.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,6 +27,16 @@ public class ControllerAdvice {
         return BaseResponse.failed(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(InvalidLoginRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public BaseResponse<Object> handleNotFoundException(InvalidLoginRequestException exception) {
+
+        Map<String, Object> body = getErrorBody(exception);
+
+        return BaseResponse.failed(body, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(AlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -41,6 +52,7 @@ public class ControllerAdvice {
         Map<String, Object> body = new HashMap<>();
         body.put("error", exception.getError());
         body.put("message", exception.getMessage());
+        body.put("error_code", exception.getError().getCode());
 
         return body;
     }

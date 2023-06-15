@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/vehicle")
 @RequiredArgsConstructor
@@ -22,11 +24,11 @@ public class VehicleController {
     private final GetAllService getAllService;
 
     @GetMapping
-    public BaseResponse<Page<PageVehicleResponse>> getAllVehicle(
+    public BaseResponse<List<PageVehicleResponse>> getAllVehicle(
             @RequestHeader HttpHeaders headers,
             @RequestBody PageVehicleRequest pageVehicleRequest) {
         Page<PageVehicleResponse> page = getAllService.getAllVehicle(headers, pageVehicleRequest);
-        return BaseResponse.isSuccess(page);
+        return BaseResponse.isSuccess(page.getContent());
     }
 
     @PostMapping

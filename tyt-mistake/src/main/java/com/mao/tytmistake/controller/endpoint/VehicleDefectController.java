@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/vd")
 @RequiredArgsConstructor
@@ -22,11 +24,11 @@ public class VehicleDefectController {
     private final GetAllService getAllService;
 
     @GetMapping
-    public BaseResponse<Page<PageVehicleDefectResponse>> getAllVehicleDefect(
+    public BaseResponse<List<PageVehicleDefectResponse>> getAllVehicleDefect(
             @RequestHeader HttpHeaders headers,
             @RequestBody PageVehicleDefectRequest request) {
         Page<PageVehicleDefectResponse> page = getAllService.getAllVehicleDefect(headers, request);
-        return BaseResponse.isSuccess(page);
+        return BaseResponse.isSuccess(page.getContent());
     }
 
     @PostMapping

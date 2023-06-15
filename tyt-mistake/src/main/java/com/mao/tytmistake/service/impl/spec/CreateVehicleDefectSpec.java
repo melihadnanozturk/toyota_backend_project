@@ -11,6 +11,7 @@ public class CreateVehicleDefectSpec {
 
     public static Specification<VehicleDefectEntity> getAll(PageVehicleDefectRequest request) {
         return getIsNotDeleted()
+                .and(getDeletedJoin())
                 .and(getByVehicleId(request.getVehicleId()))
                 .and(getByDefect(request.getDefect()));
     }
@@ -19,6 +20,13 @@ public class CreateVehicleDefectSpec {
         return (root, query, criteriaBuilder) -> {
             Join<VehicleDefectEntity, VehicleEntity> vehicleJoin = root.join("vehicle");
             return id == null ? null : criteriaBuilder.equal(vehicleJoin.get("id"), id);
+        };
+    }
+
+    private static Specification<VehicleDefectEntity> getDeletedJoin() {
+        return (root, query, criteriaBuilder) -> {
+            Join<VehicleDefectEntity, VehicleEntity> vehicleJoin = root.join("vehicle");
+            return criteriaBuilder.isFalse(vehicleJoin.get("isDeleted"));
         };
     }
 

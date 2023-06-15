@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
         UserEntity entity = this.isUserEntityExists(id);
         entity.setIsDeleted(true);
         userEntityRepository.save(entity);
+
         return id;
     }
 

@@ -2,8 +2,8 @@ package com.mao.tytconduct.service.impl;
 
 import com.mao.tytconduct.controller.response.UserResponse;
 import com.mao.tytconduct.model.entity.UserEntity;
-import com.mao.tytconduct.model.exception.InvalidLoginRequestException;
 import com.mao.tytconduct.model.exception.NotFoundException;
+import com.mao.tytconduct.model.exception.auth.InvalidLoginRequestException;
 import com.mao.tytconduct.repository.UserEntityRepository;
 import com.mao.tytconduct.service.LoginService;
 import lombok.RequiredArgsConstructor;

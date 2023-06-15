@@ -13,11 +13,11 @@ import java.util.List;
 @Setter
 public class UserRequest {
 
-    @NotBlank
+    @NotBlank(message = "Name can not be blank")
     private String name;
-    @NotBlank
+    @NotBlank(message = "Password can not be blank")
     private String password;
-    @NotNull
+    @NotNull(message = "Roles can not null")
     private List<Role> roles;
 
     public static UserEntity mappedToEntity(UserRequest request) {

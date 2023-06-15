@@ -1,10 +1,11 @@
-package com.mao.tytconduct.controller.response.exceptionHandling;
+package com.mao.tytconduct.controller.response.handling;
 
 import com.mao.tytconduct.controller.response.BaseResponse;
 import com.mao.tytconduct.model.exception.BaseException;
-import com.mao.tytconduct.model.exception.ForbiddenException;
-import com.mao.tytconduct.model.exception.NotValidTokenForUserException;
-import com.mao.tytconduct.model.exception.PastDueTimeException;
+import com.mao.tytconduct.model.exception.auth.ForbiddenException;
+import com.mao.tytconduct.model.exception.auth.InvalidLoginRequestException;
+import com.mao.tytconduct.model.exception.auth.NotValidTokenForUserException;
+import com.mao.tytconduct.model.exception.auth.PastDueTimeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +21,7 @@ public class AuthControllerAdvice {
     @ExceptionHandler(NotValidTokenForUserException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    public BaseResponse<Object> handleNotFoundException(NotValidTokenForUserException exception) {
+    public BaseResponse<Object> handleNotValidTokenForUserException(NotValidTokenForUserException exception) {
 
         Map<String, Object> body = getErrorBody(exception);
 
@@ -30,7 +31,7 @@ public class AuthControllerAdvice {
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
-    public BaseResponse<Object> handleNotFoundException(ForbiddenException exception) {
+    public BaseResponse<Object> handleForbiddenException(ForbiddenException exception) {
 
         Map<String, Object> body = getErrorBody(exception);
 
@@ -40,11 +41,21 @@ public class AuthControllerAdvice {
     @ExceptionHandler(PastDueTimeException.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     @ResponseBody
-    public BaseResponse<Object> handleAlreadyExistsException(PastDueTimeException exception) {
+    public BaseResponse<Object> handlePastDueTimeException(PastDueTimeException exception) {
 
         Map<String, Object> body = getErrorBody(exception);
 
         return BaseResponse.failed(body, HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @ExceptionHandler(InvalidLoginRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public BaseResponse<Object> handleInvalidLoginRequestException(InvalidLoginRequestException exception) {
+
+        Map<String, Object> body = getErrorBody(exception);
+
+        return BaseResponse.failed(body, HttpStatus.BAD_REQUEST);
     }
 
     private Map<String, Object> getErrorBody(BaseException exception) {
@@ -52,6 +63,7 @@ public class AuthControllerAdvice {
         Map<String, Object> body = new HashMap<>();
         body.put("error", exception.getError());
         body.put("message", exception.getMessage());
+        body.put("error_code", exception.getError().getCode());
 
         return body;
     }

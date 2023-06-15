@@ -1,8 +1,8 @@
-package com.mao.tytconduct.controller.response.exceptionHandling;
+package com.mao.tytconduct.controller.response.handling;
 
-import com.mao.tytconduct.model.exception.ForbiddenException;
-import com.mao.tytconduct.model.exception.NotValidTokenForUserException;
-import com.mao.tytconduct.model.exception.PastDueTimeException;
+import com.mao.tytconduct.model.exception.auth.ForbiddenException;
+import com.mao.tytconduct.model.exception.auth.NotValidTokenForUserException;
+import com.mao.tytconduct.model.exception.auth.PastDueTimeException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.springframework.stereotype.Component;

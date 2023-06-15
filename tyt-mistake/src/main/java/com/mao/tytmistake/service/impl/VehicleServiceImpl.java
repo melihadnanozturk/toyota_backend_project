@@ -47,12 +47,13 @@ public class VehicleServiceImpl implements VehicleService {
 
         VehicleEntity vehicleEntity = getById(id);
         vehicleEntity.setIsDeleted(true);
+        vehicleEntityRepository.save(vehicleEntity);
         return id;
     }
 
     @Override
     public VehicleEntity getById(Long id) {
-        return vehicleEntityRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
+        return vehicleEntityRepository.findByIdAndIsDeletedIsFalse(id).orElseThrow(() -> new NotFoundException(id.toString()));
     }
 
     private void checkChassisNumberBeforeInsert(String chassisNumber) {

@@ -1,8 +1,9 @@
-package com.mao.tytauth.controller.response.exceptionHandling;
+package com.mao.tytauth.controller.response.handling;
 
 import com.mao.tytauth.controller.response.BaseResponse;
 import com.mao.tytauth.model.exception.*;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,7 +20,7 @@ public class ControllerAdvice {
     @ExceptionHandler(NotValidTokenForUserException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    public BaseResponse<Object> handleNotFoundException(NotValidTokenForUserException exception) {
+    public BaseResponse<Object> handleNotValidTokenForUserException(NotValidTokenForUserException exception) {
 
         Map<String, Object> body = getErrorBody(exception);
 
@@ -29,7 +30,7 @@ public class ControllerAdvice {
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
-    public BaseResponse<Object> handleNotFoundException(ForbiddenException exception) {
+    public BaseResponse<Object> handleForbiddenException(ForbiddenException exception) {
 
         Map<String, Object> body = getErrorBody(exception);
 
@@ -39,31 +40,32 @@ public class ControllerAdvice {
     @ExceptionHandler(ExpiredJwtException.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     @ResponseBody
-    public BaseResponse<Object> handleAlreadyExistsException() {
+    public BaseResponse<Object> handleExpiredJwtException() {
 
         Map<String, Object> body = getErrorBody(new PastDueTimeException());
 
         return BaseResponse.failed(body, HttpStatus.EXPECTATION_FAILED);
     }
 
-    @ExceptionHandler(NotFoundException.class)
+
+    @ExceptionHandler(InvalidLoginRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public BaseResponse<Object> handleAlreadyExistsException(NotFoundException exception) {
+    public BaseResponse<Object> handleInvalidLoginRequestException(InvalidLoginRequestException exception) {
 
         Map<String, Object> body = getErrorBody(exception);
 
         return BaseResponse.failed(body, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(InvalidLoginRequestException.class)
+    @ExceptionHandler(SignatureException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public BaseResponse<Object> handleAlreadyExistsException(InvalidLoginRequestException exception) {
+    public BaseResponse<Object> handleSignatureException() {
 
-        Map<String, Object> body = getErrorBody(exception);
+        Map<String, Object> body = getErrorBody(new NotValidTokenForUserException());
 
-        return BaseResponse.failed(body, HttpStatus.BAD_REQUEST);
+        return BaseResponse.failed(body, HttpStatus.UNAUTHORIZED);
     }
 
     private Map<String, Object> getErrorBody(BaseException exception) {

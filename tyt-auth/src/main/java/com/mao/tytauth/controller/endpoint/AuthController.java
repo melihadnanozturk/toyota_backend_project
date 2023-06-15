@@ -16,10 +16,9 @@ public class AuthController {
 
     //alınan tokenı kontrol etmek için
     @PostMapping("/validate-user")
-    public BaseResponse<Boolean> auth(@RequestHeader("userName") String userName,
-                                      @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+    public BaseResponse<Boolean> auth(@RequestHeader HttpHeaders headers) {
 
-        return BaseResponse.isSuccess(tokenService.authentication(token, userName));
+        return BaseResponse.isSuccess(tokenService.authentication(headers));
     }
 
     //ilk başta token almak için

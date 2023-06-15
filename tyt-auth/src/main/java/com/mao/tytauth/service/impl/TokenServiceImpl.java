@@ -7,7 +7,6 @@ import com.mao.tytauth.controller.response.UserResponse;
 import com.mao.tytauth.model.Role;
 import com.mao.tytauth.model.exception.ForbiddenException;
 import com.mao.tytauth.model.exception.NotValidTokenForUserException;
-import com.mao.tytauth.model.exception.PastDueTimeException;
 import com.mao.tytauth.service.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -23,9 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Instant;
 import java.util.*;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -57,23 +54,13 @@ public class TokenServiceImpl implements TokenService {
 
     @SneakyThrows
     @Override
-    public Boolean authentication(String token, String userName) {
-        String jwt = token.substring(7);
+    public Boolean authentication(HttpHeaders headers) {
+        Map<String, String> info = getHeaderInfo(headers);
 
-        checkExpiration(jwt);
-        checkUserName(userName, jwt);
-
-        return true;
-    }
-
-    @Override
-    @SneakyThrows
-    public Boolean authorization(String userName, String token, Role role) {
-        String jwt = token.substring(7);
+        String jwt = info.get(TOKEN).substring(7);
+        String userName = info.get(USER_NAME);
 
         this.checkUserName(userName, jwt);
-        this.checkExpiration(jwt);
-        this.checkRoles(role, jwt);
 
         return true;
     }
@@ -89,7 +76,6 @@ public class TokenServiceImpl implements TokenService {
         String token = jwt.substring(7);
 
         this.checkUserName(userName, token);
-        this.checkExpiration(token);
         this.checkRoles(role, token);
 
         return true;
@@ -101,9 +87,9 @@ public class TokenServiceImpl implements TokenService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+    private byte[] generateKey(String secretkey) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        return digest.digest(secretkey.getBytes(StandardCharsets.UTF_8));
     }
 
     private UserResponse getUser(HttpHeaders headers) {
@@ -113,7 +99,8 @@ public class TokenServiceImpl implements TokenService {
     }
 
     private String getUserName(String token) {
-        return extractClaim(token, Claims::getSubject);
+        final Claims claims = this.extractAllClaims(token);
+        return claims.getSubject();
     }
 
     private void checkRoles(Role role, String token) {
@@ -121,15 +108,6 @@ public class TokenServiceImpl implements TokenService {
         List roles = claims.get("Role", List.class);
         if (!roles.contains(role.getName())) {
             throw new ForbiddenException();
-        }
-    }
-
-    private void checkExpiration(String token) {
-        Date date = extractClaim(token, Claims::getExpiration);
-
-        //todo: bunu kontrol et
-        if (!date.after(Date.from(Instant.now()))) {
-            throw new PastDueTimeException();
         }
     }
 
@@ -148,11 +126,6 @@ public class TokenServiceImpl implements TokenService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-    }
-
-    private byte[] generateKey(String secretkey) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        return digest.digest(secretkey.getBytes(StandardCharsets.UTF_8));
     }
 
     public static Map<String, String> getHeaderInfo(HttpHeaders headers) {

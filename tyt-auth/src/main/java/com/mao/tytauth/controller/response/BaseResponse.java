@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 public class BaseResponse<T> {
 
-    public HttpStatus httpStatus;
+    private HttpStatus httpStatus;
 
     private T response;
 
@@ -24,13 +24,6 @@ public class BaseResponse<T> {
                 .httpStatus(HttpStatus.OK)
                 .isSuccess(ResponseStatus.SUCCESS)
                 .response(response)
-                .build();
-    }
-
-    public static <T> BaseResponse<T> isSuccess() {
-        return BaseResponse.<T>builder()
-                .httpStatus(HttpStatus.OK)
-                .isSuccess(ResponseStatus.SUCCESS)
                 .build();
     }
 

@@ -1,10 +1,10 @@
 package com.mao.tytauth.model.exception;
 
-import com.mao.tytauth.model.error.CommonError;
+import com.mao.tytauth.model.error.AuthError;
 
 public class InvalidLoginRequestException extends BaseException {
 
     public InvalidLoginRequestException() {
-        super(CommonError.INVALID_USER_INFO);
+        super(AuthError.INVALID_USER_INFO);
     }
 }

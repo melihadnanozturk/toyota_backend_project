@@ -27,7 +27,7 @@ public class ErrorDecoderService implements ErrorDecoder {
                 return new PastDueTimeException();
             }
             default -> {
-                return new Exception();
+                return new RuntimeException("Something is wrong");
             }
         }
     }

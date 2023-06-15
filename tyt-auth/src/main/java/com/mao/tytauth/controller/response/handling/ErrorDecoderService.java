@@ -1,4 +1,4 @@
-package com.mao.tytauth.controller.response.exceptionHandling;
+package com.mao.tytauth.controller.response.handling;
 
 import com.mao.tytauth.model.exception.InvalidLoginRequestException;
 import feign.Response;

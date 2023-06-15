@@ -7,11 +7,7 @@ public interface TokenService {
 
     String createToken(HttpHeaders headers);
 
-    Boolean authentication(String token, String name);
+    Boolean authentication(HttpHeaders headers);
 
     Boolean authorization(HttpHeaders headers, Role role);
-
-    Boolean authorization(String userName,
-                          String token,
-                          Role role);
 }

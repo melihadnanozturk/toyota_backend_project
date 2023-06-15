@@ -59,7 +59,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(SignatureException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     public BaseResponse<Object> handleSignatureException() {
 

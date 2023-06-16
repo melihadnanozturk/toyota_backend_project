@@ -7,7 +7,6 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -34,6 +33,6 @@ public class VehicleEntity extends BaseEntity implements Serializable {
     private Colour colour;
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<DefectEntity> defect = new ArrayList<>();
+    private List<DefectEntity> defect;
 
 }

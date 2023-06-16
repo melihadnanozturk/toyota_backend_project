@@ -47,12 +47,8 @@ public class GetAllServiceImpl implements GetAllService {
 
         Specification<VehicleEntity> spec = CreateVehicleSpec.getAll(request);
 
-        //TODO: burada sıralma yaparken defectNumbers a göre de sıralama yapsa güzel olur
-        //todo: will refactoring
         List<PageVehicleResponse> responses = vehicleEntityRepository.findAll(spec, pageable)
                 .stream().map(PageVehicleResponse::vehicleEntityMappedPageResponse).toList();
-
-        this.mappedDefectNumbers(responses);
 
         return new PageImpl<>(responses, pageable, pageable.getPageSize());
     }
@@ -83,14 +79,6 @@ public class GetAllServiceImpl implements GetAllService {
         List<LocationEntity> entities = defectLocationEntityRepository.findAllByVehicleDefectEntityId(defectId);
 
         return entities.stream().map(LocationsResponse::mappedLocationsResponse).toList();
-    }
-
-    private void mappedDefectNumbers(List<PageVehicleResponse> responses) {
-        responses.forEach(repsonse -> repsonse.setDefectNumbers(this.getDefectNumbersByVehicleId(repsonse.getId())));
-    }
-
-    private Integer getDefectNumbersByVehicleId(Long vehicleId) {
-        return vehicleDefectEntityRepository.findAllByVehicleId(vehicleId).size();
     }
 
     private void isClientValid(HttpHeaders headers) {

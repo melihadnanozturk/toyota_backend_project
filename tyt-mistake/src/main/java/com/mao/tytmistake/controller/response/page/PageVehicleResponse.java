@@ -28,6 +28,10 @@ public class PageVehicleResponse {
                 .model(vehicleEntity.getModel())
                 .chassisNumber(vehicleEntity.getChassisNumber())
                 .colour(vehicleEntity.getColour())
+                .defectNumbers(vehicleEntity.getDefect()
+                        .stream()
+                        .filter(defectEntity -> defectEntity.getIsDeleted().equals(false))
+                        .toList().size())
                 .createdAt(vehicleEntity.getCreatedAt())
                 .updatedAt(vehicleEntity.getUpdatedAt())
                 .build();

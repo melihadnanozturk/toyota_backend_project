@@ -54,6 +54,7 @@ public class VehicleServiceImpl implements VehicleService {
 
         VehicleEntity vehicleEntity = getById(id);
         vehicleEntity.setIsDeleted(true);
+        vehicleEntity.getDefect().forEach(defectEntity -> defectEntity.setIsDeleted(true));
         vehicleEntity.setUpdatedBy(user);
 
         vehicleEntityRepository.save(vehicleEntity);

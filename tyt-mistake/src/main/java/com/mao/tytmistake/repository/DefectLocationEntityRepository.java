@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface DefectLocationEntityRepository extends JpaRepository<LocationEntity, Long> {
 
-    @Query(value = "SELECT * FROM tt_defect_location lc WHERE lc.vehicle_defect_id = :defectId AND lc.is_deleted = false", nativeQuery = true)
+    @Query(value = "SELECT * FROM tt_location lc WHERE lc.defect_Id = :defectId AND lc.is_Deleted = false", nativeQuery = true)
     List<LocationEntity> findAllByVehicleDefectEntityId(@Param("defectId") Long defectId);
 
     Optional<LocationEntity> findByIdAndIsDeletedIsFalse(Long id);

@@ -53,8 +53,8 @@ public class VehicleServiceImpl implements VehicleService {
         String user = HeaderUtility.getUser(headers);
 
         VehicleEntity vehicleEntity = getById(id);
-        vehicleEntity.setIsDeleted(true);
-        vehicleEntity.getDefect().forEach(defectEntity -> defectEntity.setIsDeleted(true));
+
+        this.mappedSoftDelete(vehicleEntity);
         vehicleEntity.setUpdatedBy(user);
 
         vehicleEntityRepository.save(vehicleEntity);
@@ -73,7 +73,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     private VehicleEntity checkVehicleEntityBeforeUpdate(Long id, String chassisNumber) {
-        VehicleEntity byId = getById(id);
+        VehicleEntity byId = this.getById(id);
         VehicleEntity byChassisNumber = vehicleEntityRepository
                 .findByChassisNumberAndIsDeletedIsFalse(chassisNumber).orElse(null);
 
@@ -89,6 +89,14 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleEntity.setChassisNumber(vehicleRequest.getChassisNumber());
         vehicleEntity.setModel(vehicleRequest.getModel());
         return vehicleEntity;
+    }
+
+    private void mappedSoftDelete(VehicleEntity vehicleEntity) {
+        vehicleEntity.setIsDeleted(true);
+        vehicleEntity.getDefect().forEach(defectEntity -> {
+            defectEntity.setIsDeleted(true);
+            defectEntity.getDefectLocation().forEach(location -> location.setIsDeleted(true));
+        });
     }
 
     private void isClientValid(HttpHeaders headers) {

@@ -29,20 +29,14 @@ public class DefectLocationServiceImpl implements DefectLocationService {
     private final AuthApiClient apiClient;
 
     @Override
-    public DefectLocationResponse addNewLocation(HttpHeaders headers, DefectLocationRequest defectLocationRequest) {
+    public DefectLocationResponse addNewLocation(HttpHeaders headers, DefectLocationRequest request) {
         this.isClientValid(headers);
         String user = HeaderUtility.getUser(headers);
 
         DefectEntity defectEntity = vehicleDefectService
-                .getVehicleDefectEntityById(defectLocationRequest.getDefectId());
+                .getVehicleDefectEntityById(request.getDefectId());
 
-        List<LocationEntity> entities = defectLocationRequest.getLocations().stream()
-                .map(locationsRequest -> {
-                    LocationEntity entity = LocationsRequest.mappedDefectLocationEntity(locationsRequest);
-                    entity.setDefectEntity(defectEntity);
-                    entity.setCreatedBy(user);
-                    return entity;
-                }).toList();
+        List<LocationEntity> entities = this.mappedLocationRequestToLocationEntity(request, user, defectEntity);
 
         List<LocationsResponse> locationsRequests = defectLocationEntityRepository.saveAll(entities).stream()
                 .map(LocationsResponse::mappedLocationsResponse).toList();
@@ -74,6 +68,18 @@ public class DefectLocationServiceImpl implements DefectLocationService {
 
         request.getLocationIds().forEach(id -> this.deleteLocations(id, user));
         return request.getLocationIds();
+    }
+
+    private List<LocationEntity> mappedLocationRequestToLocationEntity(DefectLocationRequest request,
+                                                                       String user,
+                                                                       DefectEntity defectEntity) {
+        return request.getLocations().stream()
+                .map(locationsRequest -> {
+                    LocationEntity entity = LocationsRequest.mappedDefectLocationEntity(locationsRequest);
+                    entity.setDefectEntity(defectEntity);
+                    entity.setCreatedBy(user);
+                    return entity;
+                }).toList();
     }
 
     private void isClientValid(HttpHeaders headers) {

@@ -14,9 +14,9 @@ import lombok.Setter;
 @Setter
 public class VehicleRequest {
 
-    @NotNull
+    @NotNull(message = "model can not be null")
     private Model model;
-    //todo: ileride kaldırılabilir
+    @NotNull(message = "chassisNumber can not be null")
     private String chassisNumber;
     private Colour colour;
 

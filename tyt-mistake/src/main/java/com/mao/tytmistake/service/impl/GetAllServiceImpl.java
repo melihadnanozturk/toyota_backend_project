@@ -39,11 +39,9 @@ public class GetAllServiceImpl implements GetAllService {
 
     @Override
     public Page<PageVehicleResponse> getAllVehicle(HttpHeaders headers, PageVehicleRequest request) {
-
         this.isClientValid(headers);
 
         Pageable pageable = TytPageRequest.createPageRequest(request);
-
         Specification<VehicleEntity> spec = CreateVehicleSpec.getAll(request);
 
         List<PageVehicleResponse> responses = vehicleEntityRepository.findAll(spec, pageable)
@@ -56,10 +54,7 @@ public class GetAllServiceImpl implements GetAllService {
     public Page<PageVehicleDefectResponse> getAllVehicleDefect(HttpHeaders headers, PageDefectRequest request) {
         this.isClientValid(headers);
 
-        //todo: sort kolonu düzeltilecek
         Pageable pageable = TytPageRequest.createPageRequest(request);
-
-        //todo: will refactoring
         Specification<DefectEntity> spec = CreateVehicleDefectSpec.getAll(request);
 
         List<PageVehicleDefectResponse> page = vehicleDefectEntityRepository.findAll(spec, pageable)

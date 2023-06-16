@@ -65,12 +65,16 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
         String user = HeaderUtility.getUser(headers);
 
         DefectEntity defectEntity = checkVehicleDefectEntityIsExists(id);
+        this.mappedSoftDelete(defectEntity);
 
-        defectEntity.setIsDeleted(true);
-        defectEntity.getDefectLocation().forEach(location -> location.setIsDeleted(true));
         defectEntity.setUpdatedBy(user);
 
         return vehicleDefectEntityRepository.save(defectEntity).getId();
+    }
+
+    private void mappedSoftDelete(DefectEntity entity) {
+        entity.setIsDeleted(true);
+        entity.getDefectLocation().forEach(location -> location.setIsDeleted(true));
     }
 
     @Override

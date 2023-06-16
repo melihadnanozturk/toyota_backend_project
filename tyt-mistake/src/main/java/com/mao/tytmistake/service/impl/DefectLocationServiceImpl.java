@@ -7,8 +7,8 @@ import com.mao.tytmistake.controller.request.LocationRemoveRequest;
 import com.mao.tytmistake.controller.request.LocationsRequest;
 import com.mao.tytmistake.controller.response.DefectLocationResponse;
 import com.mao.tytmistake.controller.response.LocationsResponse;
-import com.mao.tytmistake.model.entity.DefectLocationEntity;
-import com.mao.tytmistake.model.entity.VehicleDefectEntity;
+import com.mao.tytmistake.model.entity.DefectEntity;
+import com.mao.tytmistake.model.entity.LocationEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
 import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.repository.DefectLocationEntityRepository;
@@ -31,14 +31,16 @@ public class DefectLocationServiceImpl implements DefectLocationService {
     @Override
     public DefectLocationResponse addNewLocation(HttpHeaders headers, DefectLocationRequest defectLocationRequest) {
         this.isClientValid(headers);
+        String user = HeaderUtility.getUser(headers);
 
-        VehicleDefectEntity vehicleDefectEntity = vehicleDefectService
+        DefectEntity defectEntity = vehicleDefectService
                 .getVehicleDefectEntityById(defectLocationRequest.getDefectId());
 
-        List<DefectLocationEntity> entities = defectLocationRequest.getLocations().stream()
+        List<LocationEntity> entities = defectLocationRequest.getLocations().stream()
                 .map(locationsRequest -> {
-                    DefectLocationEntity entity = LocationsRequest.mappedDefectLocationEntity(locationsRequest);
-                    entity.setVehicleDefectEntity(vehicleDefectEntity);
+                    LocationEntity entity = LocationsRequest.mappedDefectLocationEntity(locationsRequest);
+                    entity.setDefectEntity(defectEntity);
+                    entity.setCreatedBy(user);
                     return entity;
                 }).toList();
 
@@ -51,23 +53,26 @@ public class DefectLocationServiceImpl implements DefectLocationService {
     @Override
     public LocationsResponse updateLocation(HttpHeaders headers, Long id, LocationsRequest locationsRequest) {
         this.isClientValid(headers);
+        String user = HeaderUtility.getUser(headers);
 
-        DefectLocationEntity entity = defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(id)
+        LocationEntity entity = defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(id)
                 .orElseThrow(() -> new NotFoundException(id.toString()));
 
         entity.setXLocation(locationsRequest.getXLocation());
         entity.setYLocation(locationsRequest.getYLocation());
-        DefectLocationEntity updatedEntity = defectLocationEntityRepository.save(entity);
+        entity.setUpdatedBy(user);
+
+        LocationEntity updatedEntity = defectLocationEntityRepository.save(entity);
 
         return LocationsResponse.mappedLocationsResponse(updatedEntity);
     }
 
-    //todo: düşünülecek
     @Override
     public List<Long> removeLocation(HttpHeaders headers, LocationRemoveRequest request) {
         this.isClientValid(headers);
+        String user = HeaderUtility.getUser(headers);
 
-        request.getLocationIds().forEach(this::deleteLocations);
+        request.getLocationIds().forEach(id -> this.deleteLocations(id, user));
         return request.getLocationIds();
     }
 
@@ -77,11 +82,13 @@ public class DefectLocationServiceImpl implements DefectLocationService {
         apiClient.validate(clientHeaders, Role.OPERATOR);
     }
 
-    private void deleteLocations(Long id) {
-        DefectLocationEntity entity = defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(id)
+    private void deleteLocations(Long id, String user) {
+        LocationEntity entity = defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(id)
                 .orElseThrow(() -> new NotFoundException(id.toString()));
 
         entity.setIsDeleted(true);
+        entity.setUpdatedBy(user);
+
         defectLocationEntityRepository.save(entity);
     }
 }

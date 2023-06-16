@@ -25,8 +25,11 @@ public class VehicleServiceImpl implements VehicleService {
     public VehicleResponse addNewVehicle(HttpHeaders headers, VehicleRequest vehicleRequest) {
         this.isClientValid(headers);
         this.checkChassisNumberBeforeInsert(vehicleRequest.getChassisNumber());
+        String user = HeaderUtility.getUser(headers);
 
         VehicleEntity vehicleEntity = VehicleRequest.requestMappedVehicleEntity(vehicleRequest);
+        vehicleEntity.setCreatedBy(user);
+
         VehicleEntity savedEntity = vehicleEntityRepository.save(vehicleEntity);
         return VehicleResponse.vehicleEntityMappedResponse(savedEntity);
     }
@@ -34,9 +37,12 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleResponse updateVehicle(HttpHeaders headers, Long id, VehicleRequest vehicleRequest) {
         this.isClientValid(headers);
+        String user = HeaderUtility.getUser(headers);
 
         VehicleEntity vehicleEntity = this.checkVehicleEntityBeforeUpdate(id, vehicleRequest.getChassisNumber());
         VehicleEntity updatedEntity = setVehicle(vehicleEntity, vehicleRequest);
+        vehicleEntity.setUpdatedBy(user);
+
         VehicleEntity savedEntity = vehicleEntityRepository.save(updatedEntity);
         return VehicleResponse.vehicleEntityMappedResponse(savedEntity);
     }
@@ -44,9 +50,12 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public Long removeVehicle(HttpHeaders headers, Long id) {
         this.isClientValid(headers);
+        String user = HeaderUtility.getUser(headers);
 
         VehicleEntity vehicleEntity = getById(id);
         vehicleEntity.setIsDeleted(true);
+        vehicleEntity.setUpdatedBy(user);
+
         vehicleEntityRepository.save(vehicleEntity);
         return id;
     }

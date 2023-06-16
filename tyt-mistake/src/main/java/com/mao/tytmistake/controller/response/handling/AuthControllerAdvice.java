@@ -2,9 +2,9 @@ package com.mao.tytmistake.controller.response.handling;
 
 import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.model.exception.BaseException;
-import com.mao.tytmistake.model.exception.ForbiddenException;
-import com.mao.tytmistake.model.exception.NotValidTokenForUserException;
-import com.mao.tytmistake.model.exception.PastDueTimeException;
+import com.mao.tytmistake.model.exception.auth.ForbiddenException;
+import com.mao.tytmistake.model.exception.auth.NotValidTokenForUserException;
+import com.mao.tytmistake.model.exception.auth.PastDueTimeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

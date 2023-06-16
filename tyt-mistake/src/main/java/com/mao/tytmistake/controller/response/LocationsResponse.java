@@ -1,6 +1,6 @@
 package com.mao.tytmistake.controller.response;
 
-import com.mao.tytmistake.model.entity.DefectLocationEntity;
+import com.mao.tytmistake.model.entity.LocationEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,11 +16,11 @@ public class LocationsResponse {
 
     private String xLocation;
 
-    public static LocationsResponse mappedLocationsResponse(DefectLocationEntity defectLocationEntity) {
+    public static LocationsResponse mappedLocationsResponse(LocationEntity locationEntity) {
         return LocationsResponse.builder()
-                .id(defectLocationEntity.getId())
-                .xLocation(defectLocationEntity.getXLocation())
-                .yLocation(defectLocationEntity.getYLocation())
+                .id(locationEntity.getId())
+                .xLocation(locationEntity.getXLocation())
+                .yLocation(locationEntity.getYLocation())
                 .build();
     }
 }

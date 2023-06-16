@@ -1,7 +1,7 @@
 package com.mao.tytmistake.controller.response;
 
 
-import com.mao.tytmistake.model.entity.VehicleDefectEntity;
+import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.enums.Defect;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,14 +21,14 @@ public class PageVehicleDefectResponse {
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
-    public static PageVehicleDefectResponse vehicleDefectEntityMappedPageResponse(VehicleDefectEntity vehicleDefectEntity) {
+    public static PageVehicleDefectResponse vehicleDefectEntityMappedPageResponse(DefectEntity defectEntity) {
         return PageVehicleDefectResponse.builder()
-                .defectId(vehicleDefectEntity.getId())
-                .vehicleId(vehicleDefectEntity.getVehicle().getId())
-                .vehicleDefectDesc(vehicleDefectEntity.getVehicleDefectDesc())
-                .defect(vehicleDefectEntity.getDefect())
-                .createdAt(vehicleDefectEntity.getCreatedAt())
-                .updatedAt(vehicleDefectEntity.getUpdatedAt())
+                .defectId(defectEntity.getId())
+                .vehicleId(defectEntity.getVehicle().getId())
+                .vehicleDefectDesc(defectEntity.getDefectDesc())
+                .defect(defectEntity.getDefect())
+                .createdAt(defectEntity.getCreatedAt())
+                .updatedAt(defectEntity.getUpdatedAt())
                 .build();
     }
 }

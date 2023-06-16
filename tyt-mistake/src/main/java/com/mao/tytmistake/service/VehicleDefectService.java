@@ -3,7 +3,7 @@ package com.mao.tytmistake.service;
 import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.VehicleDefectRequest;
 import com.mao.tytmistake.controller.response.VehicleDefectResponse;
-import com.mao.tytmistake.model.entity.VehicleDefectEntity;
+import com.mao.tytmistake.model.entity.DefectEntity;
 import org.springframework.http.HttpHeaders;
 
 public interface VehicleDefectService {
@@ -14,7 +14,7 @@ public interface VehicleDefectService {
 
     VehicleDefectResponse updateVehicleDefect(HttpHeaders headers, UpdateVehicleDefectRequest request, Long id);
 
-    VehicleDefectEntity getVehicleDefectEntityById(Long id);
+    DefectEntity getVehicleDefectEntityById(Long id);
 
     Integer getDefectNumbersByVehicleId(Long vehicleId);
 }

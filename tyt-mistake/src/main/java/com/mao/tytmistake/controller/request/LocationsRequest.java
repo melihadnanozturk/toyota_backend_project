@@ -1,6 +1,6 @@
 package com.mao.tytmistake.controller.request;
 
-import com.mao.tytmistake.model.entity.DefectLocationEntity;
+import com.mao.tytmistake.model.entity.LocationEntity;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +17,8 @@ public class LocationsRequest {
     @NotBlank
     private String xLocation;
 
-    public static DefectLocationEntity mappedDefectLocationEntity(LocationsRequest location) {
-        return DefectLocationEntity.builder()
+    public static LocationEntity mappedDefectLocationEntity(LocationsRequest location) {
+        return LocationEntity.builder()
                 .xLocation(location.getXLocation())
                 .yLocation(location.getYLocation())
                 .build();

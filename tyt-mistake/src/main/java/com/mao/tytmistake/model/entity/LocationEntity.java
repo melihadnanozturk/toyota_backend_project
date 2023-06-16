@@ -9,12 +9,12 @@ import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "tt_defect_location")
+@Table(name = "tt_location")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DefectLocationEntity extends BaseEntity implements Serializable {
+public class LocationEntity extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -3773257122505753461L;
@@ -27,7 +27,7 @@ public class DefectLocationEntity extends BaseEntity implements Serializable {
 
     //todo: burası kontrol edilebilir.
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "vehicleDefectId", referencedColumnName = "id")
-    private VehicleDefectEntity vehicleDefectEntity;
+    @JoinColumn(name = "defectId", referencedColumnName = "id")
+    private DefectEntity defectEntity;
 
 }

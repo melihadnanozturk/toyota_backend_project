@@ -1,6 +1,6 @@
 package com.mao.tytmistake.controller.request;
 
-import com.mao.tytmistake.model.entity.VehicleDefectEntity;
+import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.enums.Defect;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,11 +24,11 @@ public class VehicleDefectRequest {
     @NotNull
     private Long vehicleId;
 
-    public static VehicleDefectEntity responseMapToVehicleDefectEntity(VehicleDefectRequest defectRequest) {
-        return VehicleDefectEntity.builder()
+    public static DefectEntity responseMapToVehicleDefectEntity(VehicleDefectRequest defectRequest) {
+        return DefectEntity.builder()
                 .defect(defectRequest.getDefect())
                 .defectImage(defectRequest.getDefectImage())
-                .vehicleDefectDesc(defectRequest.getVehicleDefectDesc())
+                .defectDesc(defectRequest.getVehicleDefectDesc())
                 .build();
     }
 }

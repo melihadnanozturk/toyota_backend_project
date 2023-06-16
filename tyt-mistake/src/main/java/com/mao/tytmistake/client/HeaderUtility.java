@@ -23,4 +23,8 @@ public class HeaderUtility {
 
         return newHeaders;
     }
+
+    public static String getUser(HttpHeaders headers) {
+        return Objects.requireNonNull(headers.get(USER_NAME)).get(0);
+    }
 }

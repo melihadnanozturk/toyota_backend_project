@@ -7,8 +7,8 @@ import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.response.LocationsResponse;
 import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
 import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
-import com.mao.tytmistake.model.entity.DefectLocationEntity;
-import com.mao.tytmistake.model.entity.VehicleDefectEntity;
+import com.mao.tytmistake.model.entity.DefectEntity;
+import com.mao.tytmistake.model.entity.LocationEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
 import com.mao.tytmistake.repository.DefectLocationEntityRepository;
@@ -68,7 +68,7 @@ public class GetAllServiceImpl implements GetAllService {
                 request.getSortBy());
 
         //todo: will refactoring
-        Specification<VehicleDefectEntity> spec = CreateVehicleDefectSpec.getAll(request);
+        Specification<DefectEntity> spec = CreateVehicleDefectSpec.getAll(request);
 
         List<PageVehicleDefectResponse> page = vehicleDefectEntityRepository.findAll(spec, pageable)
                 .stream().map(PageVehicleDefectResponse::vehicleDefectEntityMappedPageResponse).toList();
@@ -80,7 +80,7 @@ public class GetAllServiceImpl implements GetAllService {
     public List<LocationsResponse> getAllLocations(HttpHeaders headers, Long defectId) {
         this.isClientValid(headers);
 
-        List<DefectLocationEntity> entities = defectLocationEntityRepository.findAllByVehicleDefectEntityId(defectId);
+        List<LocationEntity> entities = defectLocationEntityRepository.findAllByVehicleDefectEntityId(defectId);
 
         return entities.stream().map(LocationsResponse::mappedLocationsResponse).toList();
     }

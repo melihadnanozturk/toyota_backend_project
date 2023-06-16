@@ -25,7 +25,6 @@ public class LocationEntity extends BaseEntity implements Serializable {
     @Column(name = "x_location", nullable = false)
     private String xLocation;
 
-    //todo: burası kontrol edilebilir.
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "defectId", referencedColumnName = "id")
     private DefectEntity defectEntity;

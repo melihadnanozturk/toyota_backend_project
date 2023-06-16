@@ -1,7 +1,6 @@
 package com.mao.tytmistake.service.impl;
 
 import com.mao.tytmistake.client.AuthApiClient;
-import com.mao.tytmistake.client.HeaderUtility;
 import com.mao.tytmistake.controller.request.DefectLocationRequest;
 import com.mao.tytmistake.controller.request.LocationRemoveRequest;
 import com.mao.tytmistake.controller.request.LocationsRequest;
@@ -11,6 +10,7 @@ import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.LocationEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
 import com.mao.tytmistake.model.exception.NotFoundException;
+import com.mao.tytmistake.model.utility.HeaderUtility;
 import com.mao.tytmistake.repository.DefectLocationEntityRepository;
 import com.mao.tytmistake.service.DefectLocationService;
 import com.mao.tytmistake.service.VehicleDefectService;

@@ -1,7 +1,6 @@
 package com.mao.tytmistake.service.impl;
 
 import com.mao.tytmistake.client.AuthApiClient;
-import com.mao.tytmistake.client.HeaderUtility;
 import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.VehicleDefectRequest;
 import com.mao.tytmistake.controller.response.VehicleDefectResponse;
@@ -9,6 +8,7 @@ import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
 import com.mao.tytmistake.model.exception.NotFoundException;
+import com.mao.tytmistake.model.utility.HeaderUtility;
 import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
 import com.mao.tytmistake.service.VehicleDefectService;
 import lombok.RequiredArgsConstructor;

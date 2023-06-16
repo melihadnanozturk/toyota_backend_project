@@ -10,10 +10,10 @@ public enum Colour {
     GREY("Grey"),
     BLACK("Black");
 
-    private final String colour;
+    private final String name;
 
     @Override
     public String toString() {
-        return colour;
+        return name;
     }
 }

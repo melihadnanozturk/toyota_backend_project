@@ -15,6 +15,4 @@ public interface VehicleDefectService {
     VehicleDefectResponse updateVehicleDefect(HttpHeaders headers, UpdateVehicleDefectRequest request, Long id);
 
     DefectEntity getVehicleDefectEntityById(Long id);
-
-    Integer getDefectNumbersByVehicleId(Long vehicleId);
 }

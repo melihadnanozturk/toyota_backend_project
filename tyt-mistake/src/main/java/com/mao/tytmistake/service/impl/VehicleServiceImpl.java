@@ -1,13 +1,13 @@
 package com.mao.tytmistake.service.impl;
 
 import com.mao.tytmistake.client.AuthApiClient;
-import com.mao.tytmistake.client.HeaderUtility;
 import com.mao.tytmistake.controller.request.VehicleRequest;
 import com.mao.tytmistake.controller.response.VehicleResponse;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
 import com.mao.tytmistake.model.exception.AlreadyExistsException;
 import com.mao.tytmistake.model.exception.NotFoundException;
+import com.mao.tytmistake.model.utility.HeaderUtility;
 import com.mao.tytmistake.repository.VehicleEntityRepository;
 import com.mao.tytmistake.service.VehicleService;
 import lombok.RequiredArgsConstructor;

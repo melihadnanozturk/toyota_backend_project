@@ -1,4 +1,4 @@
-package com.mao.tytmistake.client;
+package com.mao.tytmistake.model.utility;
 
 import org.springframework.http.HttpHeaders;
 

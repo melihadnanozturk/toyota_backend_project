@@ -1,4 +1,4 @@
-package com.mao.tytmistake.service.impl.spec;
+package com.mao.tytmistake.model.utility;
 
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.model.entity.VehicleEntity;
@@ -7,6 +7,10 @@ import com.mao.tytmistake.model.entity.enums.Model;
 import org.springframework.data.jpa.domain.Specification;
 
 public class CreateVehicleSpec {
+
+    private CreateVehicleSpec() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static Specification<VehicleEntity> getAll(PageVehicleRequest pageVehicleRequest) {
         return getByNotDeleted()

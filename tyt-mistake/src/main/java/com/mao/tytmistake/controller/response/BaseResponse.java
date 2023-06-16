@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 public class BaseResponse<T> {
 
-    public HttpStatus httpStatus;
+    private HttpStatus httpStatus;
 
     private T response;
 

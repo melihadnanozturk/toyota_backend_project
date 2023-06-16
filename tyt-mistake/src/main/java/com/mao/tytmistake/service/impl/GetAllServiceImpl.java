@@ -1,7 +1,6 @@
 package com.mao.tytmistake.service.impl;
 
 import com.mao.tytmistake.client.AuthApiClient;
-import com.mao.tytmistake.client.HeaderUtility;
 import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.response.LocationsResponse;
@@ -11,12 +10,13 @@ import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.LocationEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
+import com.mao.tytmistake.model.utility.CreateVehicleDefectSpec;
+import com.mao.tytmistake.model.utility.CreateVehicleSpec;
+import com.mao.tytmistake.model.utility.HeaderUtility;
 import com.mao.tytmistake.repository.DefectLocationEntityRepository;
 import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
 import com.mao.tytmistake.repository.VehicleEntityRepository;
 import com.mao.tytmistake.service.GetAllService;
-import com.mao.tytmistake.service.impl.spec.CreateVehicleDefectSpec;
-import com.mao.tytmistake.service.impl.spec.CreateVehicleSpec;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;

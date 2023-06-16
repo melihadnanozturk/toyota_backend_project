@@ -1,4 +1,4 @@
-package com.mao.tytmistake.service.impl.spec;
+package com.mao.tytmistake.model.utility;
 
 import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
 import com.mao.tytmistake.model.entity.DefectEntity;
@@ -8,6 +8,10 @@ import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
 public class CreateVehicleDefectSpec {
+
+    private CreateVehicleDefectSpec() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static Specification<DefectEntity> getAll(PageVehicleDefectRequest request) {
         return getIsNotDeleted()

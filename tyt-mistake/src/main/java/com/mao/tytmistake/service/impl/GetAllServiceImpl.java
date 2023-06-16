@@ -1,8 +1,9 @@
 package com.mao.tytmistake.service.impl;
 
 import com.mao.tytmistake.client.AuthApiClient;
-import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
+import com.mao.tytmistake.controller.request.page.PageDefectRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
+import com.mao.tytmistake.controller.request.page.TytPageRequest;
 import com.mao.tytmistake.controller.response.LocationsResponse;
 import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
 import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
@@ -18,7 +19,9 @@ import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
 import com.mao.tytmistake.repository.VehicleEntityRepository;
 import com.mao.tytmistake.service.GetAllService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -39,11 +42,7 @@ public class GetAllServiceImpl implements GetAllService {
 
         this.isClientValid(headers);
 
-        Pageable pageable = PageRequest.of(
-                request.getPageNumber(),
-                request.getPageSize(),
-                Sort.Direction.valueOf(request.getSortOf()),
-                request.getSortBy());
+        Pageable pageable = TytPageRequest.createPageRequest(request);
 
         Specification<VehicleEntity> spec = CreateVehicleSpec.getAll(request);
 
@@ -54,14 +53,11 @@ public class GetAllServiceImpl implements GetAllService {
     }
 
     @Override
-    public Page<PageVehicleDefectResponse> getAllVehicleDefect(HttpHeaders headers, PageVehicleDefectRequest request) {
+    public Page<PageVehicleDefectResponse> getAllVehicleDefect(HttpHeaders headers, PageDefectRequest request) {
         this.isClientValid(headers);
 
-        Pageable pageable = PageRequest.of(
-                request.getPageNumber(),
-                request.getPageSize(),
-                Sort.Direction.valueOf(request.getSortOf()),
-                request.getSortBy());
+        //todo: sort kolonu düzeltilecek
+        Pageable pageable = TytPageRequest.createPageRequest(request);
 
         //todo: will refactoring
         Specification<DefectEntity> spec = CreateVehicleDefectSpec.getAll(request);

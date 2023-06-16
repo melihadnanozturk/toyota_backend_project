@@ -1,6 +1,6 @@
 package com.mao.tytmistake.service;
 
-import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
+import com.mao.tytmistake.controller.request.page.PageDefectRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.response.LocationsResponse;
 import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
@@ -14,7 +14,7 @@ public interface GetAllService {
 
     Page<PageVehicleResponse> getAllVehicle(HttpHeaders headers, PageVehicleRequest request);
 
-    Page<PageVehicleDefectResponse> getAllVehicleDefect(HttpHeaders headers, PageVehicleDefectRequest request);
+    Page<PageVehicleDefectResponse> getAllVehicleDefect(HttpHeaders headers, PageDefectRequest request);
 
     List<LocationsResponse> getAllLocations(HttpHeaders headers, Long defectId);
 }

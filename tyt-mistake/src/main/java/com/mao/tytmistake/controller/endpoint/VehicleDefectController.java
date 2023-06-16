@@ -2,7 +2,7 @@ package com.mao.tytmistake.controller.endpoint;
 
 import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.VehicleDefectRequest;
-import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
+import com.mao.tytmistake.controller.request.page.PageDefectRequest;
 import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
 import com.mao.tytmistake.controller.response.VehicleDefectResponse;
@@ -26,7 +26,7 @@ public class VehicleDefectController {
     @GetMapping
     public BaseResponse<List<PageVehicleDefectResponse>> getAllVehicleDefect(
             @RequestHeader HttpHeaders headers,
-            @RequestBody PageVehicleDefectRequest request) {
+            @RequestBody PageDefectRequest request) {
         Page<PageVehicleDefectResponse> page = getAllService.getAllVehicleDefect(headers, request);
         return BaseResponse.isSuccess(page.getContent());
     }

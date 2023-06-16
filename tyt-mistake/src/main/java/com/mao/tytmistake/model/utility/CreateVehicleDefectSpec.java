@@ -1,6 +1,6 @@
 package com.mao.tytmistake.model.utility;
 
-import com.mao.tytmistake.controller.request.page.PageVehicleDefectRequest;
+import com.mao.tytmistake.controller.request.page.PageDefectRequest;
 import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Defect;
@@ -13,7 +13,7 @@ public class CreateVehicleDefectSpec {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Specification<DefectEntity> getAll(PageVehicleDefectRequest request) {
+    public static Specification<DefectEntity> getAll(PageDefectRequest request) {
         return getIsNotDeleted()
                 .and(getByVehicleId(request.getVehicleId()))
                 .and(getByDefect(request.getDefect()));

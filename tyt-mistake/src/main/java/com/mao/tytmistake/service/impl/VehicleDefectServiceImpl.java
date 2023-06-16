@@ -79,11 +79,6 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
                 .orElseThrow(() -> new NotFoundException(id.toString()));
     }
 
-    @Override
-    public Integer getDefectNumbersByVehicleId(Long vehicleId) {
-        return vehicleDefectEntityRepository.findAllByVehicleId(vehicleId).size();
-    }
-
     private DefectEntity checkVehicleDefectEntityIsExists(Long id) {
         return vehicleDefectEntityRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
     }

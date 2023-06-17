@@ -1,5 +1,5 @@
+# madnan_ozturk
 # maven build alınır
-MAINTAINER madnan_ozturk
 FROM maven:3.9.1 AS build
 COPY src /home/src
 COPY pom.xml /home

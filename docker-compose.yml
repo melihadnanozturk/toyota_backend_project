@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root123
+      - POSTGRES_DB=postgres
+    volumes:
+      - tyt:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+
+  auth-service:
+    build:
+      context: ./tyt-auth
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_PROFILES_ACTIVE=test
+
+  conduct-service:
+    build:
+      context: ./tyt-conduct
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    environment:
+      - SPRING_PROFILES_ACTIVE=test
+
+  mistake-service:
+    build:
+      context: ./tyt-mistake
+      dockerfile: Dockerfile
+    ports:
+      - 8082:8082
+    environment:
+      - SPRING_PROFILES_ACTIVE=test
+
+volumes:
+  tyt:
+    driver: local

@@ -1,9 +1,9 @@
+# # madnan_ozturk
 # maven build alınır
-MAINTAINER madnan_ozturk
 FROM maven:3.9.1 AS build
 COPY src /home/src
 COPY pom.xml /home
-RUN mvn -f /home/app/pom.xml clean package
+RUN mvn -f /home/pom.xml clean package
 
 # jdk eklenir, default profile verilir
 # jar dosyası kopyalanır ve port belirlenir

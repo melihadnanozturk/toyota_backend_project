@@ -6,8 +6,8 @@ spring:
     name: tyt-auth
   datasource:
     url: jdbc:postgresql://host.docker.internal:5432/postgres
-    username: postgres
-    password: root123
+    username: ${TYT_DB_USER:postgres}
+    password: ${TYT_DB_PASS:root123}
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,8 +16,8 @@ spring:
 application:
   security:
     jwt:
-      secret-key: maoCom
-      expiration: 900000 # 15 minutes
+      secret-key: ${TYT_SECRET_KEY:maoCom}
+      expiration: ${TYT_TOKEN_EXPIRATION:900000}   # default 15 minutes
 
 tyt:
   32Bit:

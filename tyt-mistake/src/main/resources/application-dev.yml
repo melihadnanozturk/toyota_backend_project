@@ -6,8 +6,8 @@ spring:
     name: tyt-mistake
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: root123
+    username: ${TYT_DB_USER:postgres}
+    password: ${TYT_DB_PASS:root123}
   jpa:
     hibernate:
       ddl-auto: update

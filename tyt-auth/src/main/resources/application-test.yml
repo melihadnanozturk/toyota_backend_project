@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: tyt-auth
+  datasource:
+    url: jdbc:postgresql://host.docker.internal:5432/postgres
+    username: postgres
+    password: root123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+application:
+  security:
+    jwt:
+      secret-key: maoCom
+      expiration: 900000 # 15 minutes
+
+tyt:
+  32Bit:
+    feign-client:
+      conduct: http://host.docker.internal:8081
+

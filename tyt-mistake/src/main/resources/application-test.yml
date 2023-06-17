@@ -1,0 +1,19 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: tyt-mistake
+  datasource:
+    url: jdbc:postgresql://host.docker.internal:5432/postgres
+    username: postgres
+    password: root123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+tyt:
+  32Bit:
+    feign-client:
+      auth: http://host.docker.internal:8080

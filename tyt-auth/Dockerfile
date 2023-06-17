@@ -1,13 +1,14 @@
 # maven build alınır
 MAINTAINER madnan_ozturk
 FROM maven:3.9.1 AS build
-COPY src /home/app/src
-COPY pom.xml /home/app
-RUN mvn -f /home/app/pom.xml clean package
+COPY src /home/src
+COPY pom.xml /home
+RUN mvn -f /home/pom.xml clean package
 
 # jdk eklenir, default profile verilir
 # jar dosyası kopyalanır ve port belirlenir
 FROM openjdk:17-slim
-COPY --from=build /home/app/target/*.jar /user/local/lib/demo.jar
+ENV PROFILE=test
+COPY --from=build /home/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/user/local/lib/demo.jar"]
+ENTRYPOINT ["java","-Dspring.profiles.active=${PROFILE}","-jar","app.jar"]

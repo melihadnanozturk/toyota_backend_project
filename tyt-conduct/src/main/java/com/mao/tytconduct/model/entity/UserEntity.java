@@ -9,8 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 
 @Table(name = "tt_user")
 @Entity
@@ -27,5 +26,5 @@ public class UserEntity extends BaseEntity {
     private String password;
 
     @Column(columnDefinition = "smallint[]")
-    private List<Role> roles = new ArrayList<>();
+    private HashSet<Role> roles;
 }

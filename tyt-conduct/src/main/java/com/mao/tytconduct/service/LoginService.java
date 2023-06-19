@@ -5,5 +5,5 @@ import org.springframework.http.HttpHeaders;
 
 public interface LoginService {
 
-    UserResponse userIsValid(HttpHeaders headers);
+    UserResponse isUserValid(HttpHeaders headers);
 }

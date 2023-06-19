@@ -19,7 +19,7 @@ public class LoginServiceImpl implements LoginService {
     private final UserEntityRepository userEntityRepository;
 
     @Override
-    public UserResponse userIsValid(HttpHeaders headers) {
+    public UserResponse isUserValid(HttpHeaders headers) {
         String userName = getUserName(headers);
         String password = getPassword(headers);
 

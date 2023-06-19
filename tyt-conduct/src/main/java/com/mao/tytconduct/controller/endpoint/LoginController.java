@@ -20,7 +20,7 @@ public class LoginController {
     @PostMapping
     public BaseResponse<UserResponse> checkUser(
             @RequestHeader HttpHeaders headers) {
-        UserResponse response = loginService.userIsValid(headers);
+        UserResponse response = loginService.isUserValid(headers);
         return BaseResponse.isSuccess(response);
     }
 }

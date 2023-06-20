@@ -5,12 +5,14 @@ import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Colour;
 import com.mao.tytmistake.model.entity.enums.Model;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 public class VehicleResponse {
 
     private Long id;

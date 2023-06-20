@@ -2,11 +2,11 @@ package com.mao.tytauth.service.impl;
 
 
 import com.mao.tytauth.client.ConductApiClient;
-import com.mao.tytauth.client.HeaderUtility;
 import com.mao.tytauth.controller.response.UserResponse;
 import com.mao.tytauth.model.Role;
 import com.mao.tytauth.model.exception.ForbiddenException;
 import com.mao.tytauth.model.exception.NotValidTokenForUserException;
+import com.mao.tytauth.model.utility.HeaderUtility;
 import com.mao.tytauth.service.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -14,7 +14,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Value;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -30,14 +34,14 @@ public class TokenServiceImpl implements TokenService {
 
     private final ConductApiClient conductApiClient;
 
-    @Value("${application.security.jwt.secret-key}")
+
     private static final String SECRET_KEY = "maoCom";
-    @Value("${application.security.jwt.expiration}")
     private static final long JWT_EXPIRATION = 900000;
 
     private static final String USER_NAME = "userName";
     private static final String TOKEN = "token";
-    private static final String AUTHORIZATION = "Authorization";
+
+    private final Logger logger = LogManager.getLogger(TokenServiceImpl.class);
 
     @Override
     public String createToken(HttpHeaders headers) {
@@ -56,7 +60,7 @@ public class TokenServiceImpl implements TokenService {
     @SneakyThrows
     @Override
     public Boolean authentication(HttpHeaders headers) {
-        Map<String, String> info = getHeaderInfo(headers);
+        Map<String, String> info = HeaderUtility.getHeaderInfo(headers);
 
         String jwt = info.get(TOKEN).substring(7);
         String userName = info.get(USER_NAME);
@@ -69,7 +73,7 @@ public class TokenServiceImpl implements TokenService {
     @Override
     @SneakyThrows
     public Boolean authorization(HttpHeaders headers, Role role) {
-        Map<String, String> info = getHeaderInfo(headers);
+        Map<String, String> info = HeaderUtility.getHeaderInfo(headers);
 
         String jwt = info.get(TOKEN);
         String userName = info.get(USER_NAME);
@@ -95,7 +99,9 @@ public class TokenServiceImpl implements TokenService {
 
     private UserResponse getUser(HttpHeaders headers) {
         HttpHeaders clientHeader = HeaderUtility.createHeader(headers);
+        String userName = Objects.requireNonNull(clientHeader.get(USER_NAME)).get(0);
 
+        logger.atInfo().log("{} be directed Authorization", userName);
         return conductApiClient.userIsValid(clientHeader).getResponse();
     }
 
@@ -127,17 +133,5 @@ public class TokenServiceImpl implements TokenService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-    }
-
-    private static Map<String, String> getHeaderInfo(HttpHeaders headers) {
-        Map<String, String> infos = new HashMap<>();
-
-        String userName = Objects.requireNonNull(headers.get(USER_NAME)).get(0);
-        String token = Objects.requireNonNull(headers.get(AUTHORIZATION)).get(0);
-
-        infos.put(USER_NAME, userName);
-        infos.put(TOKEN, token);
-
-        return infos;
     }
 }

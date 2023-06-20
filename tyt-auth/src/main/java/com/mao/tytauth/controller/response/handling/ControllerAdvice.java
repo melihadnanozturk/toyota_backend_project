@@ -1,9 +1,12 @@
 package com.mao.tytauth.controller.response.handling;
 
 import com.mao.tytauth.controller.response.BaseResponse;
+import com.mao.tytauth.model.error.Error;
 import com.mao.tytauth.model.exception.*;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,6 +19,8 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class ControllerAdvice {
+
+    private final Logger logger = LogManager.getLogger(ControllerAdvice.class);
 
     @ExceptionHandler(NotValidTokenForUserException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -69,6 +74,12 @@ public class ControllerAdvice {
     }
 
     private Map<String, Object> getErrorBody(BaseException exception) {
+        Error error = exception.getError();
+        String message = exception.getMessage();
+        Integer errorCode = exception.getError().getCode();
+        String logMessage = "Error : {};   ExceptionMessage : {};   ErrorCode : {};";
+
+        logger.atError().log(logMessage, error, message, errorCode);
 
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());

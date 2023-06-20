@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
         HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
         String userName = Objects.requireNonNull(clientHeaders.get("userName")).get(0);
 
-        logger.atInfo().log("{} be directed authorization", userName);
+        logger.atInfo().log("{} be directed Authorization", userName);
         apiClient.validate(clientHeaders, Role.ADMIN);
         return userName;
     }

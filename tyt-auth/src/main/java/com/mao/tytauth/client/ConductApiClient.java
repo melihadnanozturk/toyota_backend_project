@@ -12,4 +12,5 @@ public interface ConductApiClient {
 
     @PostMapping("/check")
     BaseResponse<UserResponse> userIsValid(@RequestHeader HttpHeaders headers);
+
 }

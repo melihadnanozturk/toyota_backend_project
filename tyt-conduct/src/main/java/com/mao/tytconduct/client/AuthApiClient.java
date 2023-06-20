@@ -14,4 +14,7 @@ public interface AuthApiClient {
     @PostMapping("/auth/validate")
     BaseResponse<Boolean> validate(@RequestHeader HttpHeaders headers,
                                    @RequestBody Role role);
+
+    @PostMapping("/validate-user")
+    BaseResponse<Boolean> auth(@RequestHeader HttpHeaders headers);
 }

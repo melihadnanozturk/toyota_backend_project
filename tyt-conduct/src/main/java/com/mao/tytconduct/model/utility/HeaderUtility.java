@@ -1,4 +1,4 @@
-package com.mao.tytconduct.client;
+package com.mao.tytconduct.model.utility;
 
 import org.springframework.http.HttpHeaders;
 

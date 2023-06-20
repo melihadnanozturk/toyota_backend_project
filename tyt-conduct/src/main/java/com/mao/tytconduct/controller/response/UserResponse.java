@@ -15,12 +15,14 @@ import java.util.HashSet;
 @EqualsAndHashCode
 public class UserResponse {
 
+    private Long id;
     private String name;
     private String password;
     private HashSet<Role> roles;
 
     public static UserResponse entityMappedToResponse(UserEntity entity) {
         return UserResponse.builder()
+                .id(entity.getId())
                 .name(entity.getName())
                 .password(entity.getPassword())
                 .roles(entity.getRoles())

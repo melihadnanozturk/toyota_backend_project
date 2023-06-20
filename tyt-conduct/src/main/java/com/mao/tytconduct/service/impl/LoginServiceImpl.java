@@ -7,6 +7,8 @@ import com.mao.tytconduct.model.exception.auth.InvalidLoginRequestException;
 import com.mao.tytconduct.repository.UserEntityRepository;
 import com.mao.tytconduct.service.LoginService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
+    private final Logger logger = LogManager.getLogger(LoginServiceImpl.class);
 
     private final UserEntityRepository userEntityRepository;
 
@@ -27,6 +30,7 @@ public class LoginServiceImpl implements LoginService {
                 .orElseThrow(() -> new NotFoundException(userName));
 
         if (entity.getPassword().equals(password)) {
+            logger.atInfo().log(userName + " was login on the system");
             return UserResponse.entityMappedToResponse(entity);
         }
 

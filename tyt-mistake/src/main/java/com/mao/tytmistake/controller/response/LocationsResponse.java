@@ -2,12 +2,14 @@ package com.mao.tytmistake.controller.response;
 
 import com.mao.tytmistake.model.entity.LocationEntity;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 public class LocationsResponse {
 
     private Long id;

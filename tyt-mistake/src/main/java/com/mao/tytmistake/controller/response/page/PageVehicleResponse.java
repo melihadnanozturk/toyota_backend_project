@@ -4,6 +4,7 @@ import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Colour;
 import com.mao.tytmistake.model.entity.enums.Model;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Builder
 @Getter
 @Setter
+@EqualsAndHashCode
 public class PageVehicleResponse {
 
     private Long id;

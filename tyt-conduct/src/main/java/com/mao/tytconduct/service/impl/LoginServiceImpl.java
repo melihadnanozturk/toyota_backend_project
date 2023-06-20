@@ -30,7 +30,7 @@ public class LoginServiceImpl implements LoginService {
                 .orElseThrow(() -> new NotFoundException(userName));
 
         if (entity.getPassword().equals(password)) {
-            logger.atInfo().log(userName + " was login on the system");
+            logger.atInfo().log(userName + " was login on the System");
             return UserResponse.entityMappedToResponse(entity);
         }
 

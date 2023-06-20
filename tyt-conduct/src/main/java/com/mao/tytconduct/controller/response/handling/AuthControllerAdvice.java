@@ -1,18 +1,17 @@
 package com.mao.tytconduct.controller.response.handling;
 
 import com.mao.tytconduct.controller.response.BaseResponse;
-import com.mao.tytconduct.model.exception.BaseException;
 import com.mao.tytconduct.model.exception.auth.ForbiddenException;
 import com.mao.tytconduct.model.exception.auth.InvalidLoginRequestException;
 import com.mao.tytconduct.model.exception.auth.NotValidTokenForUserException;
 import com.mao.tytconduct.model.exception.auth.PastDueTimeException;
+import com.mao.tytconduct.model.utility.ExceptionResponseUtility;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
@@ -23,7 +22,7 @@ public class AuthControllerAdvice {
     @ResponseBody
     public BaseResponse<Object> handleNotValidTokenForUserException(NotValidTokenForUserException exception) {
 
-        Map<String, Object> body = getErrorBody(exception);
+        Map<String, Object> body = ExceptionResponseUtility.getErrorBody(exception);
 
         return BaseResponse.failed(body, HttpStatus.UNAUTHORIZED);
     }
@@ -33,7 +32,7 @@ public class AuthControllerAdvice {
     @ResponseBody
     public BaseResponse<Object> handleForbiddenException(ForbiddenException exception) {
 
-        Map<String, Object> body = getErrorBody(exception);
+        Map<String, Object> body = ExceptionResponseUtility.getErrorBody(exception);
 
         return BaseResponse.failed(body, HttpStatus.FORBIDDEN);
     }
@@ -43,7 +42,7 @@ public class AuthControllerAdvice {
     @ResponseBody
     public BaseResponse<Object> handlePastDueTimeException(PastDueTimeException exception) {
 
-        Map<String, Object> body = getErrorBody(exception);
+        Map<String, Object> body = ExceptionResponseUtility.getErrorBody(exception);
 
         return BaseResponse.failed(body, HttpStatus.EXPECTATION_FAILED);
     }
@@ -53,18 +52,10 @@ public class AuthControllerAdvice {
     @ResponseBody
     public BaseResponse<Object> handleInvalidLoginRequestException(InvalidLoginRequestException exception) {
 
-        Map<String, Object> body = getErrorBody(exception);
+        Map<String, Object> body = ExceptionResponseUtility.getErrorBody(exception);
 
         return BaseResponse.failed(body, HttpStatus.BAD_REQUEST);
     }
 
-    private Map<String, Object> getErrorBody(BaseException exception) {
 
-        Map<String, Object> body = new HashMap<>();
-        body.put("error", exception.getError());
-        body.put("message", exception.getMessage());
-        body.put("error_code", exception.getError().getCode());
-
-        return body;
-    }
 }

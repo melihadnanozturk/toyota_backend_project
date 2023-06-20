@@ -13,6 +13,8 @@ import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
 import com.mao.tytmistake.service.VehicleDefectService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
     private final VehicleDefectEntityRepository vehicleDefectEntityRepository;
     private final VehicleServiceImpl vehicleService;
     private final AuthApiClient apiClient;
+
+    private final Logger logger = LogManager.getLogger(VehicleDefectServiceImpl.class);
 
 
     @SneakyThrows
@@ -39,6 +43,7 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
 
         DefectEntity savedDefectEntity = vehicleDefectEntityRepository.save(defectEntity);
 
+        logger.atInfo().log("Defect with NAME {} has been registered ", vehicleDefectRequest.getDefect().toString());
         return VehicleDefectResponse.vehicleDefectEntityMappedResponse(savedDefectEntity);
     }
 
@@ -56,6 +61,7 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
 
         DefectEntity updatedEntity = vehicleDefectEntityRepository.save(defectEntity);
 
+        logger.atInfo().log("Defect with NAME {} has been updated", defectEntity.getDefect().toString());
         return VehicleDefectResponse.vehicleDefectEntityMappedResponse(updatedEntity);
     }
 
@@ -69,6 +75,7 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
 
         defectEntity.setUpdatedBy(user);
 
+        logger.atInfo().log("Defect with NAME {} has been removed", defectEntity.getDefect().toString());
         return vehicleDefectEntityRepository.save(defectEntity).getId();
     }
 
@@ -95,7 +102,9 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
 
     private void isClientValid(HttpHeaders headers) {
         HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
+        String userName = HeaderUtility.getUser(headers);
 
+        logger.atInfo().log("User with NAME {} be directed Authorization", userName);
         apiClient.validate(clientHeaders, Role.OPERATOR);
     }
 

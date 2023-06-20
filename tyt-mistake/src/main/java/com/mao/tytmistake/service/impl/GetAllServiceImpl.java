@@ -19,6 +19,8 @@ import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
 import com.mao.tytmistake.repository.VehicleEntityRepository;
 import com.mao.tytmistake.service.GetAllService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +38,8 @@ public class GetAllServiceImpl implements GetAllService {
     private final VehicleDefectEntityRepository vehicleDefectEntityRepository;
     private final DefectLocationEntityRepository defectLocationEntityRepository;
     private final AuthApiClient apiClient;
+
+    private final Logger logger = LogManager.getLogger(GetAllServiceImpl.class);
 
     @Override
     public Page<PageVehicleResponse> getAllVehicle(HttpHeaders headers, PageVehicleRequest request) {
@@ -74,7 +78,9 @@ public class GetAllServiceImpl implements GetAllService {
 
     private void isClientValid(HttpHeaders headers) {
         HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
+        String userName = HeaderUtility.getUser(headers);
 
+        logger.atInfo().log("User with NAME {} be directed Authorization", userName);
         apiClient.validate(clientHeaders, Role.TEAM_LEAD);
     }
 }

@@ -2,8 +2,8 @@ package com.mao.tytmistake.controller.response.handling;
 
 import com.mao.tytmistake.controller.response.BaseResponse;
 import com.mao.tytmistake.model.exception.AlreadyExistsException;
-import com.mao.tytmistake.model.exception.BaseException;
 import com.mao.tytmistake.model.exception.NotFoundException;
+import com.mao.tytmistake.model.utility.ExceptionResponseUtility;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +24,7 @@ public class ControllerAdvice {
     @ResponseBody
     public BaseResponse<Object> handleNotFoundException(NotFoundException exception) {
 
-        Map<String, Object> body = getErrorBody(exception);
+        Map<String, Object> body = ExceptionResponseUtility.getErrorBody(exception);
 
         return BaseResponse.failed(body, HttpStatus.NOT_FOUND);
     }
@@ -35,7 +34,7 @@ public class ControllerAdvice {
     @ResponseBody
     public BaseResponse<Object> handleAlreadyExistsException(AlreadyExistsException exception) {
 
-        Map<String, Object> body = getErrorBody(exception);
+        Map<String, Object> body = ExceptionResponseUtility.getErrorBody(exception);
 
         return BaseResponse.failed(body, HttpStatus.BAD_REQUEST);
     }
@@ -48,16 +47,6 @@ public class ControllerAdvice {
         String response = getValidationMessage(exception.getBindingResult());
 
         return BaseResponse.failed(response, HttpStatus.BAD_REQUEST);
-    }
-
-    private Map<String, Object> getErrorBody(BaseException exception) {
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("error", exception.getError());
-        body.put("message", exception.getMessage());
-        body.put("error_code", exception.getError().getCode());
-
-        return body;
     }
 
     private String getValidationMessage(BindingResult result) {

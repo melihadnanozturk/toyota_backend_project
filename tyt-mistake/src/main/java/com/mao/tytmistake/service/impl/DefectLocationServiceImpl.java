@@ -15,6 +15,8 @@ import com.mao.tytmistake.repository.DefectLocationEntityRepository;
 import com.mao.tytmistake.service.DefectLocationService;
 import com.mao.tytmistake.service.VehicleDefectService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,9 @@ public class DefectLocationServiceImpl implements DefectLocationService {
     private final DefectLocationEntityRepository defectLocationEntityRepository;
     private final VehicleDefectService vehicleDefectService;
     private final AuthApiClient apiClient;
+
+    private final Logger logger = LogManager.getLogger(DefectLocationServiceImpl.class);
+
 
     @Override
     public DefectLocationResponse addNewLocation(HttpHeaders headers, DefectLocationRequest request) {
@@ -41,6 +46,7 @@ public class DefectLocationServiceImpl implements DefectLocationService {
         List<LocationsResponse> locationsRequests = defectLocationEntityRepository.saveAll(entities).stream()
                 .map(LocationsResponse::mappedLocationsResponse).toList();
 
+        logger.atInfo().log("Locations with DEFECT_ID {} has been registered", request.getDefectId());
         return DefectLocationResponse.defectLocationEntityMappedResponse(locationsRequests);
     }
 
@@ -58,6 +64,7 @@ public class DefectLocationServiceImpl implements DefectLocationService {
 
         LocationEntity updatedEntity = defectLocationEntityRepository.save(entity);
 
+        logger.atInfo().log("Locations with ID {} has been updated", id);
         return LocationsResponse.mappedLocationsResponse(updatedEntity);
     }
 
@@ -82,12 +89,6 @@ public class DefectLocationServiceImpl implements DefectLocationService {
                 }).toList();
     }
 
-    private void isClientValid(HttpHeaders headers) {
-        HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
-
-        apiClient.validate(clientHeaders, Role.OPERATOR);
-    }
-
     private void deleteLocations(Long id, String user) {
         LocationEntity entity = defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(id)
                 .orElseThrow(() -> new NotFoundException(id.toString()));
@@ -96,5 +97,14 @@ public class DefectLocationServiceImpl implements DefectLocationService {
         entity.setUpdatedBy(user);
 
         defectLocationEntityRepository.save(entity);
+        logger.atInfo().log("Locations with ID {} has been removed", id);
+    }
+
+    private void isClientValid(HttpHeaders headers) {
+        HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
+        String userName = HeaderUtility.getUser(headers);
+
+        logger.atInfo().log("User with NAME {} be directed Authorization", userName);
+        apiClient.validate(clientHeaders, Role.OPERATOR);
     }
 }

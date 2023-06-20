@@ -11,6 +11,8 @@ import com.mao.tytmistake.model.utility.HeaderUtility;
 import com.mao.tytmistake.repository.VehicleEntityRepository;
 import com.mao.tytmistake.service.VehicleService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ public class VehicleServiceImpl implements VehicleService {
 
     private final VehicleEntityRepository vehicleEntityRepository;
     private final AuthApiClient apiClient;
+
+    private final Logger logger = LogManager.getLogger(VehicleServiceImpl.class);
 
     @Override
     public VehicleResponse addNewVehicle(HttpHeaders headers, VehicleRequest vehicleRequest) {
@@ -31,6 +35,8 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleEntity.setCreatedBy(user);
 
         VehicleEntity savedEntity = vehicleEntityRepository.save(vehicleEntity);
+        logger.atInfo().log("Entity with ID {} has been registered ", savedEntity.getId());
+
         return VehicleResponse.vehicleEntityMappedResponse(savedEntity);
     }
 
@@ -44,6 +50,8 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleEntity.setUpdatedBy(user);
 
         VehicleEntity savedEntity = vehicleEntityRepository.save(updatedEntity);
+        logger.atInfo().log("Entity with ID {} has been updated ", id);
+
         return VehicleResponse.vehicleEntityMappedResponse(savedEntity);
     }
 
@@ -58,6 +66,7 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleEntity.setUpdatedBy(user);
 
         vehicleEntityRepository.save(vehicleEntity);
+        logger.atInfo().log("Entity with ID {} has been removed ", id);
         return id;
     }
 
@@ -101,7 +110,9 @@ public class VehicleServiceImpl implements VehicleService {
 
     private void isClientValid(HttpHeaders headers) {
         HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
+        String userName = HeaderUtility.getUser(headers);
 
+        logger.atInfo().log("User with NAME {} be directed Authorization", userName);
         apiClient.validate(clientHeaders, Role.OPERATOR);
     }
 

@@ -1,4 +1,4 @@
-package com.mao.tytmistake.service.impl;
+package com.mao.tytmistake;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

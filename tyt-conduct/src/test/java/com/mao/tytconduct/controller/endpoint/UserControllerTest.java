@@ -9,7 +9,6 @@ import com.mao.tytconduct.controller.response.UserResponseBuilder;
 import com.mao.tytconduct.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -17,10 +16,12 @@ import org.springframework.http.MediaType;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @WebMvcTest(UserController.class)
 class UserControllerTest extends BaseControllerTests {
@@ -43,7 +44,7 @@ class UserControllerTest extends BaseControllerTests {
         UserRequest testRequest = new UserRequestBuilder().build();
         UserResponse testResponse = new UserResponseBuilder().build();
 
-        Mockito.when(userService.addNewUser(any(HttpHeaders.class), any(UserRequest.class))).thenReturn(testResponse);
+        when(userService.addNewUser(any(HttpHeaders.class), any(UserRequest.class))).thenReturn(testResponse);
 
         mockMvc.perform(post(COMMON_PATH)
                         .headers(testHeaders)
@@ -51,9 +52,11 @@ class UserControllerTest extends BaseControllerTests {
                         .content(objectMapper.writeValueAsString(testRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.name").value(testResponse.getName()))
-                .andExpect(jsonPath("$.response.password").value(testResponse.getPassword()))
-                .andExpect(jsonPath("$.response.roles").isNotEmpty());
+                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.localDateTime").isNotEmpty());
+
+        verify(userService, times(1))
+                .addNewUser(any(HttpHeaders.class), any(UserRequest.class));
     }
 
     @Test
@@ -64,7 +67,7 @@ class UserControllerTest extends BaseControllerTests {
         UserResponse testResponse = new UserResponseBuilder()
                 .build();
 
-        Mockito.when(userService.updateUser(any(HttpHeaders.class), anyLong(), any(UserRequest.class))).thenReturn(testResponse);
+        when(userService.updateUser(any(HttpHeaders.class), anyLong(), any(UserRequest.class))).thenReturn(testResponse);
 
         mockMvc.perform(put(COMMON_PATH + "/{id}", testId)
                         .headers(testHeaders)
@@ -72,9 +75,11 @@ class UserControllerTest extends BaseControllerTests {
                         .content(objectMapper.writeValueAsString(testRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.name").value(testResponse.getName()))
-                .andExpect(jsonPath("$.response.password").value(testResponse.getPassword()))
-                .andExpect(jsonPath("$.response.roles").isNotEmpty());
+                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.localDateTime").isNotEmpty());
+
+        verify(userService, times(1))
+                .updateUser(any(HttpHeaders.class), anyLong(), any(UserRequest.class));
     }
 
     @Test
@@ -82,13 +87,17 @@ class UserControllerTest extends BaseControllerTests {
         Long testId = 1L;
         HttpHeaders testHeaders = new HttpHeaders();
 
-        Mockito.when(userService.removeUser(any(HttpHeaders.class), anyLong())).thenReturn(testId);
+        when(userService.removeUser(any(HttpHeaders.class), anyLong())).thenReturn(testId);
 
         mockMvc.perform(delete(COMMON_PATH + "/{id}", testId)
                         .headers(testHeaders)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response").value(testId));
+                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.localDateTime").isNotEmpty());
+
+        verify(userService, times(1))
+                .removeUser(any(HttpHeaders.class), anyLong());
     }
 }

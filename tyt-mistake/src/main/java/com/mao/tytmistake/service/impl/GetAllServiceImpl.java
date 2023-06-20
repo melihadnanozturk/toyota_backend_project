@@ -51,7 +51,7 @@ public class GetAllServiceImpl implements GetAllService {
     }
 
     @Override
-    public Page<PageVehicleDefectResponse> getAllVehicleDefect(HttpHeaders headers, PageDefectRequest request) {
+    public Page<PageVehicleDefectResponse> getAllDefect(HttpHeaders headers, PageDefectRequest request) {
         this.isClientValid(headers);
 
         Pageable pageable = TytPageRequest.createPageRequest(request);

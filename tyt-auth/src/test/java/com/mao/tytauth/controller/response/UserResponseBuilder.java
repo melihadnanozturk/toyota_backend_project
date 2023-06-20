@@ -1,8 +1,7 @@
-package com.mao.tytauth.service.impl.controller.response;
+package com.mao.tytauth.controller.response;
 
-import com.mao.tytauth.controller.response.UserResponse;
+import com.mao.tytauth.TestDataBuilder;
 import com.mao.tytauth.model.Role;
-import com.mao.tytauth.service.impl.TestDataBuilder;
 
 public class UserResponseBuilder extends TestDataBuilder<UserResponse> {
     public UserResponseBuilder() {

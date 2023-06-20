@@ -1,6 +1,6 @@
 package com.mao.tytmistake.controller.request;
 
-import com.mao.tytmistake.service.impl.TestDataBuilder;
+import com.mao.tytmistake.TestDataBuilder;
 
 public class VehicleDefectRequestBuilder extends TestDataBuilder<VehicleDefectRequest> {
 

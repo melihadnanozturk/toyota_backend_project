@@ -1,7 +1,6 @@
-package com.mao.tytmistake.controller.endpoint;
+package com.mao.tytmistake.controller.response;
 
-import com.mao.tytmistake.controller.response.VehicleResponse;
-import com.mao.tytmistake.service.impl.TestDataBuilder;
+import com.mao.tytmistake.TestDataBuilder;
 
 public class VehicleResponseBuilder extends TestDataBuilder<VehicleResponse> {
 

@@ -1,6 +1,7 @@
 package com.mao.tytmistake.controller.endpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mao.tytmistake.BaseControllerTests;
 import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequestBuilder;
 import com.mao.tytmistake.controller.request.VehicleDefectRequest;
@@ -12,10 +13,8 @@ import com.mao.tytmistake.controller.response.VehicleDefectResponse;
 import com.mao.tytmistake.controller.response.VehicleDefectResponseBuilder;
 import com.mao.tytmistake.service.GetAllService;
 import com.mao.tytmistake.service.VehicleDefectService;
-import com.mao.tytmistake.service.impl.BaseControllerTests;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -25,10 +24,14 @@ import org.springframework.http.MediaType;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @WebMvcTest(VehicleDefectController.class)
 class VehicleDefectControllerTest extends BaseControllerTests {
@@ -52,7 +55,7 @@ class VehicleDefectControllerTest extends BaseControllerTests {
         PageVehicleDefectResponse testResponse = new PageVehicleDefectResponseBuilder().build();
         Page<PageVehicleDefectResponse> testPage = new PageImpl<>(List.of(testResponse));
 
-        Mockito.when(getAllService.getAllVehicleDefect(Mockito.any(HttpHeaders.class), Mockito.any(PageDefectRequest.class)))
+        when(getAllService.getAllDefect(any(HttpHeaders.class), any(PageDefectRequest.class)))
                 .thenReturn(testPage);
 
         mockMvc.perform(get(COMMON_PATH)
@@ -64,8 +67,8 @@ class VehicleDefectControllerTest extends BaseControllerTests {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
-        Mockito.verify(getAllService, Mockito.times(1))
-                .getAllVehicleDefect(Mockito.any(HttpHeaders.class), Mockito.any(PageDefectRequest.class));
+        verify(getAllService, times(1))
+                .getAllDefect(any(HttpHeaders.class), any(PageDefectRequest.class));
     }
 
     @Test
@@ -74,7 +77,7 @@ class VehicleDefectControllerTest extends BaseControllerTests {
         VehicleDefectRequest testRequest = new VehicleDefectRequestBuilder().build();
         VehicleDefectResponse testResponse = new VehicleDefectResponseBuilder().build();
 
-        Mockito.when(vehicleDefectService.addNewVehicleDefect(Mockito.any(HttpHeaders.class), Mockito.any(VehicleDefectRequest.class)))
+        when(vehicleDefectService.addNewDefect(any(HttpHeaders.class), any(VehicleDefectRequest.class)))
                 .thenReturn(testResponse);
 
         mockMvc.perform(post(COMMON_PATH)
@@ -86,8 +89,8 @@ class VehicleDefectControllerTest extends BaseControllerTests {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
-        Mockito.verify(vehicleDefectService, Mockito.times(1))
-                .addNewVehicleDefect(Mockito.any(HttpHeaders.class), Mockito.any(VehicleDefectRequest.class));
+        verify(vehicleDefectService, times(1))
+                .addNewDefect(any(HttpHeaders.class), any(VehicleDefectRequest.class));
     }
 
     @Test
@@ -97,7 +100,7 @@ class VehicleDefectControllerTest extends BaseControllerTests {
         UpdateVehicleDefectRequest testRequest = new UpdateVehicleDefectRequestBuilder().build();
         VehicleDefectResponse testResponse = new VehicleDefectResponseBuilder().build();
 
-        Mockito.when(vehicleDefectService.updateVehicleDefect(Mockito.any(HttpHeaders.class), Mockito.any(UpdateVehicleDefectRequest.class), Mockito.anyLong()))
+        when(vehicleDefectService.updateDefect(any(HttpHeaders.class), any(UpdateVehicleDefectRequest.class), anyLong()))
                 .thenReturn(testResponse);
 
         mockMvc.perform(put(COMMON_PATH + "/{id}", testId)
@@ -109,8 +112,8 @@ class VehicleDefectControllerTest extends BaseControllerTests {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
-        Mockito.verify(vehicleDefectService, Mockito.times(1))
-                .updateVehicleDefect(Mockito.any(HttpHeaders.class), Mockito.any(UpdateVehicleDefectRequest.class), Mockito.anyLong());
+        verify(vehicleDefectService, times(1))
+                .updateDefect(any(HttpHeaders.class), any(UpdateVehicleDefectRequest.class), anyLong());
     }
 
     @Test
@@ -118,7 +121,7 @@ class VehicleDefectControllerTest extends BaseControllerTests {
         Long testId = 57L;
         HttpHeaders testHeaders = createHeader();
 
-        Mockito.when(vehicleDefectService.deleteVehicleDefect(Mockito.any(HttpHeaders.class), Mockito.anyLong()))
+        when(vehicleDefectService.deleteDefect(any(HttpHeaders.class), anyLong()))
                 .thenReturn(testId);
 
         mockMvc.perform(delete(COMMON_PATH + "/{id}", testId)
@@ -129,8 +132,8 @@ class VehicleDefectControllerTest extends BaseControllerTests {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
-        Mockito.verify(vehicleDefectService, Mockito.times(1))
-                .deleteVehicleDefect(Mockito.any(HttpHeaders.class), Mockito.anyLong());
+        verify(vehicleDefectService, times(1))
+                .deleteDefect(any(HttpHeaders.class), anyLong());
     }
 
     private HttpHeaders createHeader() {

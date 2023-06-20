@@ -15,13 +15,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.http.HttpHeaders;
 
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+
 
 class UserServiceImplTest extends BaseUnitTest {
 
@@ -46,8 +46,8 @@ class UserServiceImplTest extends BaseUnitTest {
         when(userEntityRepository.findByNameAndIsDeletedIsFalse(testName)).thenReturn(Optional.of(testUserEntity));
 
         Assertions.assertThrows(AlreadyExistsException.class, () -> userService.addNewUser(testHeaders, userRequest));
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), Mockito.any(Role.class));
-        Mockito.verify(userEntityRepository, Mockito.times(1)).findByNameAndIsDeletedIsFalse(Mockito.anyString());
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), any(Role.class));
+        verify(userEntityRepository, times(1)).findByNameAndIsDeletedIsFalse(anyString());
     }
 
     @Test
@@ -59,14 +59,14 @@ class UserServiceImplTest extends BaseUnitTest {
         UserResponse expected = UserResponse.entityMappedToResponse(testEntity);
 
         when(userEntityRepository.findByNameAndIsDeletedIsFalse(testName)).thenReturn(Optional.empty());
-        when(userEntityRepository.save(Mockito.any(UserEntity.class))).thenReturn(testEntity);
+        when(userEntityRepository.save(any(UserEntity.class))).thenReturn(testEntity);
 
         UserResponse userResponse = userService.addNewUser(testHeaders, testRequest);
 
         Assertions.assertEquals(expected, userResponse);
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), Mockito.any(Role.class));
-        Mockito.verify(userEntityRepository, Mockito.times(1)).findByNameAndIsDeletedIsFalse(Mockito.anyString());
-        Mockito.verify(userEntityRepository, Mockito.times(1)).save(Mockito.any(UserEntity.class));
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), any(Role.class));
+        verify(userEntityRepository, times(1)).findByNameAndIsDeletedIsFalse(anyString());
+        verify(userEntityRepository, times(1)).save(any(UserEntity.class));
     }
 
     @Test

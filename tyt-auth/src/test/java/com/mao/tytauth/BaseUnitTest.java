@@ -1,4 +1,4 @@
-package com.mao.tytauth.service.impl;
+package com.mao.tytauth;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

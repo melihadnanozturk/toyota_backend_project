@@ -1,18 +1,18 @@
 package com.mao.tytauth.controller.endpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mao.tytauth.BaseControllerTests;
 import com.mao.tytauth.model.Role;
 import com.mao.tytauth.service.TokenService;
-import com.mao.tytauth.service.impl.BaseControllerTests;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -36,14 +36,18 @@ class AuthControllerTest extends BaseControllerTests {
     @Test
     void auth_happyPath() throws Exception {
         HttpHeaders testHeaders = new HttpHeaders();
-        Mockito.when(tokenService.authentication(any(HttpHeaders.class))).thenReturn(true);
+        when(tokenService.authentication(any(HttpHeaders.class))).thenReturn(true);
 
         mockMvc.perform(post(COMMON_PATH + "/validate-user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .headers(testHeaders))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response").value(true));
+                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.localDateTime").isNotEmpty());
+
+        verify(tokenService, times(1))
+                .authentication(any(HttpHeaders.class));
     }
 
     @Test
@@ -52,14 +56,18 @@ class AuthControllerTest extends BaseControllerTests {
         HttpHeaders testHeaders = new HttpHeaders();
         testHeaders.set("userName", "testUser");
         testHeaders.set("password", "testPassword");
-        Mockito.when(tokenService.createToken(any(HttpHeaders.class))).thenReturn(token);
+        when(tokenService.createToken(any(HttpHeaders.class))).thenReturn(token);
 
         mockMvc.perform(post(COMMON_PATH + "/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .headers(testHeaders))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response").value(token));
+                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.localDateTime").isNotEmpty());
+
+        verify(tokenService, times(1))
+                .createToken(any(HttpHeaders.class));
     }
 
     @Test
@@ -67,7 +75,7 @@ class AuthControllerTest extends BaseControllerTests {
         HttpHeaders testHeaders = new HttpHeaders();
         testHeaders.set("userName", "testUser");
         testHeaders.set("Authorization", "Bearer token");
-        Mockito.when(tokenService.authorization(any(HttpHeaders.class), any(Role.class))).thenReturn(true);
+        when(tokenService.authorization(any(HttpHeaders.class), any(Role.class))).thenReturn(true);
 
         mockMvc.perform(post(COMMON_PATH + "/validate")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -75,6 +83,10 @@ class AuthControllerTest extends BaseControllerTests {
                         .headers(testHeaders))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response").value(true));
+                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.localDateTime").isNotEmpty());
+
+        verify(tokenService, times(1))
+                .authorization(any(HttpHeaders.class), any(Role.class));
     }
 }

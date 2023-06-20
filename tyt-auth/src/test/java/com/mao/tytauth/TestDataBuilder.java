@@ -1,4 +1,4 @@
-package com.mao.tytmistake.service.impl;
+package com.mao.tytauth;
 
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;

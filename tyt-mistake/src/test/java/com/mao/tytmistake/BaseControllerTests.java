@@ -1,4 +1,4 @@
-package com.mao.tytmistake.service.impl;
+package com.mao.tytmistake;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

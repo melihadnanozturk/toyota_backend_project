@@ -1,5 +1,6 @@
-package com.mao.tytmistake.service.impl.service;
+package com.mao.tytmistake.service;
 
+import com.mao.tytmistake.BaseUnitTest;
 import com.mao.tytmistake.client.AuthApiClient;
 import com.mao.tytmistake.controller.request.*;
 import com.mao.tytmistake.controller.response.DefectLocationResponse;
@@ -11,20 +12,19 @@ import com.mao.tytmistake.model.entity.LocationEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
 import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.repository.DefectLocationEntityRepository;
-import com.mao.tytmistake.service.VehicleDefectService;
-import com.mao.tytmistake.service.impl.BaseUnitTest;
 import com.mao.tytmistake.service.impl.DefectLocationServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.http.HttpHeaders;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
 
 class DefectLocationServiceImplTest extends BaseUnitTest {
 
@@ -47,15 +47,15 @@ class DefectLocationServiceImplTest extends BaseUnitTest {
         DefectEntity testDefectEntity = new DefectEntityBuilder().withId(testDefectId).build();
         LocationEntity testLocationEntity = new LocationEntityBuilder().build();
 
-        Mockito.when(vehicleDefectService.getVehicleDefectEntityById(testDefectId)).thenReturn(testDefectEntity);
-        Mockito.when(defectLocationEntityRepository.saveAll(Mockito.any(List.class))).thenReturn(List.of(testLocationEntity));
+        when(vehicleDefectService.getDefectEntityById(testDefectId)).thenReturn(testDefectEntity);
+        when(defectLocationEntityRepository.saveAll(any(List.class))).thenReturn(List.of(testLocationEntity));
 
         DefectLocationResponse response = defectLocationService.addNewLocation(testHeaders, testRequest);
 
         Assertions.assertTrue(response.getLocationsResponseList().contains(LocationsResponse.mappedLocationsResponse(testLocationEntity)));
-        Mockito.verify(vehicleDefectService, Mockito.times(1)).getVehicleDefectEntityById(Mockito.anyLong());
-        Mockito.verify(defectLocationEntityRepository, Mockito.times(1)).saveAll(Mockito.anyList());
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), eq(Role.OPERATOR));
+        verify(vehicleDefectService, times(1)).getDefectEntityById(anyLong());
+        verify(defectLocationEntityRepository, times(1)).saveAll(anyList());
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
     }
 
     @Test
@@ -64,11 +64,11 @@ class DefectLocationServiceImplTest extends BaseUnitTest {
         HttpHeaders testHeaders = createHeader();
         LocationsRequest testRequest = new LocationsRequestBuilder().build();
 
-        Mockito.when(defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(testLocationId)).thenReturn(Optional.empty());
+        when(defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(testLocationId)).thenReturn(Optional.empty());
 
         Assertions.assertThrows(NotFoundException.class, () -> defectLocationService.updateLocation(testHeaders, testLocationId, testRequest));
-        Mockito.verify(defectLocationEntityRepository, Mockito.times(1)).findByIdAndIsDeletedIsFalse(Mockito.anyLong());
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), eq(Role.OPERATOR));
+        verify(defectLocationEntityRepository, times(1)).findByIdAndIsDeletedIsFalse(anyLong());
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
     }
 
     @Test
@@ -82,14 +82,14 @@ class DefectLocationServiceImplTest extends BaseUnitTest {
 
         LocationsResponse expected = LocationsResponse.mappedLocationsResponse(testLocationEntity);
 
-        Mockito.when(defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(testLocationId)).thenReturn(Optional.of(testLocationEntity));
-        Mockito.when(defectLocationEntityRepository.save(testLocationEntity)).thenReturn(testLocationEntity);
+        when(defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(testLocationId)).thenReturn(Optional.of(testLocationEntity));
+        when(defectLocationEntityRepository.save(testLocationEntity)).thenReturn(testLocationEntity);
 
         LocationsResponse response = defectLocationService.updateLocation(testHeaders, testLocationId, testRequest);
 
         Assertions.assertEquals(expected, response);
-        Mockito.verify(defectLocationEntityRepository, Mockito.times(1)).findByIdAndIsDeletedIsFalse(Mockito.anyLong());
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), eq(Role.OPERATOR));
+        verify(defectLocationEntityRepository, times(1)).findByIdAndIsDeletedIsFalse(anyLong());
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
     }
 
     @Test
@@ -100,11 +100,11 @@ class DefectLocationServiceImplTest extends BaseUnitTest {
                 .withIds(List.of(testLocationId))
                 .build();
 
-        Mockito.when(defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(testLocationId)).thenReturn(Optional.empty());
+        when(defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(testLocationId)).thenReturn(Optional.empty());
 
         Assertions.assertThrows(NotFoundException.class, () -> defectLocationService.removeLocation(testHeaders, testRequest));
-        Mockito.verify(defectLocationEntityRepository, Mockito.times(testRequest.getLocationIds().size())).findByIdAndIsDeletedIsFalse(Mockito.anyLong());
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), eq(Role.OPERATOR));
+        verify(defectLocationEntityRepository, times(testRequest.getLocationIds().size())).findByIdAndIsDeletedIsFalse(anyLong());
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
     }
 
     @Test
@@ -118,15 +118,15 @@ class DefectLocationServiceImplTest extends BaseUnitTest {
                 .withId(testLocationId)
                 .build();
 
-        Mockito.when(defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(testLocationId)).thenReturn(Optional.of(testLocationEntity));
+        when(defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(testLocationId)).thenReturn(Optional.of(testLocationEntity));
 
         List<Long> response = defectLocationService.removeLocation(testHeaders, testRequest);
 
         Assertions.assertEquals(testRequest.getLocationIds().size(), response.size());
         Assertions.assertTrue(response.contains(testLocationId));
-        Mockito.verify(defectLocationEntityRepository, Mockito.times(testRequest.getLocationIds().size())).findByIdAndIsDeletedIsFalse(Mockito.anyLong());
-        Mockito.verify(defectLocationEntityRepository, Mockito.times(testRequest.getLocationIds().size())).save(Mockito.any(LocationEntity.class));
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), eq(Role.OPERATOR));
+        verify(defectLocationEntityRepository, times(testRequest.getLocationIds().size())).findByIdAndIsDeletedIsFalse(anyLong());
+        verify(defectLocationEntityRepository, times(testRequest.getLocationIds().size())).save(any(LocationEntity.class));
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
     }
 
     private HttpHeaders createHeader() {

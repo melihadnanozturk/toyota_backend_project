@@ -8,11 +8,11 @@ import org.springframework.http.HttpHeaders;
 
 public interface VehicleDefectService {
 
-    VehicleDefectResponse addNewVehicleDefect(HttpHeaders headers, VehicleDefectRequest request);
+    VehicleDefectResponse addNewDefect(HttpHeaders headers, VehicleDefectRequest request);
 
-    Long deleteVehicleDefect(HttpHeaders headers, Long id);
+    Long deleteDefect(HttpHeaders headers, Long id);
 
-    VehicleDefectResponse updateVehicleDefect(HttpHeaders headers, UpdateVehicleDefectRequest request, Long id);
+    VehicleDefectResponse updateDefect(HttpHeaders headers, UpdateVehicleDefectRequest request, Long id);
 
-    DefectEntity getVehicleDefectEntityById(Long id);
+    DefectEntity getDefectEntityById(Long id);
 }

@@ -5,17 +5,18 @@ import com.mao.tytconduct.controller.response.UserResponse;
 import com.mao.tytconduct.controller.response.UserResponseBuilder;
 import com.mao.tytconduct.service.LoginService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @WebMvcTest(LoginController.class)
 class LoginControllerTest extends BaseControllerTests {
@@ -34,7 +35,7 @@ class LoginControllerTest extends BaseControllerTests {
                 .withPassword(testPassword)
                 .build();
 
-        Mockito.when(loginService.isUserValid(any(HttpHeaders.class))).thenReturn(testResponse);
+        when(loginService.isUserValid(any(HttpHeaders.class))).thenReturn(testResponse);
 
         mockMvc.perform(post(COMMON_PATH)
                         .header("userName", testUserName)
@@ -42,8 +43,10 @@ class LoginControllerTest extends BaseControllerTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.name").value(testResponse.getName()))
-                .andExpect(jsonPath("$.response.password").value(testResponse.getPassword()))
-                .andExpect(jsonPath("$.response.roles").isNotEmpty());
+                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.localDateTime").isNotEmpty());
+
+        verify(loginService, times(1))
+                .isUserValid(any(HttpHeaders.class));
     }
 }

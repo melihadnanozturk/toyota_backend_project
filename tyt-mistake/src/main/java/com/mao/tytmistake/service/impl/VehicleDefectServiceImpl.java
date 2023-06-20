@@ -27,7 +27,7 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
 
     @SneakyThrows
     @Override
-    public VehicleDefectResponse addNewVehicleDefect(HttpHeaders headers, VehicleDefectRequest vehicleDefectRequest) {
+    public VehicleDefectResponse addNewDefect(HttpHeaders headers, VehicleDefectRequest vehicleDefectRequest) {
         this.isClientValid(headers);
         String user = HeaderUtility.getUser(headers);
 
@@ -43,7 +43,7 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
     }
 
     @Override
-    public VehicleDefectResponse updateVehicleDefect(HttpHeaders headers, UpdateVehicleDefectRequest request, Long id) {
+    public VehicleDefectResponse updateDefect(HttpHeaders headers, UpdateVehicleDefectRequest request, Long id) {
         this.isClientValid(headers);
         String user = HeaderUtility.getUser(headers);
 
@@ -60,7 +60,7 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
     }
 
     @Override
-    public Long deleteVehicleDefect(HttpHeaders headers, Long id) {
+    public Long deleteDefect(HttpHeaders headers, Long id) {
         this.isClientValid(headers);
         String user = HeaderUtility.getUser(headers);
 
@@ -78,7 +78,7 @@ public class VehicleDefectServiceImpl implements VehicleDefectService {
     }
 
     @Override
-    public DefectEntity getVehicleDefectEntityById(Long id) {
+    public DefectEntity getDefectEntityById(Long id) {
         return vehicleDefectEntityRepository.findByIdAndIsDeletedIsFalse(id)
                 .orElseThrow(() -> new NotFoundException(id.toString()));
     }

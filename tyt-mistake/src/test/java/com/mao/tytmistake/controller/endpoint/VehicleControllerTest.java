@@ -1,15 +1,16 @@
 package com.mao.tytmistake.controller.endpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mao.tytmistake.BaseControllerTests;
 import com.mao.tytmistake.controller.request.VehicleRequest;
 import com.mao.tytmistake.controller.request.VehicleRequestBuilder;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.response.PageVehicleResponseBuilder;
 import com.mao.tytmistake.controller.response.VehicleResponse;
+import com.mao.tytmistake.controller.response.VehicleResponseBuilder;
 import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
 import com.mao.tytmistake.service.GetAllService;
 import com.mao.tytmistake.service.VehicleService;
-import com.mao.tytmistake.service.impl.BaseControllerTests;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

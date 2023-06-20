@@ -1,8 +1,8 @@
 package com.mao.tytmistake.controller.response;
 
+import com.mao.tytmistake.TestDataBuilder;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.request.page.VehicleSortColon;
-import com.mao.tytmistake.service.impl.TestDataBuilder;
 
 public class PageVehicleRequestBuilder extends TestDataBuilder<PageVehicleRequest> {
 

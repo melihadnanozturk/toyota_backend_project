@@ -1,5 +1,6 @@
-package com.mao.tytmistake.service.impl.service;
+package com.mao.tytmistake.service;
 
+import com.mao.tytmistake.BaseUnitTest;
 import com.mao.tytmistake.client.AuthApiClient;
 import com.mao.tytmistake.controller.request.VehicleRequest;
 import com.mao.tytmistake.controller.request.VehicleRequestBuilder;
@@ -10,16 +11,17 @@ import com.mao.tytmistake.model.entity.enums.Role;
 import com.mao.tytmistake.model.exception.AlreadyExistsException;
 import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.repository.VehicleEntityRepository;
-import com.mao.tytmistake.service.impl.BaseUnitTest;
 import com.mao.tytmistake.service.impl.VehicleServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.http.HttpHeaders;
 
 import java.util.Optional;
+
+import static org.mockito.Mockito.*;
+
 
 class VehicleServiceImplTest extends BaseUnitTest {
 
@@ -42,14 +44,14 @@ class VehicleServiceImplTest extends BaseUnitTest {
                 .withChassisNumber(testChassisNumber)
                 .build();
 
-        Mockito.when(vehicleEntityRepository.findByChassisNumberAndIsDeletedIsFalse(testChassisNumber))
+        when(vehicleEntityRepository.findByChassisNumberAndIsDeletedIsFalse(testChassisNumber))
                 .thenReturn(Optional.of(testExistsEntity));
 
         Assertions.assertThrows(AlreadyExistsException.class, () -> vehicleService.addNewVehicle(testHeaders, testRequest));
-        Mockito.verify(apiClient, Mockito.times(1))
-                .validate(Mockito.any(HttpHeaders.class), Mockito.any(Role.class));
-        Mockito.verify(vehicleEntityRepository, Mockito.times(1))
-                .findByChassisNumberAndIsDeletedIsFalse(Mockito.anyString());
+        verify(apiClient, times(1))
+                .validate(any(HttpHeaders.class), any(Role.class));
+        verify(vehicleEntityRepository, times(1))
+                .findByChassisNumberAndIsDeletedIsFalse(anyString());
     }
 
     @Test
@@ -58,16 +60,16 @@ class VehicleServiceImplTest extends BaseUnitTest {
         VehicleRequest testRequest = new VehicleRequestBuilder().build();
         VehicleEntity testVehicleEntity = new VehicleEntityBuilder().build();
 
-        Mockito.when(vehicleEntityRepository.save(Mockito.any(VehicleEntity.class))).thenReturn(testVehicleEntity);
+        when(vehicleEntityRepository.save(any(VehicleEntity.class))).thenReturn(testVehicleEntity);
 
         VehicleResponse response = vehicleService.addNewVehicle(testHeaders, testRequest);
 
         Assertions.assertEquals(VehicleResponse.vehicleEntityMappedResponse(testVehicleEntity), response);
 
-        Mockito.verify(apiClient, Mockito.times(1))
-                .validate(Mockito.any(HttpHeaders.class), Mockito.any(Role.class));
-        Mockito.verify(vehicleEntityRepository, Mockito.times(1))
-                .save(Mockito.any(VehicleEntity.class));
+        verify(apiClient, times(1))
+                .validate(any(HttpHeaders.class), any(Role.class));
+        verify(vehicleEntityRepository, times(1))
+                .save(any(VehicleEntity.class));
     }
 
     @Test
@@ -76,13 +78,13 @@ class VehicleServiceImplTest extends BaseUnitTest {
         HttpHeaders testHeaders = this.createHeader();
         VehicleRequest testRequest = new VehicleRequestBuilder().build();
 
-        Mockito.when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.empty());
+        when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.empty());
 
         Assertions.assertThrows(NotFoundException.class, () -> vehicleService.updateVehicle(testHeaders, testId, testRequest));
-        Mockito.verify(apiClient, Mockito.times(1))
-                .validate(Mockito.any(HttpHeaders.class), Mockito.any(Role.class));
-        Mockito.verify(vehicleEntityRepository, Mockito.times(1))
-                .findByIdAndIsDeletedIsFalse(Mockito.anyLong());
+        verify(apiClient, times(1))
+                .validate(any(HttpHeaders.class), any(Role.class));
+        verify(vehicleEntityRepository, times(1))
+                .findByIdAndIsDeletedIsFalse(anyLong());
     }
 
     @Test
@@ -102,16 +104,16 @@ class VehicleServiceImplTest extends BaseUnitTest {
                 .withChassisNumber(testChassisNumber)
                 .build();
 
-        Mockito.when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId))
+        when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId))
                 .thenReturn(Optional.of(testVehicleEntityById));
-        Mockito.when(vehicleEntityRepository.findByChassisNumberAndIsDeletedIsFalse(testChassisNumber))
+        when(vehicleEntityRepository.findByChassisNumberAndIsDeletedIsFalse(testChassisNumber))
                 .thenReturn(Optional.of(testVehicleEntityChassisNumber));
 
         Assertions.assertThrows(AlreadyExistsException.class, () -> vehicleService.updateVehicle(testHeaders, testId, testRequest));
-        Mockito.verify(apiClient, Mockito.times(1))
-                .validate(Mockito.any(HttpHeaders.class), Mockito.any(Role.class));
-        Mockito.verify(vehicleEntityRepository, Mockito.times(1))
-                .findByIdAndIsDeletedIsFalse(Mockito.anyLong());
+        verify(apiClient, times(1))
+                .validate(any(HttpHeaders.class), any(Role.class));
+        verify(vehicleEntityRepository, times(1))
+                .findByIdAndIsDeletedIsFalse(anyLong());
     }
 
     @Test
@@ -127,24 +129,24 @@ class VehicleServiceImplTest extends BaseUnitTest {
                 .withChassisNumber(testChassisNumber)
                 .build();
 
-        Mockito.when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId))
+        when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId))
                 .thenReturn(Optional.of(testVehicleEntity));
-        Mockito.when(vehicleEntityRepository.findByChassisNumberAndIsDeletedIsFalse(testChassisNumber))
+        when(vehicleEntityRepository.findByChassisNumberAndIsDeletedIsFalse(testChassisNumber))
                 .thenReturn(Optional.of(testVehicleEntity));
-        Mockito.when(vehicleEntityRepository.save(Mockito.any(VehicleEntity.class)))
+        when(vehicleEntityRepository.save(any(VehicleEntity.class)))
                 .thenReturn(testVehicleEntity);
 
         VehicleResponse response = vehicleService.updateVehicle(testHeaders, testId, testRequest);
 
         Assertions.assertEquals(VehicleResponse.vehicleEntityMappedResponse(testVehicleEntity), response);
-        Mockito.verify(apiClient, Mockito.times(1))
-                .validate(Mockito.any(HttpHeaders.class), Mockito.any(Role.class));
-        Mockito.verify(vehicleEntityRepository, Mockito.times(1))
-                .findByIdAndIsDeletedIsFalse(Mockito.anyLong());
-        Mockito.verify(vehicleEntityRepository, Mockito.times(1))
-                .findByChassisNumberAndIsDeletedIsFalse(Mockito.anyString());
-        Mockito.verify(vehicleEntityRepository, Mockito.times(1))
-                .save(Mockito.any(VehicleEntity.class));
+        verify(apiClient, times(1))
+                .validate(any(HttpHeaders.class), any(Role.class));
+        verify(vehicleEntityRepository, times(1))
+                .findByIdAndIsDeletedIsFalse(anyLong());
+        verify(vehicleEntityRepository, times(1))
+                .findByChassisNumberAndIsDeletedIsFalse(anyString());
+        verify(vehicleEntityRepository, times(1))
+                .save(any(VehicleEntity.class));
     }
 
     @Deprecated
@@ -153,13 +155,13 @@ class VehicleServiceImplTest extends BaseUnitTest {
         Long testId = 57L;
         HttpHeaders testHeaders = this.createHeader();
 
-        Mockito.when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId))
+        when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId))
                 .thenReturn(Optional.empty());
 
         Assertions.assertThrows(NotFoundException.class, () -> vehicleService.removeVehicle(testHeaders, testId));
 
-        Mockito.verify(vehicleEntityRepository, Mockito.times(1)).findByIdAndIsDeletedIsFalse(Mockito.anyLong());
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), Mockito.any(Role.class));
+        verify(vehicleEntityRepository, times(1)).findByIdAndIsDeletedIsFalse(anyLong());
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), any(Role.class));
     }
 
     @Test
@@ -170,21 +172,21 @@ class VehicleServiceImplTest extends BaseUnitTest {
                 .withId(testId)
                 .build();
 
-        Mockito.when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId))
+        when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId))
                 .thenReturn(Optional.of(testVehicleEntity));
 
         Long response = vehicleService.removeVehicle(testHeaders, testId);
 
         Assertions.assertEquals(testId, response);
-        Mockito.verify(vehicleEntityRepository, Mockito.times(1)).findByIdAndIsDeletedIsFalse(Mockito.anyLong());
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), Mockito.any(Role.class));
+        verify(vehicleEntityRepository, times(1)).findByIdAndIsDeletedIsFalse(anyLong());
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), any(Role.class));
     }
 
     @Test
     void getById_notExistsVehicleId_throwNotFoundException() {
         Long testId = 57L;
 
-        Mockito.when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.empty());
+        when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.empty());
 
         Assertions.assertThrows(NotFoundException.class, () -> vehicleService.getById(testId));
     }
@@ -194,7 +196,7 @@ class VehicleServiceImplTest extends BaseUnitTest {
         Long testId = 57L;
         VehicleEntity testVehicleEntity = new VehicleEntityBuilder().build();
 
-        Mockito.when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.of(testVehicleEntity));
+        when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.of(testVehicleEntity));
 
         VehicleEntity response = vehicleService.getById(testId);
         Assertions.assertEquals(testVehicleEntity, response);

@@ -1,6 +1,7 @@
 package com.mao.tytmistake.controller.endpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mao.tytmistake.BaseControllerTests;
 import com.mao.tytmistake.controller.request.*;
 import com.mao.tytmistake.controller.response.DefectLocationResponse;
 import com.mao.tytmistake.controller.response.DefectLocationResponseBuilder;
@@ -8,10 +9,8 @@ import com.mao.tytmistake.controller.response.LocationsResponse;
 import com.mao.tytmistake.controller.response.LocationsResponseBuilder;
 import com.mao.tytmistake.service.DefectLocationService;
 import com.mao.tytmistake.service.GetAllService;
-import com.mao.tytmistake.service.impl.BaseControllerTests;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -19,10 +18,14 @@ import org.springframework.http.MediaType;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @WebMvcTest(DefectLocationController.class)
 class DefectLocationControllerTest extends BaseControllerTests {
@@ -40,12 +43,12 @@ class DefectLocationControllerTest extends BaseControllerTests {
     }
 
     @Test
-    void getAllDefectLocation_happyPath() throws Exception {
+    void getAllLocation_happyPath() throws Exception {
         Long testId = 57L;
         HttpHeaders testHeaders = createHeader();
         LocationsResponse testResponse = new LocationsResponseBuilder().build();
 
-        Mockito.when(getAllService.getAllLocations(Mockito.any(HttpHeaders.class), Mockito.anyLong()))
+        when(getAllService.getAllLocations(any(HttpHeaders.class), anyLong()))
                 .thenReturn(List.of(testResponse));
 
         mockMvc.perform(get(COMMON_PATH + "/{defectId}", testId)
@@ -56,8 +59,8 @@ class DefectLocationControllerTest extends BaseControllerTests {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
-        Mockito.verify(getAllService, Mockito.times(1))
-                .getAllLocations(Mockito.any(HttpHeaders.class), Mockito.anyLong());
+        verify(getAllService, times(1))
+                .getAllLocations(any(HttpHeaders.class), anyLong());
     }
 
     @Test
@@ -66,7 +69,7 @@ class DefectLocationControllerTest extends BaseControllerTests {
         DefectLocationRequest testRequest = new DefectLocationRequestBuilder().build();
         DefectLocationResponse testResponse = new DefectLocationResponseBuilder().build();
 
-        Mockito.when(defectLocationService.addNewLocation(Mockito.any(HttpHeaders.class), Mockito.any(DefectLocationRequest.class)))
+        when(defectLocationService.addNewLocation(any(HttpHeaders.class), any(DefectLocationRequest.class)))
                 .thenReturn(testResponse);
 
         mockMvc.perform(post(COMMON_PATH)
@@ -78,8 +81,8 @@ class DefectLocationControllerTest extends BaseControllerTests {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
-        Mockito.verify(defectLocationService, Mockito.times(1))
-                .addNewLocation(Mockito.any(HttpHeaders.class), Mockito.any(DefectLocationRequest.class));
+        verify(defectLocationService, times(1))
+                .addNewLocation(any(HttpHeaders.class), any(DefectLocationRequest.class));
     }
 
     @Test
@@ -89,7 +92,7 @@ class DefectLocationControllerTest extends BaseControllerTests {
         LocationsRequest testRequest = new LocationsRequestBuilder().build();
         LocationsResponse testResponse = new LocationsResponseBuilder().build();
 
-        Mockito.when(defectLocationService.updateLocation(Mockito.any(HttpHeaders.class), Mockito.anyLong(), Mockito.any(LocationsRequest.class)))
+        when(defectLocationService.updateLocation(any(HttpHeaders.class), anyLong(), any(LocationsRequest.class)))
                 .thenReturn(testResponse);
 
         mockMvc.perform(put(COMMON_PATH + "/{locationId}", testId)
@@ -101,8 +104,8 @@ class DefectLocationControllerTest extends BaseControllerTests {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
-        Mockito.verify(defectLocationService, Mockito.times(1))
-                .updateLocation(Mockito.any(HttpHeaders.class), Mockito.anyLong(), Mockito.any(LocationsRequest.class));
+        verify(defectLocationService, times(1))
+                .updateLocation(any(HttpHeaders.class), anyLong(), any(LocationsRequest.class));
     }
 
     @Test
@@ -120,8 +123,8 @@ class DefectLocationControllerTest extends BaseControllerTests {
                 .andExpect(jsonPath("$.response").isNotEmpty())
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
-        Mockito.verify(defectLocationService, Mockito.times(1))
-                .removeLocation(Mockito.any(HttpHeaders.class), Mockito.any(LocationRemoveRequest.class));
+        verify(defectLocationService, times(1))
+                .removeLocation(any(HttpHeaders.class), any(LocationRemoveRequest.class));
     }
 
     private HttpHeaders createHeader() {

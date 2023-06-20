@@ -24,35 +24,35 @@ public class VehicleDefectController {
     private final GetAllService getAllService;
 
     @GetMapping
-    public BaseResponse<List<PageVehicleDefectResponse>> getAllVehicleDefect(
+    public BaseResponse<List<PageVehicleDefectResponse>> getAllDefect(
             @RequestHeader HttpHeaders headers,
             @RequestBody PageDefectRequest request) {
-        Page<PageVehicleDefectResponse> page = getAllService.getAllVehicleDefect(headers, request);
+        Page<PageVehicleDefectResponse> page = getAllService.getAllDefect(headers, request);
         return BaseResponse.isSuccess(page.getContent());
     }
 
     @PostMapping
-    public BaseResponse<VehicleDefectResponse> addNewVehicleDefect(
+    public BaseResponse<VehicleDefectResponse> addNewDefect(
             @RequestHeader HttpHeaders headers,
             @RequestBody VehicleDefectRequest vehicleDefectRequest) {
-        VehicleDefectResponse response = vehicleDefectService.addNewVehicleDefect(headers, vehicleDefectRequest);
+        VehicleDefectResponse response = vehicleDefectService.addNewDefect(headers, vehicleDefectRequest);
         return BaseResponse.isSuccess(response);
     }
 
     @PutMapping("/{id}")
-    public BaseResponse<VehicleDefectResponse> updateVehicleDefect(
+    public BaseResponse<VehicleDefectResponse> updateDefect(
             @RequestHeader HttpHeaders headers,
             @RequestBody UpdateVehicleDefectRequest request,
             @PathVariable Long id) {
-        VehicleDefectResponse response = vehicleDefectService.updateVehicleDefect(headers, request, id);
+        VehicleDefectResponse response = vehicleDefectService.updateDefect(headers, request, id);
         return BaseResponse.isSuccess(response);
     }
 
     @DeleteMapping("/{id}")
-    public BaseResponse<Long> delete(
+    public BaseResponse<Long> removeDefect(
             @RequestHeader HttpHeaders headers,
             @PathVariable Long id) {
-        Long removedId = vehicleDefectService.deleteVehicleDefect(headers, id);
+        Long removedId = vehicleDefectService.deleteDefect(headers, id);
         return BaseResponse.isSuccess(removedId);
     }
 }

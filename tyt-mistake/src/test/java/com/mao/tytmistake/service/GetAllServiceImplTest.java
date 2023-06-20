@@ -1,5 +1,6 @@
-package com.mao.tytmistake.service.impl.service;
+package com.mao.tytmistake.service;
 
+import com.mao.tytmistake.BaseUnitTest;
 import com.mao.tytmistake.client.AuthApiClient;
 import com.mao.tytmistake.controller.request.page.PageDefectRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
@@ -12,16 +13,15 @@ import com.mao.tytmistake.model.VehicleEntityBuilder;
 import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.LocationEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
+import com.mao.tytmistake.model.entity.enums.Role;
 import com.mao.tytmistake.repository.DefectLocationEntityRepository;
 import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
 import com.mao.tytmistake.repository.VehicleEntityRepository;
-import com.mao.tytmistake.service.impl.BaseUnitTest;
 import com.mao.tytmistake.service.impl.GetAllServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -55,8 +55,8 @@ class GetAllServiceImplTest extends BaseUnitTest {
         Page<VehicleEntity> testPage = new PageImpl<>(testVehicleEntities);
         PageVehicleResponse expectedResponse = PageVehicleResponse.vehicleEntityMappedPageResponse(testVehicleEntity);
 
-        Mockito.when(vehicleEntityRepository
-                        .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+        when(vehicleEntityRepository
+                .findAll(any(Specification.class), any(Pageable.class)))
                 .thenReturn(testPage);
 
         Page<PageVehicleResponse> response = getAllService.getAllVehicle(testHeaders, testRequest);
@@ -64,7 +64,9 @@ class GetAllServiceImplTest extends BaseUnitTest {
         Assertions.assertEquals(response.getContent().size(), testVehicleEntities.size());
         Assertions.assertTrue(response.toList().contains(expectedResponse));
         verify(vehicleEntityRepository, times(1))
-                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+                .findAll(any(Specification.class), any(Pageable.class));
+        verify(apiClient, times(1))
+                .validate(any(HttpHeaders.class), eq(Role.TEAM_LEAD));
     }
 
     @Test
@@ -77,15 +79,17 @@ class GetAllServiceImplTest extends BaseUnitTest {
                 .vehicleDefectEntityMappedPageResponse(testDefectEntity);
 
         when(vehicleDefectEntityRepository
-                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class)))
+                .findAll(any(Specification.class), any(Pageable.class)))
                 .thenReturn(testPage);
 
-        Page<PageVehicleDefectResponse> response = getAllService.getAllVehicleDefect(testHeaders, testRequest);
+        Page<PageVehicleDefectResponse> response = getAllService.getAllDefect(testHeaders, testRequest);
 
         Assertions.assertEquals(response.getContent().size(), 1);
         Assertions.assertTrue(response.toList().contains(testVehicleDefectResponse));
         verify(vehicleDefectEntityRepository, times(1))
-                .findAll(Mockito.any(Specification.class), Mockito.any(Pageable.class));
+                .findAll(any(Specification.class), any(Pageable.class));
+        verify(apiClient, times(1))
+                .validate(any(HttpHeaders.class), eq(Role.TEAM_LEAD));
     }
 
     @Test
@@ -101,6 +105,8 @@ class GetAllServiceImplTest extends BaseUnitTest {
         Assertions.assertEquals(responses.size(), 1);
         Assertions.assertTrue(responses.contains(LocationsResponse.mappedLocationsResponse(testEntity)));
         verify(defectLocationEntityRepository, times(1)).findAllByVehicleDefectEntityId(anyLong());
+        verify(apiClient, times(1))
+                .validate(any(HttpHeaders.class), eq(Role.TEAM_LEAD));
     }
 
     private HttpHeaders createHeader() {

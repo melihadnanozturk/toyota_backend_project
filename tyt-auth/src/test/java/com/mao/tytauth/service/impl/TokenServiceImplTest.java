@@ -1,14 +1,13 @@
-package com.mao.tytauth.service.impl.service.impl;
+package com.mao.tytauth.service.impl;
 
+import com.mao.tytauth.BaseUnitTest;
 import com.mao.tytauth.client.ConductApiClient;
 import com.mao.tytauth.controller.response.BaseResponse;
 import com.mao.tytauth.controller.response.UserResponse;
+import com.mao.tytauth.controller.response.UserResponseBuilder;
 import com.mao.tytauth.model.Role;
 import com.mao.tytauth.model.exception.ForbiddenException;
 import com.mao.tytauth.model.exception.NotValidTokenForUserException;
-import com.mao.tytauth.service.impl.BaseUnitTest;
-import com.mao.tytauth.service.impl.TokenServiceImpl;
-import com.mao.tytauth.service.impl.controller.response.UserResponseBuilder;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.http.HttpHeaders;
 
 import java.nio.charset.StandardCharsets;
@@ -26,6 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class TokenServiceImplTest extends BaseUnitTest {
 
@@ -42,7 +41,7 @@ class TokenServiceImplTest extends BaseUnitTest {
         HttpHeaders testHeaders = this.createHeader(testName, testPassword);
         UserResponse testResponse = new UserResponseBuilder().build();
 
-        Mockito.when(conductApiClient.userIsValid(any(HttpHeaders.class)))
+        when(conductApiClient.userIsValid(any(HttpHeaders.class)))
                 .thenReturn(BaseResponse.isSuccess(testResponse));
 
         String response = tokenService.createToken(testHeaders);
@@ -52,7 +51,7 @@ class TokenServiceImplTest extends BaseUnitTest {
         Assertions.assertEquals(testClaims.getSubject(), testResponse.getName());
         testResponse.getRoles().forEach(role ->
                 Assertions.assertTrue(testClaims.get("Role", List.class).contains(role.getName())));
-        Mockito.verify(conductApiClient, Mockito.times(1)).userIsValid(any(HttpHeaders.class));
+        verify(conductApiClient, times(1)).userIsValid(any(HttpHeaders.class));
     }
 
     @Test
@@ -62,7 +61,7 @@ class TokenServiceImplTest extends BaseUnitTest {
         HttpHeaders testHeadersForToken = this.createHeader(testName, testPassword);
         UserResponse testResponse = new UserResponseBuilder().build();
 
-        Mockito.when(conductApiClient.userIsValid(any(HttpHeaders.class)))
+        when(conductApiClient.userIsValid(any(HttpHeaders.class)))
                 .thenReturn(BaseResponse.isSuccess(testResponse));
         String testToken = tokenService.createToken(testHeadersForToken);
         HttpHeaders testForAuthentication = this.createHeaderForToken("invalidName", testToken);
@@ -80,7 +79,7 @@ class TokenServiceImplTest extends BaseUnitTest {
                 .withPassword(testPassword)
                 .build();
 
-        Mockito.when(conductApiClient.userIsValid(any(HttpHeaders.class)))
+        when(conductApiClient.userIsValid(any(HttpHeaders.class)))
                 .thenReturn(BaseResponse.isSuccess(testResponse));
         String testToken = tokenService.createToken(testHeadersForToken);
         HttpHeaders testForAuthentication = this.createHeaderForToken(testName, testToken);
@@ -99,7 +98,7 @@ class TokenServiceImplTest extends BaseUnitTest {
                 .withRole(Role.ADMIN)
                 .build();
 
-        Mockito.when(conductApiClient.userIsValid(any(HttpHeaders.class)))
+        when(conductApiClient.userIsValid(any(HttpHeaders.class)))
                 .thenReturn(BaseResponse.isSuccess(testResponse));
         String testToken = tokenService.createToken(testHeadersForToken);
         HttpHeaders testForAuthentication = this.createHeaderForToken(testName, testToken);
@@ -118,7 +117,7 @@ class TokenServiceImplTest extends BaseUnitTest {
                 .withRole(Role.ADMIN)
                 .build();
 
-        Mockito.when(conductApiClient.userIsValid(any(HttpHeaders.class)))
+        when(conductApiClient.userIsValid(any(HttpHeaders.class)))
                 .thenReturn(BaseResponse.isSuccess(testResponse));
         String testToken = tokenService.createToken(testHeadersForToken);
         HttpHeaders testForAuthentication = this.createHeaderForToken(testName, testToken);

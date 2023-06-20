@@ -14,7 +14,7 @@ public interface GetAllService {
 
     Page<PageVehicleResponse> getAllVehicle(HttpHeaders headers, PageVehicleRequest request);
 
-    Page<PageVehicleDefectResponse> getAllVehicleDefect(HttpHeaders headers, PageDefectRequest request);
+    Page<PageVehicleDefectResponse> getAllDefect(HttpHeaders headers, PageDefectRequest request);
 
     List<LocationsResponse> getAllLocations(HttpHeaders headers, Long defectId);
 }

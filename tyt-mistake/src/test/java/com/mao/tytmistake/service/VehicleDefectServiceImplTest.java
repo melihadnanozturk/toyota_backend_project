@@ -1,5 +1,6 @@
-package com.mao.tytmistake.service.impl.service;
+package com.mao.tytmistake.service;
 
+import com.mao.tytmistake.BaseUnitTest;
 import com.mao.tytmistake.client.AuthApiClient;
 import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequest;
 import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequestBuilder;
@@ -13,19 +14,19 @@ import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
 import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
-import com.mao.tytmistake.service.impl.BaseUnitTest;
 import com.mao.tytmistake.service.impl.VehicleDefectServiceImpl;
 import com.mao.tytmistake.service.impl.VehicleServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.http.HttpHeaders;
 
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
 
 class VehicleDefectServiceImplTest extends BaseUnitTest {
 
@@ -52,15 +53,15 @@ class VehicleDefectServiceImplTest extends BaseUnitTest {
                 .build();
         DefectEntity testDefectEntity = new DefectEntityBuilder().build();
 
-        Mockito.when(vehicleService.getById(testVehicleId)).thenReturn(testVehicleEntity);
-        Mockito.when(vehicleDefectEntityRepository.save(Mockito.any(DefectEntity.class))).thenReturn(testDefectEntity);
+        when(vehicleService.getById(testVehicleId)).thenReturn(testVehicleEntity);
+        when(vehicleDefectEntityRepository.save(any(DefectEntity.class))).thenReturn(testDefectEntity);
 
-        VehicleDefectResponse response = vehicleDefectService.addNewVehicleDefect(testHeaders, tesVehicleDefectRequest);
+        VehicleDefectResponse response = vehicleDefectService.addNewDefect(testHeaders, tesVehicleDefectRequest);
 
         Assertions.assertEquals(VehicleDefectResponse.vehicleDefectEntityMappedResponse(testDefectEntity), response);
-        Mockito.verify(vehicleService, Mockito.times(1)).getById(Mockito.anyLong());
-        Mockito.verify(vehicleDefectEntityRepository, Mockito.times(1)).save(Mockito.any(DefectEntity.class));
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), eq(Role.OPERATOR));
+        verify(vehicleService, times(1)).getById(anyLong());
+        verify(vehicleDefectEntityRepository, times(1)).save(any(DefectEntity.class));
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
     }
 
     @Test
@@ -69,11 +70,11 @@ class VehicleDefectServiceImplTest extends BaseUnitTest {
         HttpHeaders testHeaders = createHeader();
         UpdateVehicleDefectRequest tesRequest = new UpdateVehicleDefectRequestBuilder().build();
 
-        Mockito.when(vehicleDefectEntityRepository.findById(testVehicleDefectEntityId)).thenReturn(Optional.empty());
+        when(vehicleDefectEntityRepository.findById(testVehicleDefectEntityId)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(NotFoundException.class, () -> vehicleDefectService.updateVehicleDefect(testHeaders, tesRequest, testVehicleDefectEntityId));
-        Mockito.verify(vehicleDefectEntityRepository, Mockito.times(1)).findById(Mockito.anyLong());
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), eq(Role.OPERATOR));
+        Assertions.assertThrows(NotFoundException.class, () -> vehicleDefectService.updateDefect(testHeaders, tesRequest, testVehicleDefectEntityId));
+        verify(vehicleDefectEntityRepository, times(1)).findById(anyLong());
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
     }
 
     @Test
@@ -88,15 +89,15 @@ class VehicleDefectServiceImplTest extends BaseUnitTest {
                 .withImage(testImage)
                 .build();
 
-        Mockito.when(vehicleDefectEntityRepository.findById(testDefectEntityId)).thenReturn(Optional.of(testDefectEntity));
-        Mockito.when(vehicleDefectEntityRepository.save(Mockito.any(DefectEntity.class))).thenReturn(testDefectEntity);
+        when(vehicleDefectEntityRepository.findById(testDefectEntityId)).thenReturn(Optional.of(testDefectEntity));
+        when(vehicleDefectEntityRepository.save(any(DefectEntity.class))).thenReturn(testDefectEntity);
 
-        VehicleDefectResponse response = vehicleDefectService.updateVehicleDefect(testHeaders, testRequest, testDefectEntityId);
+        VehicleDefectResponse response = vehicleDefectService.updateDefect(testHeaders, testRequest, testDefectEntityId);
 
         Assertions.assertEquals(VehicleDefectResponse.vehicleDefectEntityMappedResponse(testDefectEntity), response);
-        Mockito.verify(vehicleDefectEntityRepository, Mockito.times(1)).findById(Mockito.anyLong());
-        Mockito.verify(vehicleDefectEntityRepository, Mockito.times(1)).save(Mockito.any(DefectEntity.class));
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), eq(Role.OPERATOR));
+        verify(vehicleDefectEntityRepository, times(1)).findById(anyLong());
+        verify(vehicleDefectEntityRepository, times(1)).save(any(DefectEntity.class));
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
     }
 
     @Test
@@ -104,11 +105,11 @@ class VehicleDefectServiceImplTest extends BaseUnitTest {
         Long testDefectEntityId = 9L;
         HttpHeaders testHeaders = createHeader();
 
-        Mockito.when(vehicleDefectEntityRepository.findById(testDefectEntityId)).thenReturn(Optional.empty());
+        when(vehicleDefectEntityRepository.findById(testDefectEntityId)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(NotFoundException.class, () -> vehicleDefectService.deleteVehicleDefect(testHeaders, testDefectEntityId));
-        Mockito.verify(vehicleDefectEntityRepository, Mockito.times(1)).findById(Mockito.anyLong());
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), eq(Role.OPERATOR));
+        Assertions.assertThrows(NotFoundException.class, () -> vehicleDefectService.deleteDefect(testHeaders, testDefectEntityId));
+        verify(vehicleDefectEntityRepository, times(1)).findById(anyLong());
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
     }
 
     @Test
@@ -117,25 +118,25 @@ class VehicleDefectServiceImplTest extends BaseUnitTest {
         HttpHeaders testHeaders = createHeader();
         DefectEntity testDefectEntity = new DefectEntityBuilder().withId(testDefectEntityId).build();
 
-        Mockito.when(vehicleDefectEntityRepository.findById(testDefectEntityId)).thenReturn(Optional.of(testDefectEntity));
-        Mockito.when(vehicleDefectEntityRepository.save(Mockito.any(DefectEntity.class))).thenReturn(testDefectEntity);
+        when(vehicleDefectEntityRepository.findById(testDefectEntityId)).thenReturn(Optional.of(testDefectEntity));
+        when(vehicleDefectEntityRepository.save(any(DefectEntity.class))).thenReturn(testDefectEntity);
 
-        Long response = vehicleDefectService.deleteVehicleDefect(testHeaders, testDefectEntityId);
+        Long response = vehicleDefectService.deleteDefect(testHeaders, testDefectEntityId);
 
         Assertions.assertEquals(testDefectEntityId, response);
-        Mockito.verify(vehicleDefectEntityRepository, Mockito.times(1)).findById(Mockito.anyLong());
-        Mockito.verify(vehicleDefectEntityRepository, Mockito.times(1)).save(Mockito.any(DefectEntity.class));
-        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), eq(Role.OPERATOR));
+        verify(vehicleDefectEntityRepository, times(1)).findById(anyLong());
+        verify(vehicleDefectEntityRepository, times(1)).save(any(DefectEntity.class));
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
     }
 
     @Test
     void getDefectEntityById_notExistsDefectId_throwNotFoundException() {
         Long testDefectEntityId = 9L;
 
-        Mockito.when(vehicleDefectEntityRepository.findByIdAndIsDeletedIsFalse(testDefectEntityId)).thenReturn(Optional.empty());
+        when(vehicleDefectEntityRepository.findByIdAndIsDeletedIsFalse(testDefectEntityId)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(NotFoundException.class, () -> vehicleDefectService.getVehicleDefectEntityById(testDefectEntityId));
-        Mockito.verify(vehicleDefectEntityRepository, Mockito.times(1)).findByIdAndIsDeletedIsFalse(Mockito.anyLong());
+        Assertions.assertThrows(NotFoundException.class, () -> vehicleDefectService.getDefectEntityById(testDefectEntityId));
+        verify(vehicleDefectEntityRepository, times(1)).findByIdAndIsDeletedIsFalse(anyLong());
     }
 
     @Test
@@ -143,12 +144,12 @@ class VehicleDefectServiceImplTest extends BaseUnitTest {
         Long testDefectEntityId = 9L;
         DefectEntity testDefectEntity = new DefectEntityBuilder().withId(testDefectEntityId).build();
 
-        Mockito.when(vehicleDefectEntityRepository.findByIdAndIsDeletedIsFalse(testDefectEntityId)).thenReturn(Optional.of(testDefectEntity));
+        when(vehicleDefectEntityRepository.findByIdAndIsDeletedIsFalse(testDefectEntityId)).thenReturn(Optional.of(testDefectEntity));
 
-        DefectEntity response = vehicleDefectService.getVehicleDefectEntityById(testDefectEntityId);
+        DefectEntity response = vehicleDefectService.getDefectEntityById(testDefectEntityId);
 
         Assertions.assertEquals(testDefectEntity, response);
-        Mockito.verify(vehicleDefectEntityRepository, Mockito.times(1)).findByIdAndIsDeletedIsFalse(Mockito.anyLong());
+        verify(vehicleDefectEntityRepository, times(1)).findByIdAndIsDeletedIsFalse(anyLong());
     }
 
     private HttpHeaders createHeader() {

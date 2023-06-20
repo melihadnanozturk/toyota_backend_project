@@ -34,7 +34,7 @@ public class DefectLocationServiceImpl implements DefectLocationService {
         String user = HeaderUtility.getUser(headers);
 
         DefectEntity defectEntity = vehicleDefectService
-                .getVehicleDefectEntityById(request.getDefectId());
+                .getDefectEntityById(request.getDefectId());
 
         List<LocationEntity> entities = this.mappedLocationRequestToLocationEntity(request, user, defectEntity);
 

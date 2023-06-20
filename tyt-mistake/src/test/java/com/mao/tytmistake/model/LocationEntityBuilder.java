@@ -1,7 +1,7 @@
 package com.mao.tytmistake.model;
 
+import com.mao.tytmistake.TestDataBuilder;
 import com.mao.tytmistake.model.entity.LocationEntity;
-import com.mao.tytmistake.service.impl.TestDataBuilder;
 
 public class LocationEntityBuilder extends TestDataBuilder<LocationEntity> {
 

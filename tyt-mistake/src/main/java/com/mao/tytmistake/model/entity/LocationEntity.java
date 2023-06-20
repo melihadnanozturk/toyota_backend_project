@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class LocationEntity extends BaseEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -3773257122505753461L;
+    private static final long serialVersionUID = 1473266048998239512L;
 
     @Column(name = "y_location", nullable = false)
     private String yLocation;

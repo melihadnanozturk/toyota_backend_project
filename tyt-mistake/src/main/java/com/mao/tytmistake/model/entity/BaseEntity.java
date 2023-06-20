@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public abstract class BaseEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -2575739952112205541L;
+    private static final long serialVersionUID = 3575817800743620899L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

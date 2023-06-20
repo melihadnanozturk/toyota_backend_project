@@ -19,7 +19,7 @@ import java.util.List;
 public class VehicleEntity extends BaseEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -1230356016786658643L;
+    private static final long serialVersionUID = 2220055646868781446L;
 
     @Column(name = "model", nullable = false)
     @Enumerated(EnumType.STRING)

@@ -18,7 +18,7 @@ import java.util.List;
 public class DefectEntity extends BaseEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -1411462554817294988L;
+    private static final long serialVersionUID = 8618845170579261301L;
 
     @Enumerated(EnumType.STRING)
     private Defect defect;

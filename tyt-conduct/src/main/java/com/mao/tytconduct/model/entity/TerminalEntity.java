@@ -8,13 +8,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Table(name = "tt_terminal")
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TerminalEntity extends BaseEntity {
+public class TerminalEntity extends BaseEntity implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -5979363465218192211L;
 
     @Column(name = "term_name")
     private String name;

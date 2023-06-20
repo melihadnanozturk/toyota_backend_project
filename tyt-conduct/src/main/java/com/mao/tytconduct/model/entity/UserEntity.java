@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashSet;
 
 @Table(name = "tt_user")
@@ -17,7 +19,10 @@ import java.util.HashSet;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity extends BaseEntity {
+public class UserEntity extends BaseEntity implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 2412919361061342382L;
 
     @Column(name = "name")
     private String name;

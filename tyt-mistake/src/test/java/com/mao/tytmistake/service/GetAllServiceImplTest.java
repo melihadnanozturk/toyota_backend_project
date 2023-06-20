@@ -84,7 +84,7 @@ class GetAllServiceImplTest extends BaseUnitTest {
 
         Page<PageVehicleDefectResponse> response = getAllService.getAllDefect(testHeaders, testRequest);
 
-        Assertions.assertEquals(response.getContent().size(), 1);
+        Assertions.assertEquals(1, response.getContent().size());
         Assertions.assertTrue(response.toList().contains(testVehicleDefectResponse));
         verify(vehicleDefectEntityRepository, times(1))
                 .findAll(any(Specification.class), any(Pageable.class));
@@ -102,7 +102,7 @@ class GetAllServiceImplTest extends BaseUnitTest {
 
         List<LocationsResponse> responses = getAllService.getAllLocations(testHeaders, testId);
 
-        Assertions.assertEquals(responses.size(), 1);
+        Assertions.assertEquals(1, responses.size());
         Assertions.assertTrue(responses.contains(LocationsResponse.mappedLocationsResponse(testEntity)));
         verify(defectLocationEntityRepository, times(1)).findAllByVehicleDefectEntityId(anyLong());
         verify(apiClient, times(1))

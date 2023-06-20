@@ -31,9 +31,9 @@ public class TokenServiceImpl implements TokenService {
     private final ConductApiClient conductApiClient;
 
     @Value("${application.security.jwt.secret-key}")
-    private String secretKey;
+    private static final String SECRET_KEY = "maoCom";
     @Value("${application.security.jwt.expiration}")
-    private long jwtExpiration;
+    private static final long JWT_EXPIRATION = 900000;
 
     private static final String USER_NAME = "userName";
     private static final String TOKEN = "token";
@@ -41,13 +41,14 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public String createToken(HttpHeaders headers) {
+
         UserResponse userResponse = getUser(headers);
 
         return Jwts.builder()
                 .setSubject(userResponse.getName())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .claim("Role", userResponse.getRoles())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
                 .signWith(this.getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -82,8 +83,8 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @SneakyThrows
-    public Key getKey() {
-        byte[] keyBytes = generateKey(secretKey);
+    private Key getKey() {
+        byte[] keyBytes = generateKey(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -128,7 +129,7 @@ public class TokenServiceImpl implements TokenService {
                 .getBody();
     }
 
-    public static Map<String, String> getHeaderInfo(HttpHeaders headers) {
+    private static Map<String, String> getHeaderInfo(HttpHeaders headers) {
         Map<String, String> infos = new HashMap<>();
 
         String userName = Objects.requireNonNull(headers.get(USER_NAME)).get(0);

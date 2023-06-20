@@ -40,7 +40,7 @@ public class BaseResponse<T> {
         SUCCESS("SUCCESS"),
         FAILED("FAILED");
 
-        private String message;
+        final String message;
 
         ResponseStatus(String message) {
             this.message = message;

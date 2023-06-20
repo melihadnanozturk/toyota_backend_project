@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.HashSet;
 
 @Getter
 @Setter
@@ -14,5 +14,5 @@ public class UserResponse {
 
     private String name;
     private String password;
-    private List<Role> roles;
+    private HashSet<Role> roles;
 }

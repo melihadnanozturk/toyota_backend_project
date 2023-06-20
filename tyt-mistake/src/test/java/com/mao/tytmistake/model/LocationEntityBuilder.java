@@ -8,4 +8,9 @@ public class LocationEntityBuilder extends TestDataBuilder<LocationEntity> {
     public LocationEntityBuilder() {
         super(LocationEntity.class, true);
     }
+
+    public LocationEntityBuilder withId(Long id) {
+        data.setId(id);
+        return this;
+    }
 }

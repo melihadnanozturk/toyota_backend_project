@@ -114,14 +114,90 @@ class VehicleServiceImplTest extends BaseUnitTest {
                 .findByIdAndIsDeletedIsFalse(Mockito.anyLong());
     }
 
-    @Deprecated
     @Test
-    void removeVehicle() {
+    void updateVehicle_happyPath() {
+        Long testId = 1L;
+        String testChassisNumber = "testChassisNumber";
+        HttpHeaders testHeaders = this.createHeader();
+        VehicleRequest testRequest = new VehicleRequestBuilder()
+                .withChassisNumber(testChassisNumber)
+                .build();
+        VehicleEntity testVehicleEntity = new VehicleEntityBuilder()
+                .withId(57L)
+                .withChassisNumber(testChassisNumber)
+                .build();
+
+        Mockito.when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId))
+                .thenReturn(Optional.of(testVehicleEntity));
+        Mockito.when(vehicleEntityRepository.findByChassisNumberAndIsDeletedIsFalse(testChassisNumber))
+                .thenReturn(Optional.of(testVehicleEntity));
+        Mockito.when(vehicleEntityRepository.save(Mockito.any(VehicleEntity.class)))
+                .thenReturn(testVehicleEntity);
+
+        VehicleResponse response = vehicleService.updateVehicle(testHeaders, testId, testRequest);
+
+        Assertions.assertEquals(VehicleResponse.vehicleEntityMappedResponse(testVehicleEntity), response);
+        Mockito.verify(apiClient, Mockito.times(1))
+                .validate(Mockito.any(HttpHeaders.class), Mockito.any(Role.class));
+        Mockito.verify(vehicleEntityRepository, Mockito.times(1))
+                .findByIdAndIsDeletedIsFalse(Mockito.anyLong());
+        Mockito.verify(vehicleEntityRepository, Mockito.times(1))
+                .findByChassisNumberAndIsDeletedIsFalse(Mockito.anyString());
+        Mockito.verify(vehicleEntityRepository, Mockito.times(1))
+                .save(Mockito.any(VehicleEntity.class));
     }
 
     @Deprecated
     @Test
-    void getById() {
+    void removeVehicle_notExistsVehicleId_throwNotFoundException() {
+        Long testId = 57L;
+        HttpHeaders testHeaders = this.createHeader();
+
+        Mockito.when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThrows(NotFoundException.class, () -> vehicleService.removeVehicle(testHeaders, testId));
+
+        Mockito.verify(vehicleEntityRepository, Mockito.times(1)).findByIdAndIsDeletedIsFalse(Mockito.anyLong());
+        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), Mockito.any(Role.class));
+    }
+
+    @Test
+    void removeVehicle_happyPath() {
+        Long testId = 57L;
+        HttpHeaders testHeaders = this.createHeader();
+        VehicleEntity testVehicleEntity = new VehicleEntityBuilder()
+                .withId(testId)
+                .build();
+
+        Mockito.when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId))
+                .thenReturn(Optional.of(testVehicleEntity));
+
+        Long response = vehicleService.removeVehicle(testHeaders, testId);
+
+        Assertions.assertEquals(testId, response);
+        Mockito.verify(vehicleEntityRepository, Mockito.times(1)).findByIdAndIsDeletedIsFalse(Mockito.anyLong());
+        Mockito.verify(apiClient, Mockito.times(1)).validate(Mockito.any(HttpHeaders.class), Mockito.any(Role.class));
+    }
+
+    @Test
+    void getById_notExistsVehicleId_throwNotFoundException() {
+        Long testId = 57L;
+
+        Mockito.when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(NotFoundException.class, () -> vehicleService.getById(testId));
+    }
+
+    @Test
+    void getById_happyPath() {
+        Long testId = 57L;
+        VehicleEntity testVehicleEntity = new VehicleEntityBuilder().build();
+
+        Mockito.when(vehicleEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.of(testVehicleEntity));
+
+        VehicleEntity response = vehicleService.getById(testId);
+        Assertions.assertEquals(testVehicleEntity, response);
     }
 
     private HttpHeaders createHeader() {

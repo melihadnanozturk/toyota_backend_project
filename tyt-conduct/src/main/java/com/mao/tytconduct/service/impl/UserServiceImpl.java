@@ -4,7 +4,7 @@ import com.mao.tytconduct.client.AuthApiClient;
 import com.mao.tytconduct.controller.request.UserRequest;
 import com.mao.tytconduct.controller.response.UserResponse;
 import com.mao.tytconduct.model.entity.UserEntity;
-import com.mao.tytconduct.model.entity.enums.Role;
+import com.mao.tytconduct.model.enums.Role;
 import com.mao.tytconduct.model.exception.AlreadyExistsException;
 import com.mao.tytconduct.model.exception.NotFoundException;
 import com.mao.tytconduct.model.utility.HeaderUtility;
@@ -98,17 +98,35 @@ public class UserServiceImpl implements UserService {
         return id;
     }
 
+    /**
+     * Retrieves the user entity with the specified ID if it exists and is not deleted.
+     *
+     * @param id Id of user entity to retrieve
+     * @return user entity
+     * @throws NotFoundException if user that has id not exits
+     */
     private UserEntity isUserEntityExists(Long id) {
         return userEntityRepository.findByIdAndIsDeletedIsFalse(id)
                 .orElseThrow(() -> new NotFoundException(id.toString()));
     }
 
+    /**
+     * Checks if a user entity with the specified name already exists and is not deleted.
+     *
+     * @param name name of the user entity to check
+     * @throws AlreadyExistsException if a user entity that has name already exists
+     */
     private void isUserEntityExistsWithName(String name) {
         if (userEntityRepository.findByNameAndIsDeletedIsFalse(name).isPresent()) {
             throw new AlreadyExistsException(name);
         }
     }
 
+    /**
+     * Validates the client's authorization and authentication.
+     *
+     * @param headers HTTP headers containing the necessary information for validation
+     */
     private String isClientValid(HttpHeaders headers) {
         HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
         String userName = Objects.requireNonNull(clientHeaders.get("userName")).get(0);

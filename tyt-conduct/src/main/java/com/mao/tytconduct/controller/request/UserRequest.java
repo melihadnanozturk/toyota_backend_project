@@ -1,7 +1,7 @@
 package com.mao.tytconduct.controller.request;
 
 import com.mao.tytconduct.model.entity.UserEntity;
-import com.mao.tytconduct.model.entity.enums.Role;
+import com.mao.tytconduct.model.enums.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

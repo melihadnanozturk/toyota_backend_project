@@ -1,4 +1,4 @@
-package com.mao.tytconduct.model.entity.enums;
+package com.mao.tytconduct.model.enums;
 
 /**
  * This Enum holds user roles

@@ -1,7 +1,7 @@
 package com.mao.tytconduct.client;
 
 import com.mao.tytconduct.controller.response.BaseResponse;
-import com.mao.tytconduct.model.entity.enums.Role;
+import com.mao.tytconduct.model.enums.Role;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;

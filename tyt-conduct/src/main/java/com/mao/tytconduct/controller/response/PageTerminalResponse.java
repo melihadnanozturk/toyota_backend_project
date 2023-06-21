@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * This class is used to response terminal information.
+ * This class is used to response terminal information in page.
  * This class contains TerminalResponses
  * The class uses the Lombok annotations @Setter,  @Getter and @Builder to automatically generate getters and a builder method.
  */

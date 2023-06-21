@@ -40,16 +40,16 @@ public class UserController {
      *
      * @param headers UserName, Bearer Token
      * @param request User information to update
-     * @param id      User id to update
+     * @param userId  User id to update
      * @return UserResponse with updated user information
      */
-    @PutMapping("/{id}")
+    @PutMapping("/{userId}")
     BaseResponse<UserResponse> updateUser(
             @RequestHeader HttpHeaders headers,
             @RequestBody @Valid UserRequest request,
-            @PathVariable Long id) {
+            @PathVariable Long userId) {
 
-        UserResponse response = userService.updateUser(headers, id, request);
+        UserResponse response = userService.updateUser(headers, userId, request);
         return BaseResponse.isSuccess(response);
     }
 

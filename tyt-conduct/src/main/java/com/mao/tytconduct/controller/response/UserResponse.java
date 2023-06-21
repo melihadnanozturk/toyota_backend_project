@@ -1,7 +1,7 @@
 package com.mao.tytconduct.controller.response;
 
 import com.mao.tytconduct.model.entity.UserEntity;
-import com.mao.tytconduct.model.entity.enums.Role;
+import com.mao.tytconduct.model.enums.Role;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

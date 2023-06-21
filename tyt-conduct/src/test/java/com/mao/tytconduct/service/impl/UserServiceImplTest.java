@@ -7,7 +7,7 @@ import com.mao.tytconduct.controller.request.UserRequest;
 import com.mao.tytconduct.controller.response.UserResponse;
 import com.mao.tytconduct.model.UserEntityBuilder;
 import com.mao.tytconduct.model.entity.UserEntity;
-import com.mao.tytconduct.model.entity.enums.Role;
+import com.mao.tytconduct.model.enums.Role;
 import com.mao.tytconduct.model.exception.AlreadyExistsException;
 import com.mao.tytconduct.model.exception.NotFoundException;
 import com.mao.tytconduct.repository.UserEntityRepository;

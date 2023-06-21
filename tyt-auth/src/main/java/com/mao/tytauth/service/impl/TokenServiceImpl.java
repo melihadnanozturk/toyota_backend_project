@@ -58,6 +58,7 @@ public class TokenServiceImpl implements TokenService {
 
         UserResponse userResponse = getUser(headers);
 
+        logger.atInfo().log("JWT token was created");
         return Jwts.builder()
                 .setSubject(userResponse.getName())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -83,6 +84,7 @@ public class TokenServiceImpl implements TokenService {
 
         this.checkUserName(userName, jwt);
 
+        logger.atInfo().log("{} is VALID", userName);
         return true;
     }
 
@@ -105,6 +107,7 @@ public class TokenServiceImpl implements TokenService {
         this.checkUserName(userName, token);
         this.checkRoles(role, token);
 
+        logger.atInfo().log("{} was passed to Authorization", userName);
         return true;
     }
 

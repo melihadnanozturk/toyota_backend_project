@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,7 +84,6 @@ public class ControllerAdvice {
         logger.atError().log(logMessage, error, message, errorCode);
 
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
         body.put("error_code", exception.getError().getCode());
         body.put("error", exception.getError());
         body.put("message", exception.getMessage());

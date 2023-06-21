@@ -50,6 +50,7 @@ mvn clean install -DskipTests
 
 [32Bit.postman_collection.json](..%2F..%2F32Bit.postman_collection.json)
 
+## Endpoint And Request
 
 
 

@@ -10,7 +10,7 @@ spring:
     password: ${TYT_DB_PASS:root123}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
 application:
   security:

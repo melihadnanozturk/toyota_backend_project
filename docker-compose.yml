@@ -7,8 +7,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root123
       - POSTGRES_DB=postgres
-    volumes:
-      - tyt:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
@@ -38,7 +36,3 @@ services:
       - 8082:8082
     environment:
       - SPRING_PROFILES_ACTIVE=test
-
-volumes:
-  tyt:
-    driver: local2

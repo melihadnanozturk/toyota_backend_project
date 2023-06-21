@@ -10,6 +10,11 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/**
+ * This class is used to response vehicle information in page.
+ * This class contains TerminalResponses
+ * The class uses the Lombok annotations @Setter,  @Getter and @Builder to automatically generate getters and a builder method,@EqualsAndHashCode to equals process.
+ */
 @Builder
 @Getter
 @Setter
@@ -24,6 +29,12 @@ public class PageVehicleResponse {
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
+    /**
+     * Maps the VehicleEntity to the PageVehicleResponse
+     *
+     * @param vehicleEntity VehicleEntity to be mapped
+     * @return TerminalResponse holding information mapped from terminalEntity
+     */
     public static PageVehicleResponse vehicleEntityMappedPageResponse(VehicleEntity vehicleEntity) {
         return PageVehicleResponse.builder()
                 .id(vehicleEntity.getId())

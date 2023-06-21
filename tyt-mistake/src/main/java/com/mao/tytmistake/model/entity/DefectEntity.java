@@ -8,6 +8,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Entity class representing a defect in the system.
+ */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tt_defect")

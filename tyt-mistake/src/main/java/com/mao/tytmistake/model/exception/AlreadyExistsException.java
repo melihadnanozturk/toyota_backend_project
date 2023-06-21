@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.io.Serial;
 
+/**
+ * This exception is thrown when record exists already
+ */
 @Getter
 public class AlreadyExistsException extends BaseException {
 

@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a page request for retrieving a list of defects with pagination.
+ */
 @Getter
 @Setter
 public class PageDefectRequest extends TytPageRequest {

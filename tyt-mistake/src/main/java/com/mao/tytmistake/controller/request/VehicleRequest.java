@@ -8,7 +8,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-
+/**
+ * This class is used to query vehicle
+ * This class is POJO class that contains vehicle information.
+ * The class uses the Lombok annotations @Getter, @Setter and @Builder to automatically generate getters, setters and a builder
+ */
 @Builder
 @Getter
 @Setter

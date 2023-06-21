@@ -3,6 +3,9 @@ package com.mao.tytmistake.model.entity.enums;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * This Enum holds vehicle models
+ */
 @Getter
 @ToString
 public enum Model {

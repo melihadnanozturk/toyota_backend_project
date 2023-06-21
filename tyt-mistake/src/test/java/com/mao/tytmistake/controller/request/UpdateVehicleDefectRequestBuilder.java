@@ -2,10 +2,10 @@ package com.mao.tytmistake.controller.request;
 
 import com.mao.tytmistake.TestDataBuilder;
 
-public class UpdateVehicleDefectRequestBuilder extends TestDataBuilder<UpdateVehicleDefectRequest> {
+public class UpdateVehicleDefectRequestBuilder extends TestDataBuilder<UpdateDefectRequest> {
 
     public UpdateVehicleDefectRequestBuilder() {
-        super(UpdateVehicleDefectRequest.class, true);
+        super(UpdateDefectRequest.class, true);
     }
 
     public UpdateVehicleDefectRequestBuilder withImage(String image) {

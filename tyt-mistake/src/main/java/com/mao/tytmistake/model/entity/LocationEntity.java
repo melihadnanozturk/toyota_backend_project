@@ -7,6 +7,9 @@ import lombok.*;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Entity class representing a location in the system.
+ */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tt_location")

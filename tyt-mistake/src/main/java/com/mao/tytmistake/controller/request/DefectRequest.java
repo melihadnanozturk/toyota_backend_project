@@ -8,10 +8,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * This class is used to query defect
+ * This class is POJO class that contains defect information.
+ * The class uses the Lombok annotations @Getter, @Setter and @Builder to automatically generate getters, setters and a builder
+ */
 @Builder
 @Getter
 @Setter
-public class VehicleDefectRequest {
+public class DefectRequest {
 
     @NotNull
     private Defect defect;
@@ -24,7 +29,7 @@ public class VehicleDefectRequest {
     @NotNull
     private Long vehicleId;
 
-    public static DefectEntity responseMapToVehicleDefectEntity(VehicleDefectRequest defectRequest) {
+    public static DefectEntity responseMapToVehicleDefectEntity(DefectRequest defectRequest) {
         return DefectEntity.builder()
                 .defect(defectRequest.getDefect())
                 .defectImage(defectRequest.getDefectImage())

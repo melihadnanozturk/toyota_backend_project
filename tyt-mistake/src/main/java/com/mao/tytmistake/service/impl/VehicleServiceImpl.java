@@ -16,6 +16,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service implementation for managing vehicles.
+ */
 @Service
 @RequiredArgsConstructor
 public class VehicleServiceImpl implements VehicleService {
@@ -25,6 +28,14 @@ public class VehicleServiceImpl implements VehicleService {
 
     private final Logger logger = LogManager.getLogger(VehicleServiceImpl.class);
 
+    /**
+     * Adds a new vehicle based on provided information.
+     *
+     * @param headers        HttpHeaders containing client information.
+     * @param vehicleRequest VehicleRequest object containing vehicle details.
+     * @return VehicleResponse object representing newly added vehicle.
+     * @throws AlreadyExistsException if a vehicle with same chassis number already exists.
+     */
     @Override
     public VehicleResponse addNewVehicle(HttpHeaders headers, VehicleRequest vehicleRequest) {
         this.isClientValid(headers);
@@ -40,6 +51,16 @@ public class VehicleServiceImpl implements VehicleService {
         return VehicleResponse.vehicleEntityMappedResponse(savedEntity);
     }
 
+    /**
+     * Updates information of an existing vehicle.
+     *
+     * @param headers        HttpHeaders containing client information.
+     * @param id             ID of vehicle to update.
+     * @param vehicleRequest VehicleRequest object containing updated vehicle details.
+     * @return VehicleResponse object representing updated vehicle.
+     * @throws NotFoundException      if vehicle is not found.
+     * @throws AlreadyExistsException if a vehicle with same updated chassis number already exists.
+     */
     @Override
     public VehicleResponse updateVehicle(HttpHeaders headers, Long id, VehicleRequest vehicleRequest) {
         this.isClientValid(headers);
@@ -55,6 +76,14 @@ public class VehicleServiceImpl implements VehicleService {
         return VehicleResponse.vehicleEntityMappedResponse(savedEntity);
     }
 
+    /**
+     * Removes a vehicle based on provided ID.
+     *
+     * @param headers HttpHeaders containing client information.
+     * @param id      ID of the vehicle to remove.
+     * @return ID of the removed vehicle.
+     * @throws NotFoundException if vehicle is not found.
+     */
     @Override
     public Long removeVehicle(HttpHeaders headers, Long id) {
         this.isClientValid(headers);
@@ -70,17 +99,39 @@ public class VehicleServiceImpl implements VehicleService {
         return id;
     }
 
+    /**
+     * Retrieves a vehicle by its ID.
+     *
+     * @param id ID of vehicle to retrieve.
+     * @return VehicleEntity with specified ID.
+     * @throws NotFoundException if vehicle is not found.
+     */
     @Override
     public VehicleEntity getById(Long id) {
         return vehicleEntityRepository.findByIdAndIsDeletedIsFalse(id).orElseThrow(() -> new NotFoundException(id.toString()));
     }
 
+    /**
+     * Checks if a vehicle with given chassis number already exists before inserting a new vehicle.
+     *
+     * @param chassisNumber Chassis number of vehicle to check.
+     * @throws AlreadyExistsException if a vehicle with same chassis number already exists.
+     */
     private void checkChassisNumberBeforeInsert(String chassisNumber) {
         if (vehicleEntityRepository.findByChassisNumberAndIsDeletedIsFalse(chassisNumber).isPresent()) {
             throw new AlreadyExistsException(chassisNumber);
         }
     }
 
+    /**
+     * Checks if a vehicle with given ID and chassis number already exists before updating a vehicle.
+     *
+     * @param id            ID of the vehicle to update.
+     * @param chassisNumber Updated chassis number of vehicle to check.
+     * @return VehicleEntity with specified ID.
+     * @throws NotFoundException      if vehicle with the given ID is not found.
+     * @throws AlreadyExistsException if a vehicle with the same updated chassis number already exists.
+     */
     private VehicleEntity checkVehicleEntityBeforeUpdate(Long id, String chassisNumber) {
         VehicleEntity byId = this.getById(id);
         VehicleEntity byChassisNumber = vehicleEntityRepository
@@ -93,6 +144,13 @@ public class VehicleServiceImpl implements VehicleService {
         return byId;
     }
 
+    /**
+     * Updates attributes of a vehicle entity based on the provided vehicle request.
+     *
+     * @param vehicleEntity  Original VehicleEntity object to update.
+     * @param vehicleRequest VehicleRequest object containing updated vehicle details.
+     * @return Updated VehicleEntity object.
+     */
     private VehicleEntity setVehicle(VehicleEntity vehicleEntity, VehicleRequest vehicleRequest) {
         vehicleEntity.setColour(vehicleRequest.getColour());
         vehicleEntity.setChassisNumber(vehicleRequest.getChassisNumber());
@@ -100,6 +158,11 @@ public class VehicleServiceImpl implements VehicleService {
         return vehicleEntity;
     }
 
+    /**
+     * Performs a soft delete by setting the "isDeleted" flag to true for a vehicle and its associated defects and defect locations.
+     *
+     * @param vehicleEntity VehicleEntity to be deleted.
+     */
     private void mappedSoftDelete(VehicleEntity vehicleEntity) {
         vehicleEntity.setIsDeleted(true);
         vehicleEntity.getDefect().forEach(defectEntity -> {
@@ -108,6 +171,11 @@ public class VehicleServiceImpl implements VehicleService {
         });
     }
 
+    /**
+     * Validates client by checking provided headers and user information.
+     *
+     * @param headers HttpHeaders containing the client information.
+     */
     private void isClientValid(HttpHeaders headers) {
         HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
         String userName = HeaderUtility.getUser(headers);

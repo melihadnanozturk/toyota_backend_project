@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * This Controller used to create, update, delete and retrieve Vehicle
+ */
 @RestController
 @RequestMapping("/vehicle")
 @RequiredArgsConstructor
@@ -23,6 +26,13 @@ public class VehicleController {
     private final VehicleService vehicleService;
     private final GetAllService getAllService;
 
+    /**
+     * Retrieve Vehicle locations
+     *
+     * @param headers            UserName, Bearer Token
+     * @param pageVehicleRequest Request for pagination
+     * @return PageVehicleResponse contain vehicle information
+     */
     @GetMapping
     public BaseResponse<List<PageVehicleResponse>> getAllVehicle(
             @RequestHeader HttpHeaders headers,
@@ -31,6 +41,13 @@ public class VehicleController {
         return BaseResponse.isSuccess(page.getContent());
     }
 
+    /**
+     * Create new vehicle
+     *
+     * @param headers        UserName, Bearer Token
+     * @param vehicleRequest Vehicle information to register
+     * @return VehicleResponse with created vehicle information
+     */
     @PostMapping
     public BaseResponse<VehicleResponse> addNewVehicle(
             @RequestHeader HttpHeaders headers,
@@ -39,20 +56,35 @@ public class VehicleController {
         return BaseResponse.isSuccess(response);
     }
 
-    @PutMapping("/{id}")
+    /**
+     * Update exits vehicle
+     *
+     * @param headers        UserName, Bearer Token
+     * @param vehicleRequest Vehicle information to update
+     * @param vehicleId      Vehicle id to update
+     * @return VehicleResponse with updated vehicle information
+     */
+    @PutMapping("/{vehicleId}")
     public BaseResponse<VehicleResponse> updateVehicle(
             @RequestHeader HttpHeaders headers,
             @RequestBody VehicleRequest vehicleRequest,
-            @PathVariable Long id) {
-        VehicleResponse response = vehicleService.updateVehicle(headers, id, vehicleRequest);
+            @PathVariable Long vehicleId) {
+        VehicleResponse response = vehicleService.updateVehicle(headers, vehicleId, vehicleRequest);
         return BaseResponse.isSuccess(response);
     }
 
-    @DeleteMapping("/{id}")
+    /**
+     * Remove exits vehicle
+     *
+     * @param headers   UserName, Bearer Token
+     * @param vehicleId Vehicle information to remove
+     * @return Long that removed vehicle id
+     */
+    @DeleteMapping("/{vehicleId}")
     public BaseResponse<Long> removeVehicle(
             @RequestHeader HttpHeaders headers,
-            @PathVariable Long id) {
-        Long removedId = vehicleService.removeVehicle(headers, id);
+            @PathVariable Long vehicleId) {
+        Long removedId = vehicleService.removeVehicle(headers, vehicleId);
         return BaseResponse.isSuccess(removedId);
     }
 }

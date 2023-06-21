@@ -2,6 +2,9 @@ package com.mao.tytmistake.model.entity.enums;
 
 import lombok.Getter;
 
+/**
+ * This Enum holds defects
+ */
 @Getter
 public enum Defect {
 

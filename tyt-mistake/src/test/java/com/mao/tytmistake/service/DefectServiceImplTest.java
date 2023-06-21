@@ -2,11 +2,11 @@ package com.mao.tytmistake.service;
 
 import com.mao.tytmistake.BaseUnitTest;
 import com.mao.tytmistake.client.AuthApiClient;
-import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequest;
+import com.mao.tytmistake.controller.request.DefectRequest;
+import com.mao.tytmistake.controller.request.UpdateDefectRequest;
 import com.mao.tytmistake.controller.request.UpdateVehicleDefectRequestBuilder;
-import com.mao.tytmistake.controller.request.VehicleDefectRequest;
 import com.mao.tytmistake.controller.request.VehicleDefectRequestBuilder;
-import com.mao.tytmistake.controller.response.VehicleDefectResponse;
+import com.mao.tytmistake.controller.response.DefectResponse;
 import com.mao.tytmistake.model.DefectEntityBuilder;
 import com.mao.tytmistake.model.VehicleEntityBuilder;
 import com.mao.tytmistake.model.entity.DefectEntity;
@@ -14,7 +14,7 @@ import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
 import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
-import com.mao.tytmistake.service.impl.VehicleDefectServiceImpl;
+import com.mao.tytmistake.service.impl.DefectServiceImpl;
 import com.mao.tytmistake.service.impl.VehicleServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 
-class VehicleDefectServiceImplTest extends BaseUnitTest {
+class DefectServiceImplTest extends BaseUnitTest {
 
     @Mock
     private VehicleDefectEntityRepository vehicleDefectEntityRepository;
@@ -38,14 +38,14 @@ class VehicleDefectServiceImplTest extends BaseUnitTest {
     private AuthApiClient apiClient;
 
     @InjectMocks
-    private VehicleDefectServiceImpl vehicleDefectService;
+    private DefectServiceImpl vehicleDefectService;
 
 
     @Test
     void addNewDefect_happyPath() {
         HttpHeaders testHeaders = createHeader();
         Long testVehicleId = 61L;
-        VehicleDefectRequest tesVehicleDefectRequest = new VehicleDefectRequestBuilder()
+        DefectRequest tesDefectRequest = new VehicleDefectRequestBuilder()
                 .witVehicleId(testVehicleId)
                 .build();
         VehicleEntity testVehicleEntity = new VehicleEntityBuilder()
@@ -56,9 +56,9 @@ class VehicleDefectServiceImplTest extends BaseUnitTest {
         when(vehicleService.getById(testVehicleId)).thenReturn(testVehicleEntity);
         when(vehicleDefectEntityRepository.save(any(DefectEntity.class))).thenReturn(testDefectEntity);
 
-        VehicleDefectResponse response = vehicleDefectService.addNewDefect(testHeaders, tesVehicleDefectRequest);
+        DefectResponse response = vehicleDefectService.addNewDefect(testHeaders, tesDefectRequest);
 
-        Assertions.assertEquals(VehicleDefectResponse.vehicleDefectEntityMappedResponse(testDefectEntity), response);
+        Assertions.assertEquals(DefectResponse.vehicleDefectEntityMappedResponse(testDefectEntity), response);
         verify(vehicleService, times(1)).getById(anyLong());
         verify(vehicleDefectEntityRepository, times(1)).save(any(DefectEntity.class));
         verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
@@ -68,7 +68,7 @@ class VehicleDefectServiceImplTest extends BaseUnitTest {
     void updateDefect_notExistsDefectId_throwNotFoundException() {
         Long testVehicleDefectEntityId = 9L;
         HttpHeaders testHeaders = createHeader();
-        UpdateVehicleDefectRequest tesRequest = new UpdateVehicleDefectRequestBuilder().build();
+        UpdateDefectRequest tesRequest = new UpdateVehicleDefectRequestBuilder().build();
 
         when(vehicleDefectEntityRepository.findById(testVehicleDefectEntityId)).thenReturn(Optional.empty());
 
@@ -82,7 +82,7 @@ class VehicleDefectServiceImplTest extends BaseUnitTest {
         Long testDefectEntityId = 9L;
         String testImage = "testImage";
         HttpHeaders testHeaders = createHeader();
-        UpdateVehicleDefectRequest testRequest = new UpdateVehicleDefectRequestBuilder()
+        UpdateDefectRequest testRequest = new UpdateVehicleDefectRequestBuilder()
                 .withImage("image")
                 .build();
         DefectEntity testDefectEntity = new DefectEntityBuilder().withId(testDefectEntityId)
@@ -92,9 +92,9 @@ class VehicleDefectServiceImplTest extends BaseUnitTest {
         when(vehicleDefectEntityRepository.findById(testDefectEntityId)).thenReturn(Optional.of(testDefectEntity));
         when(vehicleDefectEntityRepository.save(any(DefectEntity.class))).thenReturn(testDefectEntity);
 
-        VehicleDefectResponse response = vehicleDefectService.updateDefect(testHeaders, testRequest, testDefectEntityId);
+        DefectResponse response = vehicleDefectService.updateDefect(testHeaders, testRequest, testDefectEntityId);
 
-        Assertions.assertEquals(VehicleDefectResponse.vehicleDefectEntityMappedResponse(testDefectEntity), response);
+        Assertions.assertEquals(DefectResponse.vehicleDefectEntityMappedResponse(testDefectEntity), response);
         verify(vehicleDefectEntityRepository, times(1)).findById(anyLong());
         verify(vehicleDefectEntityRepository, times(1)).save(any(DefectEntity.class));
         verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));

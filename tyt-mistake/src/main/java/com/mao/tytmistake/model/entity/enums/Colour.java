@@ -2,6 +2,9 @@ package com.mao.tytmistake.model.entity.enums;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * This Enum holds vehicle colours
+ */
 @AllArgsConstructor
 public enum Colour {
 

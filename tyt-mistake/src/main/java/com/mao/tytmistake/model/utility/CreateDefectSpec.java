@@ -7,16 +7,25 @@ import com.mao.tytmistake.model.entity.enums.Defect;
 import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
-public class CreateVehicleDefectSpec {
+/**
+ * Utility class for creating specifications to filter defect entities.
+ */
+public class CreateDefectSpec {
 
-    private CreateVehicleDefectSpec() {
+    private CreateDefectSpec() {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Specification<DefectEntity> getAll(PageDefectRequest request) {
+    /**
+     * Creates a specification for filtering vehicle entities based on the provided criteria.
+     *
+     * @param pageDefectRequest the page pageDefectRequest containing the filter criteria
+     * @return a Specification object for filtering vehicle entities
+     */
+    public static Specification<DefectEntity> getAll(PageDefectRequest pageDefectRequest) {
         return getIsNotDeleted()
-                .and(getByVehicleId(request.getVehicleId()))
-                .and(getByDefect(request.getDefect()));
+                .and(getByVehicleId(pageDefectRequest.getVehicleId()))
+                .and(getByDefect(pageDefectRequest.getDefect()));
     }
 
     private static Specification<DefectEntity> getByVehicleId(Long id) {

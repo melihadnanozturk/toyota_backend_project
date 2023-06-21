@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import java.io.Serial;
 
+/**
+ * This exception is thrown when the Client does not have the valid token
+ */
 @Getter
 @Setter
 public class NotValidTokenForUserException extends BaseException {

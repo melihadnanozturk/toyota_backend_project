@@ -31,7 +31,7 @@ class DefectLocationServiceImplTest extends BaseUnitTest {
     @Mock
     private DefectLocationEntityRepository defectLocationEntityRepository;
     @Mock
-    private VehicleDefectService vehicleDefectService;
+    private DefectService defectService;
     @Mock
     private AuthApiClient apiClient;
 
@@ -47,13 +47,13 @@ class DefectLocationServiceImplTest extends BaseUnitTest {
         DefectEntity testDefectEntity = new DefectEntityBuilder().withId(testDefectId).build();
         LocationEntity testLocationEntity = new LocationEntityBuilder().build();
 
-        when(vehicleDefectService.getDefectEntityById(testDefectId)).thenReturn(testDefectEntity);
+        when(defectService.getDefectEntityById(testDefectId)).thenReturn(testDefectEntity);
         when(defectLocationEntityRepository.saveAll(any(List.class))).thenReturn(List.of(testLocationEntity));
 
         DefectLocationResponse response = defectLocationService.addNewLocation(testHeaders, testRequest);
 
         Assertions.assertTrue(response.getLocationsResponseList().contains(LocationsResponse.mappedLocationsResponse(testLocationEntity)));
-        verify(vehicleDefectService, times(1)).getDefectEntityById(anyLong());
+        verify(defectService, times(1)).getDefectEntityById(anyLong());
         verify(defectLocationEntityRepository, times(1)).saveAll(anyList());
         verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
     }

@@ -27,8 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WebMvcTest(DefectLocationController.class)
-class DefectLocationControllerTest extends BaseControllerTests {
+@WebMvcTest(LocationController.class)
+class LocationControllerTest extends BaseControllerTests {
 
     private static final String COMMON_PATH = "/location";
 

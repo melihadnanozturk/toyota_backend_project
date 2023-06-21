@@ -3,6 +3,9 @@ package com.mao.tytmistake.model.error;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * This Enum is used to identify authentication related errors
+ */
 @Getter
 @AllArgsConstructor
 public enum AuthError implements TytError {

@@ -5,13 +5,13 @@ import com.mao.tytmistake.controller.request.page.PageDefectRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.request.page.TytPageRequest;
 import com.mao.tytmistake.controller.response.LocationsResponse;
-import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
+import com.mao.tytmistake.controller.response.PageDefectResponse;
 import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
 import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.LocationEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
-import com.mao.tytmistake.model.utility.CreateVehicleDefectSpec;
+import com.mao.tytmistake.model.utility.CreateDefectSpec;
 import com.mao.tytmistake.model.utility.CreateVehicleSpec;
 import com.mao.tytmistake.model.utility.HeaderUtility;
 import com.mao.tytmistake.repository.DefectLocationEntityRepository;
@@ -30,6 +30,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service implementation for retrieving all entities.
+ */
 @Service
 @RequiredArgsConstructor
 public class GetAllServiceImpl implements GetAllService {
@@ -41,6 +44,13 @@ public class GetAllServiceImpl implements GetAllService {
 
     private final Logger logger = LogManager.getLogger(GetAllServiceImpl.class);
 
+    /**
+     * Retrieves a page of vehicle entities based on the specified request parameters.
+     *
+     * @param headers the HttpHeaders containing the request headers
+     * @param request the PageVehicleRequest specifying the page parameters
+     * @return a Page of PageVehicleResponse objects
+     */
     @Override
     public Page<PageVehicleResponse> getAllVehicle(HttpHeaders headers, PageVehicleRequest request) {
         this.isClientValid(headers);
@@ -54,19 +64,33 @@ public class GetAllServiceImpl implements GetAllService {
         return new PageImpl<>(responses, pageable, pageable.getPageSize());
     }
 
+    /**
+     * Retrieves a page of defect entities based on the specified request parameters.
+     *
+     * @param headers the HttpHeaders containing the request headers
+     * @param request the PageDefectRequest specifying the page parameters
+     * @return a Page of PageDefectResponse objects
+     */
     @Override
-    public Page<PageVehicleDefectResponse> getAllDefect(HttpHeaders headers, PageDefectRequest request) {
+    public Page<PageDefectResponse> getAllDefect(HttpHeaders headers, PageDefectRequest request) {
         this.isClientValid(headers);
 
         Pageable pageable = TytPageRequest.createPageRequest(request);
-        Specification<DefectEntity> spec = CreateVehicleDefectSpec.getAll(request);
+        Specification<DefectEntity> spec = CreateDefectSpec.getAll(request);
 
-        List<PageVehicleDefectResponse> page = vehicleDefectEntityRepository.findAll(spec, pageable)
-                .stream().map(PageVehicleDefectResponse::vehicleDefectEntityMappedPageResponse).toList();
+        List<PageDefectResponse> page = vehicleDefectEntityRepository.findAll(spec, pageable)
+                .stream().map(PageDefectResponse::vehicleDefectEntityMappedPageResponse).toList();
 
         return new PageImpl<>(page, pageable, request.getPageSize());
     }
 
+    /**
+     * Retrieves all locations associated with the specified defect ID.
+     *
+     * @param headers  the HttpHeaders containing the request headers
+     * @param defectId the ID of the defect to retrieve the locations for
+     * @return a list of LocationsResponse objects
+     */
     @Override
     public List<LocationsResponse> getAllLocations(HttpHeaders headers, Long defectId) {
         this.isClientValid(headers);
@@ -75,6 +99,12 @@ public class GetAllServiceImpl implements GetAllService {
 
         return entities.stream().map(LocationsResponse::mappedLocationsResponse).toList();
     }
+
+    /**
+     * Validates the client's authorization based on the request headers.
+     *
+     * @param headers the HttpHeaders containing the request headers
+     */
 
     private void isClientValid(HttpHeaders headers) {
         HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);

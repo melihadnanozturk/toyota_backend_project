@@ -2,6 +2,9 @@ package com.mao.tytmistake.controller.request.page;
 
 import lombok.Getter;
 
+/**
+ * This Enum holds defect sort colons
+ */
 @Getter
 public enum VehicleSortColon implements TytSortCol {
 

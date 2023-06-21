@@ -5,7 +5,7 @@ import com.mao.tytmistake.client.AuthApiClient;
 import com.mao.tytmistake.controller.request.page.PageDefectRequest;
 import com.mao.tytmistake.controller.request.page.PageVehicleRequest;
 import com.mao.tytmistake.controller.response.LocationsResponse;
-import com.mao.tytmistake.controller.response.PageVehicleDefectResponse;
+import com.mao.tytmistake.controller.response.PageDefectResponse;
 import com.mao.tytmistake.controller.response.page.PageVehicleResponse;
 import com.mao.tytmistake.model.DefectEntityBuilder;
 import com.mao.tytmistake.model.LocationEntityBuilder;
@@ -75,14 +75,14 @@ class GetAllServiceImplTest extends BaseUnitTest {
         PageDefectRequest testRequest = new PageDefectRequest();
         DefectEntity testDefectEntity = new DefectEntityBuilder().build();
         Page<DefectEntity> testPage = new PageImpl<>(List.of(testDefectEntity));
-        PageVehicleDefectResponse testVehicleDefectResponse = PageVehicleDefectResponse
+        PageDefectResponse testVehicleDefectResponse = PageDefectResponse
                 .vehicleDefectEntityMappedPageResponse(testDefectEntity);
 
         when(vehicleDefectEntityRepository
                 .findAll(any(Specification.class), any(Pageable.class)))
                 .thenReturn(testPage);
 
-        Page<PageVehicleDefectResponse> response = getAllService.getAllDefect(testHeaders, testRequest);
+        Page<PageDefectResponse> response = getAllService.getAllDefect(testHeaders, testRequest);
 
         Assertions.assertEquals(1, response.getContent().size());
         Assertions.assertTrue(response.toList().contains(testVehicleDefectResponse));

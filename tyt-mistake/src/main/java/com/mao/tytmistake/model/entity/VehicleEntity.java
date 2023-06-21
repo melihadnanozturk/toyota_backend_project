@@ -9,6 +9,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Entity class representing a vehicle in the system.
+ */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "tt_vehicle")

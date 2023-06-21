@@ -13,7 +13,7 @@ import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.model.utility.HeaderUtility;
 import com.mao.tytmistake.repository.DefectLocationEntityRepository;
 import com.mao.tytmistake.service.DefectLocationService;
-import com.mao.tytmistake.service.VehicleDefectService;
+import com.mao.tytmistake.service.DefectService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,23 +22,33 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementation of the DefectLocationService interface that provides functionality for managing defect locations.
+ */
 @Service
 @RequiredArgsConstructor
 public class DefectLocationServiceImpl implements DefectLocationService {
 
     private final DefectLocationEntityRepository defectLocationEntityRepository;
-    private final VehicleDefectService vehicleDefectService;
+    private final DefectService defectService;
     private final AuthApiClient apiClient;
 
     private final Logger logger = LogManager.getLogger(DefectLocationServiceImpl.class);
 
 
+    /**
+     * This method create new location when client is valid.
+     *
+     * @param headers Username, Password
+     * @param request Contains new location information
+     * @throws NotFoundException if defect is not exists
+     */
     @Override
     public DefectLocationResponse addNewLocation(HttpHeaders headers, DefectLocationRequest request) {
         this.isClientValid(headers);
         String user = HeaderUtility.getUser(headers);
 
-        DefectEntity defectEntity = vehicleDefectService
+        DefectEntity defectEntity = defectService
                 .getDefectEntityById(request.getDefectId());
 
         List<LocationEntity> entities = this.mappedLocationRequestToLocationEntity(request, user, defectEntity);
@@ -50,6 +60,13 @@ public class DefectLocationServiceImpl implements DefectLocationService {
         return DefectLocationResponse.defectLocationEntityMappedResponse(locationsRequests);
     }
 
+    /**
+     * This method update exists location when client is valid.
+     *
+     * @param headers          Username, Password
+     * @param locationsRequest Contains location new information
+     * @throws NotFoundException if location that has id not exists
+     */
     @Override
     public LocationsResponse updateLocation(HttpHeaders headers, Long id, LocationsRequest locationsRequest) {
         this.isClientValid(headers);
@@ -68,6 +85,13 @@ public class DefectLocationServiceImpl implements DefectLocationService {
         return LocationsResponse.mappedLocationsResponse(updatedEntity);
     }
 
+    /**
+     * This method remove exists location when client is valid.
+     *
+     * @param headers Username, Password
+     * @param request Contains id of the location to be deleted
+     * @throws NotFoundException if location that has id not exists
+     */
     @Override
     public List<Long> removeLocation(HttpHeaders headers, LocationRemoveRequest request) {
         this.isClientValid(headers);
@@ -77,6 +101,14 @@ public class DefectLocationServiceImpl implements DefectLocationService {
         return request.getLocationIds();
     }
 
+    /**
+     * Maps the defect location request to a list of location entities.
+     *
+     * @param request      Defect location request
+     * @param user         User who created the locations
+     * @param defectEntity Defect entity associated with the locations
+     * @return List of location entities
+     */
     private List<LocationEntity> mappedLocationRequestToLocationEntity(DefectLocationRequest request,
                                                                        String user,
                                                                        DefectEntity defectEntity) {
@@ -89,6 +121,13 @@ public class DefectLocationServiceImpl implements DefectLocationService {
                 }).toList();
     }
 
+    /**
+     * Deletes the defect locations with the specified ID.
+     *
+     * @param id   ID of the defect location to be deleted
+     * @param user User who performs the deletion
+     * @throws NotFoundException if the defect location with specified ID is not found
+     */
     private void deleteLocations(Long id, String user) {
         LocationEntity entity = defectLocationEntityRepository.findByIdAndIsDeletedIsFalse(id)
                 .orElseThrow(() -> new NotFoundException(id.toString()));
@@ -100,6 +139,11 @@ public class DefectLocationServiceImpl implements DefectLocationService {
         logger.atInfo().log("Locations with ID {} has been removed", id);
     }
 
+    /**
+     * Validates the client's authorization and authentication.
+     *
+     * @param headers HTTP headers containing the necessary information for validation
+     */
     private void isClientValid(HttpHeaders headers) {
         HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
         String userName = HeaderUtility.getUser(headers);

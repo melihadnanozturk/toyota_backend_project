@@ -9,6 +9,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * This class is used to response vehicle information.
+ * This class contains information field about to vehicle.
+ * The class uses the Lombok annotations @Getter,@Setter and @Builder to automatically generate getters, setters and a builders,@EqualsAndHashCode to equals process.
+ */
 @Getter
 @Setter
 @Builder
@@ -20,6 +25,12 @@ public class VehicleResponse {
     private String chassisNumber;
     private Colour colour;
 
+    /**
+     * Maps the VehicleEntity to the UserResponse
+     *
+     * @param vehicleEntity VehicleEntity to be mapped
+     * @return VehicleResponse holding information mapped from vehicleEntity
+     */
     public static VehicleResponse vehicleEntityMappedResponse(VehicleEntity vehicleEntity) {
         return VehicleResponse.builder()
                 .id(vehicleEntity.getId())

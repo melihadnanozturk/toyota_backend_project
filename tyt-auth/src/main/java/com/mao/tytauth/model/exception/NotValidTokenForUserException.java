@@ -1,13 +1,12 @@
 package com.mao.tytauth.model.exception;
 
 import com.mao.tytauth.model.error.AuthError;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serial;
 
-@Getter
-@Setter
+/**
+ * This exception is thrown when the Client does not have the valid token
+ */
 public class NotValidTokenForUserException extends BaseException {
 
     @Serial

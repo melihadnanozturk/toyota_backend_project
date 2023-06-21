@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * This Utility Class is used to create and retrieve header information
+ */
 public class HeaderUtility {
 
     private static final String USER_NAME = "userName";

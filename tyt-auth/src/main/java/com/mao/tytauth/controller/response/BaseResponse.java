@@ -6,6 +6,10 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
+/**
+ * This class is a base class for responseClasses.Common fields for responses are inherited from here.
+ * The class uses the Lombok annotations @Data and @Getter to automatically generate getters and a builder method.
+ */
 @Builder
 @Getter
 public class BaseResponse<T> {

@@ -2,13 +2,15 @@ package com.mao.tytauth.controller.response;
 
 import com.mao.tytauth.model.Role;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.HashSet;
 
-@Getter
-@Setter
+/**
+ * This class is POJO class that contains the user's name, surname and information.
+ * The class uses the Lombok annotations @Data and @Builder to automatically generate getters, setters, and a builder method.
+ */
+@Data
 @Builder
 public class UserResponse {
 

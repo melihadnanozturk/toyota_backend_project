@@ -3,9 +3,12 @@ package com.mao.tytauth.model.error;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * This Enum is used to identify authentication related errors
+ */
 @Getter
 @AllArgsConstructor
-public enum AuthError implements Error {
+public enum AuthError implements TytError {
 
     INVALID_USER_INFO(2000, "Username or Password are invalid"),
     PAST_DUE_TIME(2001, "Token has expired"),

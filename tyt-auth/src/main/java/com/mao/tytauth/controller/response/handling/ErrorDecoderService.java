@@ -5,6 +5,9 @@ import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * This class catches errors thrown in microservice
+ */
 @Component
 public class ErrorDecoderService implements ErrorDecoder {
 

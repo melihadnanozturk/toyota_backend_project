@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * This Controller is used to send request for Auth process
+ */
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -14,14 +17,24 @@ public class AuthController {
 
     private final TokenService tokenService;
 
-    //alınan tokenı kontrol etmek için
+    /**
+     * Checks if the user is correct
+     *
+     * @param headers contains UserName, Bearer Token
+     * @return BaseResponse with a boolean for whether it is valid
+     */
     @PostMapping("/validate-user")
     public BaseResponse<Boolean> auth(@RequestHeader HttpHeaders headers) {
 
         return BaseResponse.isSuccess(tokenService.authentication(headers));
     }
 
-    //ilk başta token almak için
+    /**
+     * Allows admin to take token
+     *
+     * @param headers contains username and password
+     * @return A BaseResponse with a token
+     */
     @PostMapping("/login")
     public BaseResponse<String> login(@RequestHeader HttpHeaders headers) {
 
@@ -30,7 +43,12 @@ public class AuthController {
         return BaseResponse.isSuccess(token);
     }
 
-    //diğer servicelerden gelen tokenı doğrulamak için
+    /**
+     * Checks requests from other services for authorization
+     *
+     * @param headers contains UserName, Bearer token
+     * @return BaseResponse with a boolean for whether it is valid
+     */
     @PostMapping("/validate")
     public BaseResponse<Boolean> validate(@RequestHeader HttpHeaders headers,
                                           @RequestBody Role role) {

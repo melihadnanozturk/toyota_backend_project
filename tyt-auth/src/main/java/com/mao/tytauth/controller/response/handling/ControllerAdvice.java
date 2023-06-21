@@ -1,7 +1,7 @@
 package com.mao.tytauth.controller.response.handling;
 
 import com.mao.tytauth.controller.response.BaseResponse;
-import com.mao.tytauth.model.error.Error;
+import com.mao.tytauth.model.error.TytError;
 import com.mao.tytauth.model.exception.*;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class catches thrown errors in module
+ */
 @RestControllerAdvice
 public class ControllerAdvice {
 
@@ -74,7 +77,7 @@ public class ControllerAdvice {
     }
 
     private Map<String, Object> getErrorBody(BaseException exception) {
-        Error error = exception.getError();
+        TytError error = exception.getError();
         String message = exception.getMessage();
         Integer errorCode = exception.getError().getCode();
         String logMessage = "Error : {};   ExceptionMessage : {};   ErrorCode : {};";

@@ -2,7 +2,6 @@ package com.mao.tytmistake.model;
 
 import com.mao.tytmistake.TestDataBuilder;
 import com.mao.tytmistake.model.entity.DefectEntity;
-import com.mao.tytmistake.model.entity.VehicleEntity;
 
 public class DefectEntityBuilder extends TestDataBuilder<DefectEntity> {
 
@@ -10,17 +9,12 @@ public class DefectEntityBuilder extends TestDataBuilder<DefectEntity> {
         super(DefectEntity.class, true);
     }
 
-    public DefectEntityBuilder withVehicle(VehicleEntity vehicleEntity) {
-        data.setVehicle(vehicleEntity);
-        return this;
-    }
-
     public DefectEntityBuilder withId(Long id) {
         data.setId(id);
         return this;
     }
 
-    public DefectEntityBuilder withImage(String image) {
+    public DefectEntityBuilder withImage(byte[] image) {
         data.setDefectImage(image);
         return this;
     }

@@ -1,6 +1,5 @@
 package com.mao.tytmistake.controller.request;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +14,4 @@ import lombok.Setter;
 public class UpdateDefectRequest {
 
     private String defectDesc;
-
-    @NotBlank
-    private String defectImage;
 }

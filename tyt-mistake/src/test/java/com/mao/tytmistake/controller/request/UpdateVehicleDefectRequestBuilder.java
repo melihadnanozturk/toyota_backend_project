@@ -8,8 +8,4 @@ public class UpdateVehicleDefectRequestBuilder extends TestDataBuilder<UpdateDef
         super(UpdateDefectRequest.class, true);
     }
 
-    public UpdateVehicleDefectRequestBuilder withImage(String image) {
-        data.setDefectImage(image);
-        return this;
-    }
 }

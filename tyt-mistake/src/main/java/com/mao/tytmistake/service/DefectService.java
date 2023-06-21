@@ -5,6 +5,7 @@ import com.mao.tytmistake.controller.request.UpdateDefectRequest;
 import com.mao.tytmistake.controller.response.DefectResponse;
 import com.mao.tytmistake.model.entity.DefectEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Service interface for defect functionality.
@@ -19,6 +20,25 @@ public interface DefectService {
      * @return a DefectResponse representing added defect
      */
     DefectResponse addNewDefect(HttpHeaders headers, DefectRequest request);
+
+    /**
+     * Adds an image to a defect.
+     *
+     * @param headers       HTTP headers containing client information.
+     * @param multipartFile Image file to be added to the defect.
+     * @param id            ID of the defect.
+     * @return ID of the defect after adding the image.
+     */
+    Long addDefectImage(HttpHeaders headers, MultipartFile multipartFile, Long id);
+
+    /**
+     * Retrieves the image of a defect.
+     *
+     * @param headers HTTP headers containing client information.
+     * @param id      ID of defect.
+     * @return Byte array representation of the defect image.
+     */
+    byte[] getDefectImage(HttpHeaders headers, Long id);
 
     /**
      * Deletes a defect.
@@ -46,4 +66,14 @@ public interface DefectService {
      * @return DefectEntity with the specified ID.
      */
     DefectEntity getDefectEntityById(Long id);
+
+    /**
+     * Updates the image of a defect.
+     *
+     * @param headers   HTTP headers containing client information.
+     * @param imageFile New image file to be updated for defect.
+     * @param defectId  ID of defect.
+     * @return Updated ID of  defect.
+     */
+    Long updateDefectImage(HttpHeaders headers, MultipartFile imageFile, Long defectId);
 }

@@ -21,7 +21,7 @@ import java.util.List;
 public class DefectEntity extends BaseEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 8618845170579261301L;
+    private static final long serialVersionUID = -236835569387242391L;
 
     @Enumerated(EnumType.STRING)
     private Defect defect;
@@ -29,8 +29,8 @@ public class DefectEntity extends BaseEntity implements Serializable {
     @Column(name = "defect_desc")
     private String defectDesc;
 
-    @Column(name = "defect_image")
-    private String defectImage;
+    @Column(name = "image_data")
+    private byte[] defectImage;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id")

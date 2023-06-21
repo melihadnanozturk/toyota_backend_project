@@ -14,6 +14,7 @@ import com.mao.tytmistake.controller.response.VehicleDefectResponseBuilder;
 import com.mao.tytmistake.service.DefectService;
 import com.mao.tytmistake.service.GetAllService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,6 +22,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -94,6 +99,39 @@ class DefectControllerTest extends BaseControllerTests {
     }
 
     @Test
+    void addNewDefectImage_happyPath() throws Exception {
+        MockMultipartFile imageFile = new MockMultipartFile("imageFile", "test.jpg", MediaType.IMAGE_JPEG_VALUE, "Test Image".getBytes());
+        Long id = 123L;
+
+        HttpHeaders headers = createHeader();
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart(COMMON_PATH + "/{id}", id)
+                        .file(imageFile)
+                        .headers(headers))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.localDateTime").isNotEmpty());
+    }
+
+    @Test
+    void getDefectImage_happyPath() throws Exception {
+        Long testId = 57L;
+        HttpHeaders testHeaders = createHeader();
+        String testName = "test";
+
+        when(defectService.getDefectImage(any(HttpHeaders.class), anyLong()))
+                .thenReturn(testName.getBytes());
+
+        mockMvc.perform(get(COMMON_PATH + "/{id}", testId)
+                        .headers(testHeaders)
+                        .contentType(MediaType.IMAGE_JPEG))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        verify(defectService, times(1))
+                .getDefectImage(any(HttpHeaders.class), anyLong());
+    }
+
+    @Test
     void updateDefect_happyPath() throws Exception {
         Long testId = 57L;
         HttpHeaders testHeaders = createHeader();
@@ -114,6 +152,31 @@ class DefectControllerTest extends BaseControllerTests {
 
         verify(defectService, times(1))
                 .updateDefect(any(HttpHeaders.class), any(UpdateDefectRequest.class), anyLong());
+    }
+
+    @Disabled
+    @Test
+    void updateDefectImage_happyPath() throws Exception {
+        MockMultipartFile file = new MockMultipartFile(
+                "imageFile",
+                "test.jpg",
+                "image/jpeg",
+                "test image".getBytes()
+        );
+
+        Long defectId = 123L;
+
+        Long response = 1L;
+        when(defectService.updateDefectImage(any(HttpHeaders.class), any(MultipartFile.class), any(Long.class)))
+                .thenReturn(response);
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/{defectId}", defectId)
+                        .file(file)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value(response));
+
     }
 
     @Test

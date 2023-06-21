@@ -7,6 +7,7 @@ import com.mao.tytmistake.controller.response.DefectResponse;
 import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
+import com.mao.tytmistake.model.exception.AlreadyExistsException;
 import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.model.utility.HeaderUtility;
 import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
@@ -17,6 +18,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
 
 /**
  * Service implementation for vehicle defects.
@@ -54,8 +58,49 @@ public class DefectServiceImpl implements DefectService {
 
         DefectEntity savedDefectEntity = vehicleDefectEntityRepository.save(defectEntity);
 
-        logger.atInfo().log("Defect with NAME {} has been registered ", defectRequest.getDefect().toString());
+        logger.atInfo().log("Defect with Name {} has been registered ", defectRequest.getDefect().toString());
         return DefectResponse.vehicleDefectEntityMappedResponse(savedDefectEntity);
+    }
+
+    /**
+     * Adds an image to a defect.
+     *
+     * @param headers   HTTP headers containing client information.
+     * @param imageFile Image file to be added to the defect.
+     * @param id        ID of the defect.
+     * @return ID of the defect after adding the image.
+     * @throws AlreadyExistsException if a defect image already exists for the given defect.
+     * @throws NotFoundException      if the defect with the given ID is not found.
+     */
+    @Override
+    @SneakyThrows
+    public Long addDefectImage(HttpHeaders headers, MultipartFile imageFile, Long id) {
+        this.isClientValid(headers);
+        DefectEntity entity = this.getDefectEntityById(id);
+        if (entity.getDefectImage() != null) {
+            throw new AlreadyExistsException("defect image");
+        }
+
+        byte[] imageData = imageFile.getBytes();
+        entity.setDefectImage(imageData);
+
+        logger.atInfo().log("Defect image with Id {} has been registered", id);
+        return vehicleDefectEntityRepository.save(entity).getId();
+    }
+
+    /**
+     * Retrieves the image of a defect.
+     *
+     * @param headers HTTP headers containing client information.
+     * @param id      ID of defect.
+     * @return Byte array representation of the defect image.
+     * @throws NotFoundException if defect with given ID is not found.
+     */
+    @Override
+    public byte[] getDefectImage(HttpHeaders headers, Long id) {
+        this.isClientValid(headers);
+        DefectEntity entity = this.getDefectEntityById(id);
+        return entity.getDefectImage();
     }
 
     /**
@@ -72,17 +117,32 @@ public class DefectServiceImpl implements DefectService {
         this.isClientValid(headers);
         String user = HeaderUtility.getUser(headers);
 
-        DefectEntity defectEntity = this.checkVehicleDefectEntityIsExists(id);
-        checkImageIsExist(defectEntity, request.getDefectImage());
-
+        DefectEntity defectEntity = this.getDefectEntityById(id);
         defectEntity.setDefectDesc(request.getDefectDesc());
-        defectEntity.setDefectImage(request.getDefectImage());
         defectEntity.setUpdatedBy(user);
 
         DefectEntity updatedEntity = vehicleDefectEntityRepository.save(defectEntity);
 
-        logger.atInfo().log("Defect with NAME {} has been updated", defectEntity.getDefect().toString());
+        logger.atInfo().log("Defect with Name {} has been updated", defectEntity.getDefect().toString());
         return DefectResponse.vehicleDefectEntityMappedResponse(updatedEntity);
+    }
+
+    /**
+     * Updates the image of a defect.
+     *
+     * @param headers   HTTP headers containing client information.
+     * @param imageFile New image file to be updated for defect.
+     * @param defectId  ID of defect.
+     * @return Updated ID of  defect.
+     * @throws NotFoundException if the defect with given ID is not found.
+     */
+    @SneakyThrows
+    @Override
+    public Long updateDefectImage(HttpHeaders headers, MultipartFile imageFile, Long defectId) {
+        this.isClientValid(headers);
+        byte[] imageData = imageFile.getBytes();
+        DefectEntity defectEntity = this.getDefectEntityById(defectId);
+        return checkImageIsExist(defectEntity, imageData).getId();
     }
 
     /**
@@ -98,12 +158,12 @@ public class DefectServiceImpl implements DefectService {
         this.isClientValid(headers);
         String user = HeaderUtility.getUser(headers);
 
-        DefectEntity defectEntity = checkVehicleDefectEntityIsExists(id);
+        DefectEntity defectEntity = getDefectEntityById(id);
         this.mappedSoftDelete(defectEntity);
 
         defectEntity.setUpdatedBy(user);
 
-        logger.atInfo().log("Defect with NAME {} has been removed", defectEntity.getDefect().toString());
+        logger.atInfo().log("Defect with Name {} has been removed", defectEntity.getDefect().toString());
         return vehicleDefectEntityRepository.save(defectEntity).getId();
     }
 
@@ -131,27 +191,21 @@ public class DefectServiceImpl implements DefectService {
     }
 
     /**
-     * Checks if DefectEntity with given ID exists.
-     *
-     * @param id ID of DefectEntity to check.
-     * @return DefectEntity with specified ID.
-     * @throws NotFoundException if DefectEntity is not found.
-     */
-    private DefectEntity checkVehicleDefectEntityIsExists(Long id) {
-        return vehicleDefectEntityRepository.findById(id).orElseThrow(() -> new NotFoundException(id.toString()));
-    }
-
-    /**
      * Checks if specified image exists for given DefectEntity. If image is different from one stored
      * in entity, marks all associated DefectLocation objects as deleted.
      *
-     * @param entity DefectEntity to check for image.
-     * @param image  image to compare with one stored in entity.
+     * @param entity    DefectEntity to check for image.
+     * @param imageData image to compare with one stored in entity.
      */
-    private void checkImageIsExist(DefectEntity entity, String image) {
-        if (image != null && !entity.getDefectImage().equals(image)) {
+    private DefectEntity checkImageIsExist(DefectEntity entity, byte[] imageData) {
+        if (!Arrays.equals(entity.getDefectImage(), imageData)) {
             entity.getDefectLocation().forEach(location -> location.setIsDeleted(true));
+            entity.setDefectImage(imageData);
+
+            logger.atInfo().log("Defect image with Defect Id {} has been updated", entity.getId());
+            return vehicleDefectEntityRepository.save(entity);
         }
+        throw new AlreadyExistsException("same defect image");
     }
 
     /**

@@ -2,7 +2,6 @@ package com.mao.tytmistake.controller.request;
 
 import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.enums.Defect;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,16 +22,12 @@ public class DefectRequest {
 
     private String vehicleDefectDesc;
 
-    @NotBlank
-    private String defectImage;
-
     @NotNull
     private Long vehicleId;
 
     public static DefectEntity responseMapToVehicleDefectEntity(DefectRequest defectRequest) {
         return DefectEntity.builder()
                 .defect(defectRequest.getDefect())
-                .defectImage(defectRequest.getDefectImage())
                 .defectDesc(defectRequest.getVehicleDefectDesc())
                 .build();
     }

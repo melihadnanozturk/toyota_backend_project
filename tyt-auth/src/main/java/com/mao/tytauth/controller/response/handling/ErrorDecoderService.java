@@ -6,7 +6,7 @@ import feign.codec.ErrorDecoder;
 import org.springframework.stereotype.Component;
 
 /**
- * This class catches errors thrown in microservice
+ * This class catches errors thrown in feign-client
  */
 @Component
 public class ErrorDecoderService implements ErrorDecoder {

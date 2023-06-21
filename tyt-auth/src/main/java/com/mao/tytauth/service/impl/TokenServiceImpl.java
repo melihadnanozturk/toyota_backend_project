@@ -29,8 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This Service is used for token creation, authorization, authentication.
- * Requests to other services fall on this service and authorization is performed.
+ * Implementation of the TokenService interface that handles token functionality.
  */
 
 @Service
@@ -173,8 +172,8 @@ public class TokenServiceImpl implements TokenService {
     /**
      * This method checks if the given role is available in the claims of the provided token.
      *
-     * @param userName - Checked Name
-     * @param token    - JWT Token
+     * @param userName Checked Name
+     * @param token    JWT Token
      * @throws NotValidTokenForUserException if the provided username does not match the username in the token
      */
     private void checkUserName(String userName, String token) {

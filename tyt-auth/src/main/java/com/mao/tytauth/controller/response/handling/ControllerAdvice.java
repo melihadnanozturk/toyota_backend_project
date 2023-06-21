@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class catches thrown errors in module
+ * This class catches thrown exceptions in module
  */
 @RestControllerAdvice
 public class ControllerAdvice {

@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 /**
- * This class is used to send request to tyt-Conduct service
+ * This feign-client is used to send request to conduct service
  */
 @FeignClient(value = "CONDUCT", url = "${tyt.32Bit.feign-client.conduct}")
 public interface ConductApiClient {
 
 
     /**
-     * Send request for authentication
+     * Send request for check user information
      *
      * @param headers has UserName, Password
      * @return UserResponse

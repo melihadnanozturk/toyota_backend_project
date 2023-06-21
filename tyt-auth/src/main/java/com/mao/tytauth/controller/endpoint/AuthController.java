@@ -20,7 +20,7 @@ public class AuthController {
     /**
      * Checks if the user is correct
      *
-     * @param headers contains UserName, Bearer Token
+     * @param headers UserName, Bearer Token
      * @return BaseResponse with a boolean for whether it is valid
      */
     @PostMapping("/validate-user")

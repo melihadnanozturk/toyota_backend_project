@@ -9,6 +9,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+/**
+ * Base entity class with common fields and functionality for entities.
+ */
 @Getter
 @Setter
 @MappedSuperclass
@@ -32,11 +35,19 @@ public abstract class BaseEntity implements Serializable {
 
     private String updatedBy;
 
+    /**
+     * Executed before the entity is persisted to the database.
+     * Sets the creation date to the current date.
+     */
     @PrePersist
     public void prePersist() {
         createdAt = LocalDate.now();
     }
 
+    /**
+     * Executed before the entity is updated in the database.
+     * Sets the update date to the current date.
+     */
     @PreUpdate
     public void preUpdate() {
         updatedAt = LocalDate.now();

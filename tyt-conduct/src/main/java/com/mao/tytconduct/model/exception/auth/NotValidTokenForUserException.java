@@ -2,13 +2,12 @@ package com.mao.tytconduct.model.exception.auth;
 
 import com.mao.tytconduct.model.error.AuthError;
 import com.mao.tytconduct.model.exception.BaseException;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serial;
 
-@Getter
-@Setter
+/**
+ * This exception is thrown when the Client does not have the valid token
+ */
 public class NotValidTokenForUserException extends BaseException {
 
     @Serial

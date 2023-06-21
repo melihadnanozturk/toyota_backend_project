@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class catches thrown common exceptions in module
+ */
 @RestControllerAdvice
 public class ControllerAdvice {
 

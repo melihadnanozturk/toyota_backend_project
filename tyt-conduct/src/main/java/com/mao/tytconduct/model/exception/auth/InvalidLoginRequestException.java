@@ -5,6 +5,9 @@ import com.mao.tytconduct.model.exception.BaseException;
 
 import java.io.Serial;
 
+/**
+ * This exception is thrown when the Client does not have the valid information
+ */
 public class InvalidLoginRequestException extends BaseException {
 
     @Serial

@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+/**
+ * Implementation of the LoginService interface that handles user login functionality.
+ */
 @Service
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
@@ -21,6 +24,11 @@ public class LoginServiceImpl implements LoginService {
 
     private final UserEntityRepository userEntityRepository;
 
+    /**
+     * This method checks if the given information is valid.
+     *
+     * @param headers - Username, Password
+     */
     @Override
     public UserResponse isUserValid(HttpHeaders headers) {
         String userName = getUserName(headers);
@@ -37,10 +45,20 @@ public class LoginServiceImpl implements LoginService {
         throw new InvalidLoginRequestException();
     }
 
+    /**
+     * Retrieves userName from headers
+     *
+     * @param headers - Username, Password
+     */
     private String getUserName(HttpHeaders headers) {
         return Objects.requireNonNull(headers.get("userName")).get(0);
     }
 
+    /**
+     * Retrieves password from headers
+     *
+     * @param headers - Username, Password
+     */
     private String getPassword(HttpHeaders headers) {
         return Objects.requireNonNull(headers.get("password")).get(0);
     }

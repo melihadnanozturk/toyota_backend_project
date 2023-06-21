@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * This class catches exceptions thrown in feign-client
+ */
 @Component
 public class ErrorDecoderService implements ErrorDecoder {
 

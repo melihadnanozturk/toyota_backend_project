@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * This Controller is used to send request for Login process
+ */
 @RestController
 @RequestMapping("/check")
 @RequiredArgsConstructor
@@ -17,6 +20,12 @@ public class LoginController {
 
     private final LoginService loginService;
 
+    /**
+     * Provides valid user information
+     *
+     * @param headers contains UserName, Password
+     * @return BaseResponse containing valid user information
+     */
     @PostMapping
     public BaseResponse<UserResponse> checkUser(
             @RequestHeader HttpHeaders headers) {

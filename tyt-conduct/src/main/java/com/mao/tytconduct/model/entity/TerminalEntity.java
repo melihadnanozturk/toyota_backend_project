@@ -11,6 +11,10 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 
+
+/**
+ * Entity class representing a terminal in the system.
+ */
 @Table(name = "tt_terminal")
 @Entity
 @Data

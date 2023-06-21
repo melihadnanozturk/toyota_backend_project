@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+/**
+ * Implementation of the UserService interface that handles user functionality.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -27,6 +30,13 @@ public class UserServiceImpl implements UserService {
 
     private final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
+    /**
+     * This method create new user when client is valid.
+     *
+     * @param headers Username, Password
+     * @param request Contains new user information
+     * @throws AlreadyExistsException if user that has name already exists
+     */
     @Override
     public UserResponse addNewUser(HttpHeaders headers, UserRequest request) {
         String userName = this.isClientValid(headers);
@@ -42,6 +52,13 @@ public class UserServiceImpl implements UserService {
         return UserResponse.entityMappedToResponse(saved);
     }
 
+    /**
+     * This method update exists user when client is valid.
+     *
+     * @param headers Username, Password
+     * @param request Contains user new information
+     * @throws NotFoundException if user that has id not exists
+     */
     @Override
     public UserResponse updateUser(HttpHeaders headers, Long id, UserRequest request) {
         String userName = this.isClientValid(headers);
@@ -60,6 +77,13 @@ public class UserServiceImpl implements UserService {
         return UserResponse.entityMappedToResponse(saved);
     }
 
+    /**
+     * This method remove exists user when client is valid.
+     *
+     * @param headers Username, Password
+     * @param id      User that will remove id
+     * @throws NotFoundException if user that has id not exists
+     */
     @Override
     public Long removeUser(HttpHeaders headers, Long id) {
         String userName = this.isClientValid(headers);

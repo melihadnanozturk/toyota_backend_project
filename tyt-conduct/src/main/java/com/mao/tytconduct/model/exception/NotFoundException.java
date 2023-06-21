@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.io.Serial;
 
+/**
+ * This exception is thrown when record not found
+ */
 @Getter
 @Setter
 public class NotFoundException extends BaseException {

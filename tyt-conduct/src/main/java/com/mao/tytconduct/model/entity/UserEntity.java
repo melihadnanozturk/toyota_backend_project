@@ -13,6 +13,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 
+/**
+ * Entity class representing a user in the system.
+ */
 @Table(name = "tt_user")
 @Entity
 @Data

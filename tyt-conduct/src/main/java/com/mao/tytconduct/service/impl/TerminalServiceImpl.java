@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementation of the TerminalService interface that handles terminal functionality.
+ */
 @Service
 @RequiredArgsConstructor
 public class TerminalServiceImpl implements TerminalService {
@@ -19,6 +22,11 @@ public class TerminalServiceImpl implements TerminalService {
     private final TerminalEntityRepository terminalEntityRepository;
     private final AuthApiClient apiClient;
 
+    /**
+     * This method checks if client is valid retrieves terminal information.
+     *
+     * @param headers - Username, Password
+     */
     @Override
     public PageTerminalResponse getTerminals(HttpHeaders headers) {
         apiClient.auth(headers);

@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
 
+/**
+ * This class catches thrown exceptions about auth in module
+ */
 @RestControllerAdvice
 public class AuthControllerAdvice {
 

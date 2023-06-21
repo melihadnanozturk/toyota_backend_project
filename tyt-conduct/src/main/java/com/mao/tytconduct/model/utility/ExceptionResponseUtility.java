@@ -8,10 +8,19 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Utility class for generating error response bodies for exceptions.
+ */
 public class ExceptionResponseUtility {
 
     public static Logger logger = LogManager.getLogger(ExceptionResponseUtility.class);
 
+    /**
+     * Generates the error response body for the given exception.
+     *
+     * @param exception the BaseException for which the error response body is generated
+     * @return the error response body as a map containing error, message, and error_code
+     */
     public static Map<String, Object> getErrorBody(BaseException exception) {
         TytError tytError = exception.getError();
         String message = exception.getMessage();

@@ -4,6 +4,9 @@ package com.mao.tytconduct.model.error;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * This Enum is used to identify common related errors
+ */
 @Getter
 @AllArgsConstructor
 public enum CommonError implements TytError {

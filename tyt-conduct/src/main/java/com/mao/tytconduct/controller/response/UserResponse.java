@@ -9,6 +9,11 @@ import lombok.Setter;
 
 import java.util.HashSet;
 
+/**
+ * This class is used to response user information.
+ * This class contains information field about to user.
+ * The class uses the Lombok annotations @Getter,@Setter and @Builder to automatically generate getters, setters and a builders,@EqualsAndHashCode to equals process.
+ */
 @Getter
 @Setter
 @Builder
@@ -20,12 +25,18 @@ public class UserResponse {
     private String password;
     private HashSet<Role> roles;
 
-    public static UserResponse entityMappedToResponse(UserEntity entity) {
+    /**
+     * Maps the UserEntity to the UserResponse
+     *
+     * @param userEntity UserEntity to be mapped
+     * @return UserResponse holding information mapped from userEntity
+     */
+    public static UserResponse entityMappedToResponse(UserEntity userEntity) {
         return UserResponse.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .password(entity.getPassword())
-                .roles(entity.getRoles())
+                .id(userEntity.getId())
+                .name(userEntity.getName())
+                .password(userEntity.getPassword())
+                .roles(userEntity.getRoles())
                 .build();
     }
 }

@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         entity.setCreatedBy(userName);
 
         UserEntity saved = userEntityRepository.save(entity);
-        logger.atInfo().log("{} record was saved", saved.getName());
+        logger.atInfo().log("New User with Name {} has been registered ", saved.getName());
 
         return UserResponse.entityMappedToResponse(saved);
     }
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
         entity.setUpdatedBy(userName);
 
         UserEntity saved = userEntityRepository.save(entity);
-        logger.atInfo().log("{} was updated", updatedName);
+        logger.atInfo().log("User with Name {} has been updated ", updatedName);
 
         return UserResponse.entityMappedToResponse(saved);
     }
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
         entity.setUpdatedBy(userName);
 
         userEntityRepository.save(entity);
-        logger.atInfo().log("{} was removed", entity.getName());
+        logger.atInfo().log("User with Name {} has been removed ", entity.getName());
 
         return id;
     }
@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
         HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
         String userName = Objects.requireNonNull(clientHeaders.get("userName")).get(0);
 
-        logger.atInfo().log("{} be directed Authorization", userName);
+        logger.atInfo().log("User with Name {} be directed Authorization", userName);
         apiClient.validate(clientHeaders, Role.ADMIN);
         return userName;
     }

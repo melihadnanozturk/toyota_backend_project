@@ -12,7 +12,6 @@ services:
     ports:
       - 5432:5432
 
-
   auth-service:
     build:
       context: ./tyt-auth
@@ -42,4 +41,4 @@ services:
 
 volumes:
   tyt:
-    driver: local
+    driver: local2

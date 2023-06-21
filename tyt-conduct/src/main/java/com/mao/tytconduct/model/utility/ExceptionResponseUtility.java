@@ -13,7 +13,11 @@ import java.util.Map;
  */
 public class ExceptionResponseUtility {
 
-    public static Logger logger = LogManager.getLogger(ExceptionResponseUtility.class);
+    private ExceptionResponseUtility() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static final Logger LOGGER = LogManager.getLogger(ExceptionResponseUtility.class);
 
     /**
      * Generates the error response body for the given exception.
@@ -27,7 +31,7 @@ public class ExceptionResponseUtility {
         Integer errorCode = exception.getError().getCode();
         String logMessage = "Error : {};   ExceptionMessage : {};   ErrorCode : {};";
 
-        logger.atError().log(logMessage, tytError, message, errorCode);
+        LOGGER.atError().log(logMessage, tytError, message, errorCode);
 
         Map<String, Object> body = new HashMap<>();
         body.put("error", tytError);

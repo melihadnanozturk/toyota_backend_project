@@ -217,7 +217,7 @@ public class DefectServiceImpl implements DefectService {
         HttpHeaders clientHeaders = HeaderUtility.createHeader(headers);
         String userName = HeaderUtility.getUser(headers);
 
-        logger.atInfo().log("User with NAME {} be directed Authorization", userName);
+        logger.atInfo().log("User with Name {} be directed Authorization", userName);
         apiClient.validate(clientHeaders, Role.OPERATOR);
     }
 

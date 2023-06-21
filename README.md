@@ -43,8 +43,8 @@ mvn clean install -DskipTests
 
 ## Must Run
 
-Run Sql script in readyUser.sql in tyt-conduct module
-This script has info about JOKER user and tt_terminal datas
+* Run readyForProject.sql script in tyt-conduct module for first User
+* This script in same time contain tt_terminal data
 
 ## Postman Collection
 

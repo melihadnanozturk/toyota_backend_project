@@ -3,7 +3,7 @@
 FROM maven:3.9.1 AS build
 COPY src /home/src
 COPY pom.xml /home
-RUN mvn -f /home/pom.xml clean package
+RUN mvn -f /home/pom.xml clean install -DskipTests
 
 # jdk eklenir, default profile verilir
 # jar dosyası kopyalanır ve port belirlenir

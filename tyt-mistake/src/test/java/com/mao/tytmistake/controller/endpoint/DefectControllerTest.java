@@ -118,7 +118,7 @@ class DefectControllerTest extends BaseControllerTests {
         HttpHeaders testHeaders = createHeader();
         String testName = "test";
 
-        when(defectService.getDefectImage(any(HttpHeaders.class), anyLong()))
+        when(getAllService.getDefectImage(any(HttpHeaders.class), anyLong()))
                 .thenReturn(testName.getBytes());
 
         mockMvc.perform(get(COMMON_PATH + "/{id}", testId)
@@ -127,7 +127,7 @@ class DefectControllerTest extends BaseControllerTests {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        verify(defectService, times(1))
+        verify(getAllService, times(1))
                 .getDefectImage(any(HttpHeaders.class), anyLong());
     }
 

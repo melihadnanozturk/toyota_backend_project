@@ -32,15 +32,6 @@ public interface DefectService {
     Long addDefectImage(HttpHeaders headers, MultipartFile multipartFile, Long id);
 
     /**
-     * Retrieves the image of a defect.
-     *
-     * @param headers HTTP headers containing client information.
-     * @param id      ID of defect.
-     * @return Byte array representation of the defect image.
-     */
-    byte[] getDefectImage(HttpHeaders headers, Long id);
-
-    /**
      * Deletes a defect.
      *
      * @param headers HttpHeaders containing request headers

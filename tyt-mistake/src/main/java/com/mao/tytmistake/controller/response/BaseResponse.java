@@ -3,6 +3,7 @@ package com.mao.tytmistake.controller.response;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +17,8 @@ public class BaseResponse<T> {
 
     private HttpStatus httpStatus;
 
+    private MediaType mediaType;
+
     private T response;
 
     private ResponseStatus isSuccess;
@@ -26,6 +29,15 @@ public class BaseResponse<T> {
     public static <T> BaseResponse<T> isSuccess(T response) {
         return BaseResponse.<T>builder()
                 .httpStatus(HttpStatus.OK)
+                .isSuccess(ResponseStatus.SUCCESS)
+                .response(response)
+                .build();
+    }
+
+    public static <T> BaseResponse<T> isSuccessOtherType(T response, MediaType mediaType) {
+        return BaseResponse.<T>builder()
+                .httpStatus(HttpStatus.OK)
+                .mediaType(mediaType)
                 .isSuccess(ResponseStatus.SUCCESS)
                 .response(response)
                 .build();

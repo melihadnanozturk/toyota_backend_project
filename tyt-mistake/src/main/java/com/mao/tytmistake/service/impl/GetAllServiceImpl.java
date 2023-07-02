@@ -11,6 +11,7 @@ import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.LocationEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
+import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.model.utility.CreateDefectSpec;
 import com.mao.tytmistake.model.utility.CreateVehicleSpec;
 import com.mao.tytmistake.model.utility.HeaderUtility;
@@ -98,6 +99,23 @@ public class GetAllServiceImpl implements GetAllService {
         List<LocationEntity> entities = defectLocationEntityRepository.findAllByVehicleDefectEntityId(defectId);
 
         return entities.stream().map(LocationsResponse::mappedLocationsResponse).toList();
+    }
+
+    /**
+     * Retrieves the image of a defect.
+     *
+     * @param headers HTTP headers containing client information.
+     * @param id      ID of defect.
+     * @return Byte array representation of the defect image.
+     * @throws NotFoundException if defect with given ID is not found.
+     */
+    @Override
+    public byte[] getDefectImage(HttpHeaders headers, Long id) {
+        this.isClientValid(headers);
+        DefectEntity entity = vehicleDefectEntityRepository.findByIdAndIsDeletedIsFalse(id)
+                .orElseThrow(() -> new NotFoundException(id.toString()));
+
+        return entity.getDefectImage();
     }
 
     /**

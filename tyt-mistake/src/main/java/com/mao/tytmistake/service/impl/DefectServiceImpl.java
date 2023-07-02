@@ -89,21 +89,6 @@ public class DefectServiceImpl implements DefectService {
     }
 
     /**
-     * Retrieves the image of a defect.
-     *
-     * @param headers HTTP headers containing client information.
-     * @param id      ID of defect.
-     * @return Byte array representation of the defect image.
-     * @throws NotFoundException if defect with given ID is not found.
-     */
-    @Override
-    public byte[] getDefectImage(HttpHeaders headers, Long id) {
-        this.isClientValid(headers);
-        DefectEntity entity = this.getDefectEntityById(id);
-        return entity.getDefectImage();
-    }
-
-    /**
      * Updates an existing defect.
      *
      * @param headers HttpHeaders containing request headers

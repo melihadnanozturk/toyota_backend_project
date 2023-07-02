@@ -78,7 +78,6 @@ class DefectServiceImplTest extends BaseUnitTest {
                 "image/jpeg",
                 "test image".getBytes()
         );
-        DefectEntity testDefectEntity = new DefectEntityBuilder().withId(testId).build();
 
         Mockito.when(vehicleDefectEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.empty());
 
@@ -133,34 +132,6 @@ class DefectServiceImplTest extends BaseUnitTest {
         Assertions.assertEquals(testId, response);
         verify(vehicleDefectEntityRepository, times(1)).findByIdAndIsDeletedIsFalse(anyLong());
         verify(vehicleDefectEntityRepository, times(1)).save(any(DefectEntity.class));
-        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
-    }
-
-    @Test
-    void getDefectImage_notExistsDefectId_throwNotFoundException() {
-        Long testId = 57L;
-        HttpHeaders testHeaders = createHeader();
-
-        when(vehicleDefectEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.empty());
-
-        Assertions.assertThrows(NotFoundException.class, () -> vehicleDefectService
-                .getDefectImage(testHeaders, testId));
-        verify(vehicleDefectEntityRepository, times(1)).findByIdAndIsDeletedIsFalse(anyLong());
-        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
-    }
-
-    @Test
-    void getDefectImage_happyPath() {
-        Long testId = 57L;
-        HttpHeaders testHeaders = createHeader();
-        DefectEntity testDefectEntity = new DefectEntityBuilder().build();
-
-        when(vehicleDefectEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.of(testDefectEntity));
-
-        byte[] response = vehicleDefectService.getDefectImage(testHeaders, testId);
-
-        Assertions.assertEquals(testDefectEntity.getDefectImage(), response);
-        verify(vehicleDefectEntityRepository, times(1)).findByIdAndIsDeletedIsFalse(anyLong());
         verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.OPERATOR));
     }
 

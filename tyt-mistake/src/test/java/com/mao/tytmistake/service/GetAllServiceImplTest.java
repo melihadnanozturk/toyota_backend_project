@@ -14,6 +14,7 @@ import com.mao.tytmistake.model.entity.DefectEntity;
 import com.mao.tytmistake.model.entity.LocationEntity;
 import com.mao.tytmistake.model.entity.VehicleEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
+import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.repository.DefectLocationEntityRepository;
 import com.mao.tytmistake.repository.VehicleDefectEntityRepository;
 import com.mao.tytmistake.repository.VehicleEntityRepository;
@@ -29,6 +30,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -107,6 +109,34 @@ class GetAllServiceImplTest extends BaseUnitTest {
         verify(defectLocationEntityRepository, times(1)).findAllByVehicleDefectEntityId(anyLong());
         verify(apiClient, times(1))
                 .validate(any(HttpHeaders.class), eq(Role.TEAM_LEAD));
+    }
+
+    @Test
+    void getDefectImage_notExistsDefectId_throwNotFoundException() {
+        Long testId = 57L;
+        HttpHeaders testHeaders = createHeader();
+
+        when(vehicleDefectEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(NotFoundException.class, () -> getAllService
+                .getDefectImage(testHeaders, testId));
+        verify(vehicleDefectEntityRepository, times(1)).findByIdAndIsDeletedIsFalse(anyLong());
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.TEAM_LEAD));
+    }
+
+    @Test
+    void getDefectImage_happyPath() {
+        Long testId = 57L;
+        HttpHeaders testHeaders = createHeader();
+        DefectEntity testDefectEntity = new DefectEntityBuilder().build();
+
+        when(vehicleDefectEntityRepository.findByIdAndIsDeletedIsFalse(testId)).thenReturn(Optional.of(testDefectEntity));
+
+        byte[] response = getAllService.getDefectImage(testHeaders, testId);
+
+        Assertions.assertEquals(testDefectEntity.getDefectImage(), response);
+        verify(vehicleDefectEntityRepository, times(1)).findByIdAndIsDeletedIsFalse(anyLong());
+        verify(apiClient, times(1)).validate(any(HttpHeaders.class), eq(Role.TEAM_LEAD));
     }
 
     private HttpHeaders createHeader() {

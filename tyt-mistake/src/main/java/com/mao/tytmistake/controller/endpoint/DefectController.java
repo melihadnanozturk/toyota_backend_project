@@ -55,7 +55,7 @@ public class DefectController {
     public ResponseEntity<byte[]> getDefectImage(@RequestHeader HttpHeaders headers,
                                                  @PathVariable Long id) {
 
-        byte[] imageData = defectService.getDefectImage(headers, id);
+        byte[] imageData = getAllService.getDefectImage(headers, id);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)

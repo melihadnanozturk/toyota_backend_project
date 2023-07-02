@@ -27,7 +27,7 @@ public class UserEntity extends BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 2412919361061342382L;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "password")

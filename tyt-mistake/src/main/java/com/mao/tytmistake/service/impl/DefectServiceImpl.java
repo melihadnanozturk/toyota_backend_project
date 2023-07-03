@@ -183,6 +183,9 @@ public class DefectServiceImpl implements DefectService {
      * @param imageData image to compare with one stored in entity.
      */
     private DefectEntity checkImageIsExist(DefectEntity entity, byte[] imageData) {
+        if (entity.getDefectImage() == null) {
+            throw new NotFoundException("images " + entity.getId());
+        }
         if (!Arrays.equals(entity.getDefectImage(), imageData)) {
             entity.getDefectLocation().forEach(location -> location.setIsDeleted(true));
             entity.setDefectImage(imageData);

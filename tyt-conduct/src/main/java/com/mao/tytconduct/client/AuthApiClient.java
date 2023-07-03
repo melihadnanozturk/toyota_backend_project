@@ -32,6 +32,6 @@ public interface AuthApiClient {
      * @param headers UserName, JWT Token
      * @return Boolean that the client is valid or not
      */
-    @PostMapping("/validate-user")
+    @PostMapping("/auth/validate-user")
     BaseResponse<Boolean> auth(@RequestHeader HttpHeaders headers);
 }

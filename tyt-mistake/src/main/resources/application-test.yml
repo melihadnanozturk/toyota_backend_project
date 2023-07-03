@@ -5,7 +5,7 @@ spring:
   application:
     name: tyt-mistake
   datasource:
-    url: jdbc:postgresql://host.docker.internal:5432/postgres
+    url: jdbc:postgresql://db:5432/postgres
     username: ${TYT_DB_USER:postgres}
     password: ${TYT_DB_PASS:root123}
   jpa:
@@ -15,4 +15,4 @@ spring:
 tyt:
   32Bit:
     feign-client:
-      auth: http://host.docker.internal:8080
+      auth: http://auth-service:8080

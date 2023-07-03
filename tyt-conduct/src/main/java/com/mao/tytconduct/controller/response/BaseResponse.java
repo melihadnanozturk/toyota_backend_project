@@ -31,23 +31,9 @@ public class BaseResponse<T> {
                 .build();
     }
 
-    public static <T> BaseResponse<T> isSuccess() {
-        return BaseResponse.<T>builder()
-                .httpStatus(HttpStatus.OK)
-                .isSuccess(ResponseStatus.SUCCESS)
-                .build();
-    }
-
     public static <T> BaseResponse<T> failed(T t, HttpStatus httpStatus) {
         return BaseResponse.<T>builder()
                 .httpStatus(httpStatus)
-                .isSuccess(ResponseStatus.FAILED)
-                .response(t)
-                .build();
-    }
-
-    public static <T> BaseResponse<T> failed(T t) {
-        return BaseResponse.<T>builder()
                 .isSuccess(ResponseStatus.FAILED)
                 .response(t)
                 .build();

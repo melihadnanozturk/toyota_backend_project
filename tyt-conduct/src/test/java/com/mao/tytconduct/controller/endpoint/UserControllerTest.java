@@ -2,8 +2,8 @@ package com.mao.tytconduct.controller.endpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mao.tytconduct.BaseControllerTests;
-import com.mao.tytconduct.controller.UserRequestBuilder;
 import com.mao.tytconduct.controller.request.UserRequest;
+import com.mao.tytconduct.controller.request.UserRequestBuilder;
 import com.mao.tytconduct.controller.response.UserResponse;
 import com.mao.tytconduct.controller.response.UserResponseBuilder;
 import com.mao.tytconduct.service.UserService;
@@ -94,7 +94,7 @@ class UserControllerTest extends BaseControllerTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.response").value(testId))
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
         verify(userService, times(1))

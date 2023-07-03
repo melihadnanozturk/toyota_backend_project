@@ -2,8 +2,8 @@ package com.mao.tytconduct.service.impl;
 
 import com.mao.tytconduct.BaseUnitTest;
 import com.mao.tytconduct.client.AuthApiClient;
-import com.mao.tytconduct.controller.UserRequestBuilder;
 import com.mao.tytconduct.controller.request.UserRequest;
+import com.mao.tytconduct.controller.request.UserRequestBuilder;
 import com.mao.tytconduct.controller.response.UserResponse;
 import com.mao.tytconduct.model.UserEntityBuilder;
 import com.mao.tytconduct.model.entity.UserEntity;

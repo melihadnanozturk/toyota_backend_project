@@ -1,7 +1,6 @@
-package com.mao.tytconduct.controller;
+package com.mao.tytconduct.controller.request;
 
 import com.mao.tytconduct.TestDataBuilder;
-import com.mao.tytconduct.controller.request.UserRequest;
 
 public class UserRequestBuilder extends TestDataBuilder<UserRequest> {
 

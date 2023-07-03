@@ -117,7 +117,7 @@ public class DefectController {
      * @param imageFile Defect image to defect image update
      * @return Long with updated defect information
      */
-    @PutMapping("/img/{defectId}")
+    @PatchMapping("/img/{defectId}")
     public BaseResponse<Long> updateDefectImage(
             @RequestHeader HttpHeaders headers,
             @RequestParam("imageFile") MultipartFile imageFile,

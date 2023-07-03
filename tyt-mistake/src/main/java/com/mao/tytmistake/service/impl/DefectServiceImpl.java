@@ -44,7 +44,7 @@ public class DefectServiceImpl implements DefectService {
      * @return a DefectResponse representing added defect
      * @throws NotFoundException if vehicle entity not exists
      */
-    @SneakyThrows
+
     @Override
     public DefectResponse addNewDefect(HttpHeaders headers, DefectRequest defectRequest) {
         this.isClientValid(headers);

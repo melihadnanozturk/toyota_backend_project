@@ -27,13 +27,13 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class DefectLocationServiceImpl implements DefectLocationService {
+public class LocationServiceImpl implements DefectLocationService {
 
     private final DefectLocationEntityRepository defectLocationEntityRepository;
     private final DefectService defectService;
     private final AuthApiClient apiClient;
 
-    private final Logger logger = LogManager.getLogger(DefectLocationServiceImpl.class);
+    private final Logger logger = LogManager.getLogger(LocationServiceImpl.class);
 
 
     /**

@@ -8,7 +8,7 @@ public enum Role {
     OPERATOR("OPERATOR"),
     TEAM_LEAD("TEAM_LEAD");
 
-    private String name;
+    private final String name;
 
     Role(String name) {
         this.name = name;

@@ -34,22 +34,6 @@ public class BaseResponse<T> {
                 .build();
     }
 
-    public static <T> BaseResponse<T> isSuccessOtherType(T response, MediaType mediaType) {
-        return BaseResponse.<T>builder()
-                .httpStatus(HttpStatus.OK)
-                .mediaType(mediaType)
-                .isSuccess(ResponseStatus.SUCCESS)
-                .response(response)
-                .build();
-    }
-
-    public static <T> BaseResponse<T> isSuccess() {
-        return BaseResponse.<T>builder()
-                .httpStatus(HttpStatus.OK)
-                .isSuccess(ResponseStatus.SUCCESS)
-                .build();
-    }
-
     public static <T> BaseResponse<T> failed(T t, HttpStatus httpStatus) {
         return BaseResponse.<T>builder()
                 .httpStatus(httpStatus)

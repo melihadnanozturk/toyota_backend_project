@@ -100,16 +100,24 @@ class DefectControllerTest extends BaseControllerTests {
 
     @Test
     void addNewDefectImage_happyPath() throws Exception {
-        MockMultipartFile imageFile = new MockMultipartFile("imageFile", "test.jpg", MediaType.IMAGE_JPEG_VALUE, "Test Image".getBytes());
-        Long id = 123L;
-
+        MockMultipartFile imageFile = new MockMultipartFile("imageFile",
+                "test.jpg", MediaType.IMAGE_JPEG_VALUE,
+                "Test Image".getBytes());
+        Long testId = 123L;
         HttpHeaders headers = createHeader();
 
-        mockMvc.perform(MockMvcRequestBuilders.multipart(COMMON_PATH + "/{id}", id)
+        when(defectService.addDefectImage(any(HttpHeaders.class), any(MultipartFile.class), anyLong()))
+                .thenReturn(testId);
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart(COMMON_PATH + "/{id}", testId)
                         .file(imageFile)
                         .headers(headers))
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.response").value(testId))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.localDateTime").isNotEmpty());
+
+        verify(defectService, times(1))
+                .addDefectImage(any(HttpHeaders.class), any(MultipartFile.class), anyLong());
     }
 
     @Test
@@ -125,7 +133,8 @@ class DefectControllerTest extends BaseControllerTests {
                         .headers(testHeaders)
                         .contentType(MediaType.IMAGE_JPEG))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().bytes(testName.getBytes()));
 
         verify(getAllService, times(1))
                 .getDefectImage(any(HttpHeaders.class), anyLong());
@@ -155,7 +164,7 @@ class DefectControllerTest extends BaseControllerTests {
     }
 
     @Test
-    public void testUpdateDefectImage() throws Exception {
+    void testUpdateDefectImage() throws Exception {
         Long defectId = 123L;
 
         MockMultipartFile file = new MockMultipartFile(
@@ -199,7 +208,7 @@ class DefectControllerTest extends BaseControllerTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.response").value(testId))
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
         verify(defectService, times(1))

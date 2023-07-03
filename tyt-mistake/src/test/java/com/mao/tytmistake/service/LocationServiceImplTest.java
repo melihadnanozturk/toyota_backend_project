@@ -12,7 +12,7 @@ import com.mao.tytmistake.model.entity.LocationEntity;
 import com.mao.tytmistake.model.entity.enums.Role;
 import com.mao.tytmistake.model.exception.NotFoundException;
 import com.mao.tytmistake.repository.DefectLocationEntityRepository;
-import com.mao.tytmistake.service.impl.DefectLocationServiceImpl;
+import com.mao.tytmistake.service.impl.LocationServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,7 +26,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 
-class DefectLocationServiceImplTest extends BaseUnitTest {
+class LocationServiceImplTest extends BaseUnitTest {
 
     @Mock
     private DefectLocationEntityRepository defectLocationEntityRepository;
@@ -36,7 +36,7 @@ class DefectLocationServiceImplTest extends BaseUnitTest {
     private AuthApiClient apiClient;
 
     @InjectMocks
-    private DefectLocationServiceImpl defectLocationService;
+    private LocationServiceImpl defectLocationService;
 
     @Test
     void addNewLocation_happyPath() {

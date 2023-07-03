@@ -124,7 +124,7 @@ class VehicleControllerTest extends BaseControllerTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.response").value(testVehicleId))
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
         Mockito.verify(vehicleService, Mockito.times(1))

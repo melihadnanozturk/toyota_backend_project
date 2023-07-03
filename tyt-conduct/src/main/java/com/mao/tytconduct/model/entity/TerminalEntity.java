@@ -1,8 +1,6 @@
 package com.mao.tytconduct.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,10 +17,14 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TerminalEntity extends BaseEntity implements Serializable {
+public class TerminalEntity implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -5979363465218192211L;
+    private static final long serialVersionUID = -2993155797185341905L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "term_name")
     private String name;

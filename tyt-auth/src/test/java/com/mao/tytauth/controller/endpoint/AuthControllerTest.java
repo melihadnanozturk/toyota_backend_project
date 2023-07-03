@@ -43,7 +43,7 @@ class AuthControllerTest extends BaseControllerTests {
                         .headers(testHeaders))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.response").value(true))
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
         verify(tokenService, times(1))
@@ -52,18 +52,18 @@ class AuthControllerTest extends BaseControllerTests {
 
     @Test
     void login_happyPath() throws Exception {
-        String token = "Bearer token";
+        String testToken = "Bearer token";
         HttpHeaders testHeaders = new HttpHeaders();
         testHeaders.set("userName", "testUser");
         testHeaders.set("password", "testPassword");
-        when(tokenService.createToken(any(HttpHeaders.class))).thenReturn(token);
+        when(tokenService.createToken(any(HttpHeaders.class))).thenReturn(testToken);
 
         mockMvc.perform(post(COMMON_PATH + "/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .headers(testHeaders))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.response").value(testToken))
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
         verify(tokenService, times(1))
@@ -83,7 +83,7 @@ class AuthControllerTest extends BaseControllerTests {
                         .headers(testHeaders))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response").isNotEmpty())
+                .andExpect(jsonPath("$.response").value(true))
                 .andExpect(jsonPath("$.localDateTime").isNotEmpty());
 
         verify(tokenService, times(1))

@@ -45,7 +45,6 @@ class TokenServiceImplTest extends BaseUnitTest {
                 .thenReturn(BaseResponse.isSuccess(testResponse));
 
         String response = tokenService.createToken(testHeaders);
-
         Claims testClaims = Jwts.parserBuilder().setSigningKey(createTestKey()).build().parseClaimsJws(response).getBody();
 
         Assertions.assertEquals(testClaims.getSubject(), testResponse.getName());
@@ -63,6 +62,7 @@ class TokenServiceImplTest extends BaseUnitTest {
 
         when(conductApiClient.userIsValid(any(HttpHeaders.class)))
                 .thenReturn(BaseResponse.isSuccess(testResponse));
+
         String testToken = tokenService.createToken(testHeadersForToken);
         HttpHeaders testForAuthentication = this.createHeaderForToken("invalidName", testToken);
 
@@ -81,6 +81,7 @@ class TokenServiceImplTest extends BaseUnitTest {
 
         when(conductApiClient.userIsValid(any(HttpHeaders.class)))
                 .thenReturn(BaseResponse.isSuccess(testResponse));
+
         String testToken = tokenService.createToken(testHeadersForToken);
         HttpHeaders testForAuthentication = this.createHeaderForToken(testName, testToken);
 
@@ -100,6 +101,7 @@ class TokenServiceImplTest extends BaseUnitTest {
 
         when(conductApiClient.userIsValid(any(HttpHeaders.class)))
                 .thenReturn(BaseResponse.isSuccess(testResponse));
+
         String testToken = tokenService.createToken(testHeadersForToken);
         HttpHeaders testForAuthentication = this.createHeaderForToken(testName, testToken);
 
@@ -119,6 +121,7 @@ class TokenServiceImplTest extends BaseUnitTest {
 
         when(conductApiClient.userIsValid(any(HttpHeaders.class)))
                 .thenReturn(BaseResponse.isSuccess(testResponse));
+
         String testToken = tokenService.createToken(testHeadersForToken);
         HttpHeaders testForAuthentication = this.createHeaderForToken(testName, testToken);
 

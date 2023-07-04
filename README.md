@@ -64,7 +64,7 @@ after the initial setup
 >* Same time There are noy any TerminalService information in database
 
 > For this getting this information you must run {readyForProject.sql} <br><br>
-> readyForProject.sql = \toyota_backend_project\tyt-conduct\src\main\resources\readyForProject.sql
+> readyForProject.sql = \toyota_backend_project\readyForProject.sql
 
 ## Postman Collection
 

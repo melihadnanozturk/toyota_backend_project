@@ -1,0 +1,872 @@
+{
+  "info": {
+    "_postman_id": "2ea6dc93-0548-4bba-a186-a62cbd0a961c",
+    "name": "32Bit",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "CONDUCT",
+      "item": [
+        {
+          "name": "User",
+          "item": [
+            {
+              "name": "add new user",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"operator\",\r\n    \"password\":\"123\",\r\n    \"roles\":[\r\n        \"OPERATOR\"\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{conduct_url}}/user",
+                  "host": [
+                    "{{conduct_url}}"
+                  ],
+                  "path": [
+                    "user"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update user",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"operator\",\r\n    \"password\":\"guncel\",\r\n    \"roles\":[\r\n        \"OPERATOR\",\"ADMIN\"\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{conduct_url}}/user/{userId}",
+                  "host": [
+                    "{{conduct_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "{userId}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete user",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{conduct_url}}/user/{userId}",
+                  "host": [
+                    "{{conduct_url}}"
+                  ],
+                  "path": [
+                    "user",
+                    "{userId}"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Terminal",
+          "item": [
+            {
+              "name": "getAllTerminal",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{conduct_url}}/terminal",
+                  "host": [
+                    "{{conduct_url}}"
+                  ],
+                  "path": [
+                    "terminal"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "MISTAKE",
+      "item": [
+        {
+          "name": "Vehicle",
+          "item": [
+            {
+              "name": "get All",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"model\": null,\r\n    \"colour\": null,\r\n    \"pageNumber\": 0,\r\n    \"pageSize\": 20,\r\n    \"sortOf\": \"ASC\",\r\n    \"sortCol\":\"ID\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{mistake_url}}/vehicle",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "vehicle"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "add new Vehicle",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"model\": \"AURIS\",\r\n    \"chassisNumber\": \"neW94\",\r\n    \"colour\":\"BLACK\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{mistake_url}}/vehicle",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "vehicle"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update Vehicle",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"model\": \"YARIS\",\r\n    \"chassisNumber\": \"updated\",\r\n    \"colour\": \"BLACK\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{mistake_url}}/vehicle/{vehicleId}",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "vehicle",
+                    "{vehicleId}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete Vehicle",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{mistake_url}}/vehicle/{vehicleId}",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "vehicle",
+                    "{vehicleId}"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Defect",
+          "item": [
+            {
+              "name": "get all",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"vehicleId\": null,\r\n    \"defect\": null,\r\n    \"pageNumber\": 0,\r\n    \"pageSize\": 20,\r\n    \"sortOf\": \"ASC\",\r\n    \"sortCol\": \"ID\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{mistake_url}}/vd",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "vd"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get defect image",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{mistake_url}}/vd/{defectId}",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "vd",
+                    "{defectId}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "add Defect",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"defect\":\"FADING_PAINT\",\r\n    \"vehicleDefectDesc\":\"new new\",\r\n    \"vehicleId\":2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{mistake_url}}/vd",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "vd"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "add Defect image",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "imageFile",
+                      "type": "file",
+                      "src": "/C:/Users/Adnan/Desktop/WhatsApp Image 2023-05-11 at 21.22.21 (1).jpeg"
+                    }
+                  ],
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{mistake_url}}/vd/{defectId}",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "vd",
+                    "{defectId}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update defect",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"defectDesc\":\"değüşüklük\",\r\n    \"defectImage\":\"new image\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{mistake_url}}/vd/{defectId}",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "vd",
+                    "{defectId}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update defect image",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "imageFile",
+                      "type": "file",
+                      "src": "/C:/Users/Adnan/Desktop/Ekran görüntüsü 2023-05-30 113320.png"
+                    }
+                  ],
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{mistake_url}}/vd/img/{defectId}",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "vd",
+                    "img",
+                    "{defectId}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete defect",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{mistake_url}}/vd/{defectId}",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "vd",
+                    "{defectId}"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Locations",
+          "item": [
+            {
+              "name": "add new location",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"locations\": [\r\n        {\r\n            \"yLocation\": \"yLocation\",\r\n            \"xLocation\": \"xLocation\"\r\n        }\r\n    ],\r\n    \"defectId\":2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{mistake_url}}/location",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "location"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get all locaiton by defect ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "url": {
+                  "raw": "{{mistake_url}}/location/{defectId}",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "location",
+                    "{defectId}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update location",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"yLocation\":\"güncellendi\",\r\n    \"xLocation\":\"güncellendi\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{mistake_url}}/location/{locationId}",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "location",
+                    "{locationId}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "delete locaitons (send location list)",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "userName",
+                    "value": "{{userName}}",
+                    "type": "default"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"locationIds\":[1,2,3]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{mistake_url}}/location",
+                  "host": [
+                    "{{mistake_url}}"
+                  ],
+                  "path": [
+                    "location"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "AUTH",
+      "item": [
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "userName",
+                "value": "{{userName}}",
+                "type": "default"
+              },
+              {
+                "key": "password",
+                "value": "{{password}}",
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "{{auth_url}}/auth/login",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "validate-user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "userName",
+                "value": "{{userName}}",
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "{{auth_url}}/auth/validate-user",
+              "host": [
+                "{{auth_url}}"
+              ],
+              "path": [
+                "auth",
+                "validate-user"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const user = pm.collectionVariables.userName;",
+          "const pass = pm.collectionVariables.password;",
+          "",
+          "const getToken = () => {",
+          "  pm.sendRequest({",
+          "    url: '{{auth_url}}/auth/login',",
+          "    method: 'POST',",
+          "    body: {",
+          "      username: user,",
+          "      password: pass",
+          "    }",
+          "  }, (err, response) => {",
+          "    if (err) {",
+          "      console.error(err);",
+          "      return;",
+          "    }",
+          "",
+          "    const token = response.json().token;",
+          "    pm.collectionVariables.set('bearerToken', token);",
+          "",
+          "  });",
+          "};"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "userName",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "password",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "auth_url",
+      "value": "http://localhost:8080",
+      "type": "default"
+    },
+    {
+      "key": "conduct_url",
+      "value": "http://localhost:8081",
+      "type": "default"
+    },
+    {
+      "key": "mistake_url",
+      "value": "http://localhost:8082",
+      "type": "default"
+    },
+    {
+      "key": "bearerToken",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}

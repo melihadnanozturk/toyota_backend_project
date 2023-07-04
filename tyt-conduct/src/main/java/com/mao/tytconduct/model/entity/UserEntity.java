@@ -33,6 +33,6 @@ public class UserEntity extends BaseEntity implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(columnDefinition = "smallint[]")
+    @Column(columnDefinition = "smallint[]", nullable = false)
     private HashSet<Role> roles;
 }
